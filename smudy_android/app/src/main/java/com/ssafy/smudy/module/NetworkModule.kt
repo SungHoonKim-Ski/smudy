@@ -2,7 +2,6 @@ package com.ssafy.smudy.module
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.ssafy.data.BuildConfig
 import com.ssafy.data.BuildConfig.BASE_URL
 import com.ssafy.data.api.UserService
 import com.ssafy.smudy.AuthInterceptor
