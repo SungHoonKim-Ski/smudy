@@ -1,14 +1,50 @@
 [versions]
 agp = "8.3.2"
 kotlin = "1.9.0"
-coreKtx = "1.10.1"
+coreKtx = "1.13.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 appcompat = "1.6.1"
-material = "1.10.0"
-activity = "1.8.0"
+androidx-view-model = "2.7.0"
+androidx-fragment = "1.6.2"
+material = "1.11.0"
+activity = "1.9.0"
 constraintlayout = "2.1.4"
+navigation = "2.7.7"
+parcelize = "1.9.23"
+ksp = "1.9.0-1.0.12"
+
+# Coroutine
+coroutine = "1.6.4"
+
+# GoogleServices
+googleService = "4.6.0"
+
+# Hilt
+hilt = "2.50"
+inject = "1"
+
+# Retrofit
+retrofit = "2.9.0"
+moshi-converter = "2.9.0"
+moshi-kotlin = "1.14.0"
+okhttp = "4.12.0"
+logging-interceptor = "4.12.0"
+
+# Lottie
+lottie = "6.4.0"
+
+# Glide
+glide = "4.16.0"
+
+#ViewPager
+viewpager = "1.0.0"
+
+#Paging
+paging = "3.2.1"
+annotation = "1.6.0"
+lifecycleLivedataKtx = "2.7.0"
 
 
 [libraries]
@@ -18,14 +54,73 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-view-model = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidx-view-model" }
+androidx-fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "androidx-fragment" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+navigation-fragment = {group = "androidx.navigation", name="navigation-fragment-ktx", version.ref = "navigation"}
+navigation-ui = {group = "androidx.navigation", name="navigation-ui-ktx", version.ref="navigation"}
+
+# Dependency Injection
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-navigation = {group = "androidx.hilt", name="hilt-navigation-fragment", version = "1.2.0"}
+# Domain Inject
+inject = { group = "javax.inject", name = "javax.inject", version.ref = "inject" }
+
+# Networking
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+moshi-converter = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "moshi-converter" }
+moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi-kotlin" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+okhttp-logginginterceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "logging-interceptor" }
+
+# Animation
+lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie" }
+
+#Glide
+glide = {group = "com.github.bumptech.glide", name = "glide", version.ref = "glide"}
+
+#ViewPager
+viewpager = {group = "androidx.viewpager2", name = "viewpager2", version.ref = "viewpager"}
+
+#Paging
+paging = {group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "paging"}
+
+# Coroutine
+coroutine = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutine" }
+
+# Circle Image View
+circleImageView = {group = "de.hdodenhof", name = "circleimageview", version = "3.1.0"}
+androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
+androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+daggerHilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
+parcelize = {id="org.jetbrains.kotlin.plugin.parcelize", version.ref="parcelize"}
 
-#id 'kotlin-kapt'
-#id 'com.google.dagger.hilt.android'
-#id("com.google.gms.google-services")
-#id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+#googleservice = {id ="com.google.gms.google-services" , version.ref = "googleService" }
+
+[bundles]
+# AndroidX Bundle
+androidx = ["androidx-core-ktx", "androidx-appcompat", "material", "androidx-constraintlayout", "androidx-view-model", "androidx-fragment", "androidx-activity"]
+
+# Testing Bundle
+testing = ["junit", "androidx-junit", "androidx-espresso-core"]
+
+# Networking Bundle
+retrofit = ["retrofit", "moshi-converter", "moshi-kotlin", "okhttp", "okhttp-logginginterceptor"]
+
+# Hilt Bundle (Dependency Injection)
+hilt = ["hilt-android", "hilt-compiler", "hilt-navigation"]
+
+navigation = ["navigation-fragment", "navigation-ui"]
+
+presentationBundle = ["glide", "viewpager", "paging", "circleImageView"]

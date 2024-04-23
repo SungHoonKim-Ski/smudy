@@ -1,14 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
-buildscript {
-
-    dependencies {
-        classpath ("com.google.dagger:hilt-android-gradle-plugin:2.49")
-    }
-}
+@file:Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.jetbrainsKotlinAndroid) apply false
-    id("com.google.dagger.hilt.android") version "2.49" apply false
-    id("com.google.devtools.ksp") version "1.9.0-1.0.12" apply false
+    alias(libs.plugins.androidLibrary) apply false
+    alias(libs.plugins.kotlinJvm) apply false
+    alias(libs.plugins.daggerHilt) apply false
+    alias(libs.plugins.ksp) apply false
+//    alias(libs.plugins.kapt) apply false
+
+//    alias(libs.plugins.googleservice) apply false
 }

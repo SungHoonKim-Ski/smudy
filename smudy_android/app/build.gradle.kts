@@ -1,20 +1,16 @@
-import java.io.FileInputStream
-import java.util.Properties
-
+@file:Suppress("DSL_SCOPE_VIOLATION")
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    //hilt
-    id("com.google.dagger.hilt.android")
-    id("kotlin-parcelize")
-    //ksp
-    id("com.google.devtools.ksp")
-    id("kotlin-kapt")
+//    alias(libs.plugins.kapt)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.daggerHilt)
+//    alias(libs.plugins.googleservice)
 }
 
-var properties = Properties()
-properties.load(FileInputStream("local.properties"))
+fun getProperty(propertyKey: String): String = gradleLocalProperties(rootDir, providers).getProperty(propertyKey)
 
 android {
     namespace = "com.ssafy.smudy"
@@ -22,14 +18,14 @@ android {
 
     defaultConfig {
         applicationId = "com.ssafy.smudy"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "BASE_URL", properties.getProperty("BASE_URL"))
+
 
     }
 
@@ -43,82 +39,57 @@ android {
         }
     }
 
-    buildFeatures {
+    buildFeatures{
+        viewBinding = true
+        dataBinding = true
         buildConfig = true
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     hilt {
         enableAggregatingTask = true
     }
+
+    packaging{
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1,DEPENDENCIES,LICENSE.md,NOTICE.md,io.netty.versions.properties,annotation.kotlin_builtins,INDEX.LIST}"
+            excludes += "/META-INF/gradle/{incremental.annotation.processors}"
+        }
+    }
 }
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.constraintlayout)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    implementation(project(":presentation"))
+    implementation(project(":domain"))
+    implementation(project(":data"))
 
-    // https://github.com/square/retrofit
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation(libs.bundles.androidx)
+    testImplementation(libs.bundles.testing)
 
-    // https://github.com/square/okhttp
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    // Hilt
+    implementation(libs.bundles.hilt)
+    ksp(libs.hilt.compiler)
 
-    // https://github.com/square/retrofit/tree/master/retrofit-converters/gson
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-
-    // https://github.com/square/okhttp/tree/master/okhttp-logging-interceptor
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-
-    // Glide 사용
-    implementation ("com.github.bumptech.glide:glide:4.14.2")
-    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
-
-    //viewmodel dependency 추가
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-    //lifecycle scope dependency
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    //framework ktx dependency 추가
-    implementation ("androidx.fragment:fragment-ktx:1.6.2")
-
-    // 코루틴
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-
-    //hilt
-    implementation("com.google.dagger:hilt-android:2.49")
-    implementation("com.android.identity:identity-credential-android:20231002")
-
-
-    // DataStore
-    implementation("androidx.datastore:datastore-core:1.1.0")
+    // Retrofit
+    implementation(libs.bundles.retrofit)
 
     // Navigation
-    implementation ("androidx.navigation:navigation-fragment-ktx:2.7.7")
-    implementation ("androidx.navigation:navigation-ui-ktx:2.7.7")
+    implementation(libs.bundles.navigation)
+    implementation(libs.bundles.presentationBundle)
 
-    // viwePager2
-    implementation ("androidx.viewpager2:viewpager2:1.0.0")
+    androidTestImplementation ("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation ("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation ("androidx.test:runner:1.4.0")
+    androidTestImplementation ("androidx.test:rules:1.4.0")
 
-    //lottie
-    implementation ("com.airbnb.android:lottie:6.4.0")
 
-    //paging
-    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
-
-    kapt ("com.google.dagger:hilt-compiler:2.48")
 }
 
