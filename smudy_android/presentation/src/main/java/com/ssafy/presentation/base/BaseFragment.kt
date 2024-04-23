@@ -1,4 +1,4 @@
-package com.tasteguys.foorrng_customer.presentation.base
+package com.ssafy.presentation.base
 
 import android.annotation.SuppressLint
 import android.content.Context

@@ -44,7 +44,6 @@ android {
 
     buildFeatures{
         viewBinding = true
-        dataBinding = true
         buildConfig = true
     }
 }
@@ -58,6 +57,10 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
     ksp(libs.hilt.compiler)
 
+    implementation(libs.bundles.presentationBundle)
+
+    // Navigation
+    implementation(libs.bundles.navigation)
     implementation(libs.bundles.presentationBundle)
 
     testImplementation(libs.bundles.testing)
