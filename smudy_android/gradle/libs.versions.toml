@@ -16,7 +16,7 @@ parcelize = "1.9.23"
 ksp = "1.9.0-1.0.12"
 
 # Coroutine
-coroutine = "1.6.4"
+coroutine = "1.7.3"
 
 # GoogleServices
 googleService = "4.6.0"
@@ -43,7 +43,7 @@ viewpager = "1.0.0"
 
 #Paging
 paging = "3.2.1"
-annotation = "1.6.0"
+annotation = "1.7.1"
 lifecycleLivedataKtx = "2.7.0"
 
 
@@ -102,7 +102,6 @@ jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "k
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 daggerHilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
 parcelize = {id="org.jetbrains.kotlin.plugin.parcelize", version.ref="parcelize"}
 

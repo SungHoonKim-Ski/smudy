@@ -1,4 +1,11 @@
 <resources>
 
-    <style name="Theme.Smudy" parent="Theme.MaterialComponents.Light" />
+    <style name="Base.Theme.Smudy" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/smudy_mint</item>
+    </style>
+
+    <style name="Theme.Smudy" parent="Base.Theme.Smudy">
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>
