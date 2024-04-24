@@ -91,4 +91,9 @@
         <item name="android:fontFamily">@font/noto_sans_kr_extra_bold</item>
     </style>
 
+    <!-- Jalnan -->
+    <style name="Jalnan.TEXT.R.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/jalnan2</item>
+    </style>
+
 </resources>
