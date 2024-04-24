@@ -18,6 +18,5 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
         val navController = navHostFragment.findNavController()
 
         binding.bnBar.setupWithNavController(navController)
-        binding.bnBar.itemIconTintList = null
     }
 }

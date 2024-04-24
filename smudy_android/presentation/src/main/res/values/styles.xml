@@ -170,6 +170,7 @@
 
     <style name="Widget.Material3.BottomNavigationView.Color" parent="Base.Widget.Material3.BottomNavigationView">
         <item name="backgroundTint">@color/white</item>
+        <item name="itemIconTint">@color/sl_nav_item_color</item>
         <item name="itemActiveIndicatorStyle">@style/CustomItemActiveIndicator</item>
     </style>
 

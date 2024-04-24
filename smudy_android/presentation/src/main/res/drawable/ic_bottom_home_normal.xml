@@ -4,6 +4,6 @@
     android:viewportWidth="960"
     android:viewportHeight="960">
   <path
-      android:fillColor="@color/sl_nav_item_color"
+      android:fillColor="@color/black"
       android:pathData="M160,840L160,360L480,120L800,360L800,840L560,840L560,560L400,560L400,840L160,840Z"/>
 </vector>
