@@ -5,5 +5,11 @@
     <color name="red">#FFFF0000</color>
 
     <color name="smudy_mint">#FF75E3D1</color>
+    <color name="gray">#FFF3F3F3</color>
+    <color name="charcoal">#5536454F</color>
+    <color name="navy_blue">#FF000080</color>
+    <color name="light_pink">#ABFFB6C1</color>
+    <color name="dark_purple">#FF5C007A</color>
+    <color name="box_blue">#FFEBFAFF</color>
 
 </resources>

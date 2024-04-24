@@ -1,4 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Dangrek -->
+    <style name="Dangrek.TEXT.R.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/dangrek_regular</item>
+    </style>
+
+    <!-- Gyungi Title -->
+    <style name="Gyungi.TITLE_TEXT.L.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/gyungi_title_light</item>
+    </style>
+
+    <style name="Gyungi.TITLE_TEXT.R.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/gyungi_title_medium</item>
+    </style>
+
+    <style name="Gyungi.TITLE_TEXT.B.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/gyungi_title_bold</item>
+    </style>
+
+    <!-- Gyungi Body -->
+    <style name="Gyungi.BODY_TEXT.R.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/gyungi_body_regular</item>
+    </style>
+
+    <style name="Gyungi.BODY_TEXT.B.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/gyungi_body_bold</item>
+    </style>
+
+    <!-- Nanum Gothic -->
+    <style name="Nanum_Gothic.TEXT.L.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/nanum_gothic_light</item>
+    </style>
+
+    <style name="Nanum_Gothic.TEXT.R.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/nanum_gothic</item>
+    </style>
+
+    <style name="Nanum_Gothic.TEXT.B.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/nanum_gothic_bold</item>
+    </style>
+
+    <style name="Nanum_Gothic.TEXT.EB.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/nanum_gothic_extrabold</item>
+    </style>
+
+    <!-- Nanum Square -->
+    <style name="Nanum_Square.TEXT.L.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/nanum_square_round_light</item>
+    </style>
+
+    <style name="Nanum_Square.TEXT.R.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/nanum_square_round_regular</item>
+    </style>
+
+    <style name="Nanum_Square.TEXT.B.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/nanum_square_round_bold</item>
+    </style>
+
+    <style name="Nanum_Square.TEXT.B.12." parent="Nanum_Square.TEXT.B.16">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Nanum_Square.TEXT.EB.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/nanum_square_round_extrabold</item>
+    </style>
+
+    <!-- Noto Sans -->
+    <style name="Noto_Sans.TEXT.L.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/noto_sans_kr_light</item>
+    </style>
+
+    <style name="Noto_Sans.TEXT.EL.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/noto_sans_kr_extra_light</item>
+    </style>
+
+    <style name="Noto_Sans.TEXT.R.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/noto_sans_kr_regular</item>
+    </style>
+
+    <style name="Noto_Sans.TEXT.SB.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/noto_sans_kr_semi_bold</item>
+    </style>
+
+    <style name="Noto_Sans.TEXT.B.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/noto_sans_kr_bold</item>
+    </style>
+
+    <style name="Noto_Sans.TEXT.EB.16" parent="Theme.Smudy">
+        <item name="android:fontFamily">@font/noto_sans_kr_extra_bold</item>
+    </style>
+
 </resources>
