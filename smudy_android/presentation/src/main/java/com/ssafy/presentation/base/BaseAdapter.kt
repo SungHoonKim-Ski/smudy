@@ -1,7 +1,6 @@
-package com.tasteguys.foorrng_customer.presentation.base
+package com.ssafy.presentation.base
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter

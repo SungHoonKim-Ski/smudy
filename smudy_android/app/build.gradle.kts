@@ -81,10 +81,6 @@ dependencies {
     // Retrofit
     implementation(libs.bundles.retrofit)
 
-    // Navigation
-    implementation(libs.bundles.navigation)
-    implementation(libs.bundles.presentationBundle)
-
     androidTestImplementation ("androidx.test.ext:junit:1.1.3")
     androidTestImplementation ("androidx.test.espresso:espresso-core:3.4.0")
     androidTestImplementation ("androidx.test:runner:1.4.0")
