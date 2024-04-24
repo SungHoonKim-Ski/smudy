@@ -11,4 +11,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home">홈 화면 입니다.</string>
+
+    <string name="recently_study_music">최근 학습한 음악</string>
+    <string name="todo">TODO</string>
+    <string name="music_recommend">이런 곡도 학습해봐요!</string>
+    <string name="today_sentence">오늘의 문장</string>
+    <string name="repeat_wrong_sentence">틀린 표현 복습</string>
+
 </resources>

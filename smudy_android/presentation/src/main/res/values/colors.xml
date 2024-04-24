@@ -11,5 +11,7 @@
     <color name="light_pink">#ABFFB6C1</color>
     <color name="dark_purple">#FF5C007A</color>
     <color name="box_blue">#FFEBFAFF</color>
+    <color name="progress_background">#2300B2FF</color>
+    <color name="sentence_box">#FFFFD972</color>
 
 </resources>
