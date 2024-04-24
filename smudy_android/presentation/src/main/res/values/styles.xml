@@ -6,6 +6,14 @@
         <item name="android:fontFamily">@font/dangrek_regular</item>
     </style>
 
+    <style name="Dangrek.TEXT.R.11" parent="Dangrek.TEXT.R.16">
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="Dangrek.TEXT.R.12" parent="Dangrek.TEXT.R.16">
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <!-- Gyungi Title -->
     <style name="Gyungi.TITLE_TEXT.L.16" parent="Theme.Smudy">
         <item name="android:fontFamily">@font/gyungi_title_light</item>
@@ -17,6 +25,10 @@
 
     <style name="Gyungi.TITLE_TEXT.B.16" parent="Theme.Smudy">
         <item name="android:fontFamily">@font/gyungi_title_bold</item>
+    </style>
+
+    <style name="Gyungi.TITLE_TEXT.B.12" parent="Gyungi.TITLE_TEXT.B.16">
+        <item name="android:textSize">12sp</item>
     </style>
 
     <!-- Gyungi Body -->
@@ -58,7 +70,11 @@
         <item name="android:fontFamily">@font/nanum_square_round_bold</item>
     </style>
 
-    <style name="Nanum_Square.TEXT.B.12." parent="Nanum_Square.TEXT.B.16">
+    <style name="Nanum_Square.TEXT.B.11" parent="Nanum_Square.TEXT.B.16">
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="Nanum_Square.TEXT.B.12" parent="Nanum_Square.TEXT.B.16">
         <item name="android:textSize">12sp</item>
     </style>
 
@@ -66,9 +82,25 @@
         <item name="android:fontFamily">@font/nanum_square_round_extrabold</item>
     </style>
 
+    <style name="Nanum_Square.TEXT.EB.12" parent="Nanum_Square.TEXT.EB.16">
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <!-- Noto Sans -->
     <style name="Noto_Sans.TEXT.L.16" parent="Theme.Smudy">
         <item name="android:fontFamily">@font/noto_sans_kr_light</item>
+    </style>
+
+    <style name="Noto_Sans.TEXT.L.11" parent="Noto_Sans.TEXT.L.16">
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="Noto_Sans.TEXT.L.12" parent="Noto_Sans.TEXT.L.16">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Noto_Sans.TEXT.L.14" parent="Noto_Sans.TEXT.L.16">
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="Noto_Sans.TEXT.EL.16" parent="Theme.Smudy">
@@ -79,12 +111,40 @@
         <item name="android:fontFamily">@font/noto_sans_kr_regular</item>
     </style>
 
+    <style name="Noto_Sans.TEXT.R.11" parent="Noto_Sans.TEXT.R.16">
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="Noto_Sans.TEXT.R.12" parent="Noto_Sans.TEXT.R.16">
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <style name="Noto_Sans.TEXT.SB.16" parent="Theme.Smudy">
         <item name="android:fontFamily">@font/noto_sans_kr_semi_bold</item>
     </style>
 
     <style name="Noto_Sans.TEXT.B.16" parent="Theme.Smudy">
         <item name="android:fontFamily">@font/noto_sans_kr_bold</item>
+    </style>
+
+    <style name="Noto_Sans.TEXT.B.11" parent="Noto_Sans.TEXT.B.16">
+        <item name="android:textSize">11sp</item>
+    </style>
+
+    <style name="Noto_Sans.TEXT.B.12" parent="Noto_Sans.TEXT.B.16">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Noto_Sans.TEXT.B.13" parent="Noto_Sans.TEXT.B.16">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="Noto_Sans.TEXT.B.18" parent="Noto_Sans.TEXT.B.16">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Noto_Sans.TEXT.B.20" parent="Noto_Sans.TEXT.B.16">
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="Noto_Sans.TEXT.EB.16" parent="Theme.Smudy">
@@ -94,6 +154,18 @@
     <!-- Jalnan -->
     <style name="Jalnan.TEXT.R.16" parent="Theme.Smudy">
         <item name="android:fontFamily">@font/jalnan2</item>
+    </style>
+
+    <style name="Jalnan.TEXT.R.10" parent="Jalnan.TEXT.R.16">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="Jalnan.TEXT.R.20" parent="Jalnan.TEXT.R.16">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="Jalnan.TEXT.R.24" parent="Jalnan.TEXT.R.16">
+        <item name="android:textSize">24sp</item>
     </style>
 
 </resources>
