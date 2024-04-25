@@ -61,7 +61,6 @@ dependencies {
 
     // Navigation
     implementation(libs.bundles.navigation)
-    implementation(libs.bundles.presentationBundle)
 
     testImplementation(libs.bundles.testing)
     androidTestImplementation(libs.androidx.junit)
