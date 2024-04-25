@@ -46,6 +46,8 @@ paging = "3.2.1"
 annotation = "1.7.1"
 lifecycleLivedataKtx = "2.7.0"
 
+#Kakao
+kakao = "2.20.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -58,13 +60,13 @@ androidx-view-model = { group = "androidx.lifecycle", name = "lifecycle-viewmode
 androidx-fragment = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "androidx-fragment" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
-navigation-fragment = {group = "androidx.navigation", name="navigation-fragment-ktx", version.ref = "navigation"}
-navigation-ui = {group = "androidx.navigation", name="navigation-ui-ktx", version.ref="navigation"}
+navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
+navigation-ui = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
 
 # Dependency Injection
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
-hilt-navigation = {group = "androidx.hilt", name="hilt-navigation-fragment", version = "1.2.0"}
+hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-fragment", version = "1.2.0" }
 # Domain Inject
 inject = { group = "javax.inject", name = "javax.inject", version.ref = "inject" }
 
@@ -79,22 +81,24 @@ okhttp-logginginterceptor = { group = "com.squareup.okhttp3", name = "logging-in
 lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie" }
 
 #Glide
-glide = {group = "com.github.bumptech.glide", name = "glide", version.ref = "glide"}
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
 
 #ViewPager
-viewpager = {group = "androidx.viewpager2", name = "viewpager2", version.ref = "viewpager"}
+viewpager = { group = "androidx.viewpager2", name = "viewpager2", version.ref = "viewpager" }
 
 #Paging
-paging = {group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "paging"}
+paging = { group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "paging" }
 
 # Coroutine
 coroutine = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutine" }
 
 # Circle Image View
-circleImageView = {group = "de.hdodenhof", name = "circleimageview", version = "3.1.0"}
+circleImageView = { group = "de.hdodenhof", name = "circleimageview", version = "3.1.0" }
 androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 
+# Kakao Login
+kakao = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -102,8 +106,8 @@ jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "k
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 daggerHilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
-parcelize = {id="org.jetbrains.kotlin.plugin.parcelize", version.ref="parcelize"}
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "parcelize" }
 
 #googleservice = {id ="com.google.gms.google-services" , version.ref = "googleService" }
 

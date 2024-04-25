@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.ksp)
     alias(libs.plugins.daggerHilt)
+
 }
 
 android {
@@ -22,7 +23,7 @@ android {
         if (localPropertiesFile.exists()) {
             localProperties.load(localPropertiesFile.inputStream())
         }
-
+        manifestPlaceholders["NATIVE_APP_KEY"] = localProperties["NATIVE_APP_KEY"] as String
     }
 
     buildTypes {
@@ -59,9 +60,9 @@ dependencies {
 
     implementation(libs.bundles.presentationBundle)
 
+    implementation(libs.kakao)
     // Navigation
     implementation(libs.bundles.navigation)
-
     testImplementation(libs.bundles.testing)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
