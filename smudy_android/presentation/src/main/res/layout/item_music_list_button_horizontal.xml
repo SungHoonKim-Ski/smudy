@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/fragment_padding">
+
+    <ImageView
+        android:id="@+id/iv_album_jacket"
+        android:layout_width="@dimen/jacket_size_medium"
+        android:layout_height="@dimen/jacket_size_medium"
+        android:contentDescription="@string/all_album_jacket_img_description"
+        android:src="@drawable/ic_bottom_calendar_month"
+        tools:src="@drawable/ic_bottom_home_normal"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center|start"
+        android:layout_marginStart="@dimen/item_padding">
+
+        <TextView
+            android:id="@+id/tv_album_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/Noto_Sans.TEXT.B.12"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="@string/action_sign_in"
+            tools:text="@string/action_sign_in"/>
+
+        <TextView
+            android:id="@+id/tv_album_singer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/Noto_Sans.TEXT.R.11"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="@string/login_img_app_logo"
+            tools:text="@string/login_img_app_logo"/>
+
+    </LinearLayout>
+    <ImageView
+        android:layout_width="@dimen/icon_size_regular"
+        android:layout_height="@dimen/icon_size_regular"
+        android:src="@drawable/ic_bottom_calendar_month"
+        tools:src="@drawable/ic_bottom_calendar_month"
+        android:contentDescription="@string/item_visible_btn_img_description" />
+</LinearLayout>
