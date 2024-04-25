@@ -24,9 +24,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-
-
+        buildConfigField("String", "NATIVE_APP_KEY", getProperty("NATIVE_APP_KEY"))
     }
 
     buildTypes {
@@ -40,8 +38,6 @@ android {
     }
 
     buildFeatures{
-        viewBinding = true
-        dataBinding = true
         buildConfig = true
     }
 
@@ -77,6 +73,8 @@ dependencies {
     // Hilt
     implementation(libs.bundles.hilt)
     ksp(libs.hilt.compiler)
+
+    implementation(libs.kakao)
 
     // Retrofit
     implementation(libs.bundles.retrofit)

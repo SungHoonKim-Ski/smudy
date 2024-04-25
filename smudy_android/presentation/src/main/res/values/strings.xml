@@ -18,4 +18,6 @@
     <string name="today_sentence">오늘의 문장</string>
     <string name="repeat_wrong_sentence">틀린 표현 복습</string>
 
+    <string name="login_btn_img_description">카카오 로그인 버튼 이미지</string>
+    <string name="login_img_app_logo">로그인 화면 앱 로고</string>
 </resources>
