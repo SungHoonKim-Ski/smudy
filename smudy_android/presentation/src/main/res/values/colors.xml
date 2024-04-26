@@ -6,12 +6,11 @@
 
     <color name="smudy_mint">#FF75E3D1</color>
     <color name="gray">#FFF3F3F3</color>
-    <color name="charcoal">#5536454F</color>
-    <color name="navy_blue">#FF000080</color>
-    <color name="light_pink">#ABFFB6C1</color>
+    <color name="charcoal">#4D2E343A</color>
+    <color name="navy_blue">#E6000080</color>
+    <color name="light_pink">#B3FFB6C1</color>
     <color name="dark_purple">#FF5C007A</color>
     <color name="box_blue">#FFEBFAFF</color>
     <color name="progress_background">#2300B2FF</color>
     <color name="sentence_box">#FFFFD972</color>
-
 </resources>

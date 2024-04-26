@@ -1,52 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:paddingHorizontal="@dimen/fragment_padding">
 
-    <ImageView
-        android:id="@+id/iv_album_jacket"
-        android:layout_width="@dimen/jacket_size_medium"
-        android:layout_height="@dimen/jacket_size_medium"
-        android:contentDescription="@string/all_album_jacket_img_description"
-        android:src="@drawable/ic_bottom_calendar_month"
-        tools:src="@drawable/ic_bottom_home_normal"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_album_jacket"
+            android:layout_width="@dimen/jacket_size_medium"
+            android:layout_height="@dimen/jacket_size_medium"
+            android:contentDescription="@string/all_album_jacket_img_description"
+            tools:src="@drawable/ic_bottom_home_normal" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/item_padding"
+            android:layout_weight="1"
+            android:gravity="center|start"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_album_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:textAppearance="@style/Noto_Sans.TEXT.B.12"
+                tools:text="@string/action_sign_in" />
+
+            <TextView
+                android:id="@+id/tv_album_singer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:textAppearance="@style/Noto_Sans.TEXT.R.11"
+                tools:text="@string/login_img_app_logo" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/btn_expand"
+            android:layout_width="@dimen/icon_size_regular"
+            android:layout_height="@dimen/icon_size_regular"
+            android:contentDescription="@string/item_visible_btn_img_description"
+            tools:src="@drawable/ic_bottom_calendar_month" />
+    </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center|start"
-        android:layout_marginStart="@dimen/item_padding">
+        android:id="@+id/ll_study_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:visibility="gone"
+        tools:visibility="visible">
 
-        <TextView
-            android:id="@+id/tv_album_title"
-            android:layout_width="wrap_content"
+        <Button
+            style="@style/TextAppearance.MaterialComponents.Button.Color"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/Noto_Sans.TEXT.B.12"
-            android:includeFontPadding="false"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:text="@string/action_sign_in"
-            tools:text="@string/action_sign_in"/>
+            android:layout_marginHorizontal="5dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/dark_purple"
+            android:text="@string/all_study_type_fill" />
 
-        <TextView
-            android:id="@+id/tv_album_singer"
-            android:layout_width="wrap_content"
+        <Button
+            style="@style/TextAppearance.MaterialComponents.Button.Color"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/Noto_Sans.TEXT.R.11"
-            android:includeFontPadding="false"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:text="@string/login_img_app_logo"
-            tools:text="@string/login_img_app_logo"/>
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/charcoal"
+            android:text="@string/all_study_type_pick" />
 
+        <Button
+            style="@style/TextAppearance.MaterialComponents.Button.Color"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/navy_blue"
+            android:text="@string/all_study_type_express" />
+
+        <Button
+            style="@style/TextAppearance.MaterialComponents.Button.Color"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/light_pink"
+            android:text="@string/all_study_type_pronounce" />
     </LinearLayout>
-    <ImageView
-        android:layout_width="@dimen/icon_size_regular"
-        android:layout_height="@dimen/icon_size_regular"
-        android:src="@drawable/ic_bottom_calendar_month"
-        tools:src="@drawable/ic_bottom_calendar_month"
-        android:contentDescription="@string/item_visible_btn_img_description" />
 </LinearLayout>

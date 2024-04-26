@@ -12,10 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/rv_study_list"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/rv_study_list">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_chainStyle="packed">
+
         <TextView
             android:id="@+id/tv_study_title"
             android:layout_width="wrap_content"
@@ -23,10 +26,12 @@
             android:gravity="start"
             android:text="@string/study_fragment_title"
             android:textAppearance="@style/Nanum_Square.TEXT.B.16" />
+
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
+
         <TextView
             android:id="@+id/tv_music_add"
             android:layout_width="wrap_content"
@@ -39,10 +44,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_study_list"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/ll_study_title"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="300dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_study_title"
+        tools:itemCount="10"
+        tools:listitem="@layout/item_music_list_button_horizontal" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
