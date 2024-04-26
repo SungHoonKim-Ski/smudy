@@ -1,17 +1,20 @@
 def backendImage
+def dummyImage
 def AIImage
 def modelImage
 
 pipeline {
     agent any
 
-    // environment {
-    //     BACK_IMAGE_NAME = "${env.BACK_IMAGE_NAME}"
-    //     AI_IMAGE_NAME = "${env.AI_IMAGE_NAME}"
-    //     CONTAINER_NAME = 'Back'
-    //     AI_CONTAINER_NAME = 'AI'
-    //     DATABASE_URL = "${env.DATABASE_URL}"
-    // }
+    environment {
+        DUMMY_IMAGE_NAME = "${env.DUMMY_IMAGE_NAME}"
+
+        // BACK_IMAGE_NAME = "${env.BACK_IMAGE_NAME}"
+        // AI_IMAGE_NAME = "${env.AI_IMAGE_NAME}"
+        // CONTAINER_NAME = 'Back'
+        // AI_CONTAINER_NAME = 'AI'
+        // DATABASE_URL = "${env.DATABASE_URL}"
+    }
     
     stages {
         stage('Checkout') {
@@ -37,28 +40,28 @@ pipeline {
 
         //     }
         // }
-        // stage('Build and Push the Back-end Docker Image') {
-        //     steps {
-        //         script {
-        //             sh 'echo "Starting Build Back Docker Image"'
-        //             dir('back') {
-        //                     withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
-        //                         backendImage = docker.build("${BACK_IMAGE_NAME}:${env.BUILD_NUMBER}", ".")
+        stage('Build and Push the Dummy Back-end Docker Image') {
+            steps {
+                script {
+                    sh 'echo "Starting Build Dummy Back Docker Image"'
+                    dir('smudy_backend/backend_dummy') {
+                            withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
+                                dummyImage = docker.build("${DUMMY_IMAGE_NAME}:${env.BUILD_NUMBER}", ".")
 
-        //                         // Docker 빌드 결과 출력
-        //                         if (backendImage != 0) {
-        //                             echo "Docker build succeeded: ${BACK_IMAGE_NAME}:${env.BUILD_NUMBER}"
-        //                             docker.withRegistry('https://registry.hub.docker.com', 'docker') {
-        //                                 backendImage.push()
-        //                             }
-        //                         } else {
-        //                             error "Docker build failed"
-        //                         }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+                                // Docker 빌드 결과 출력
+                                if (dummyImage != 0) {
+                                    echo "Docker build succeeded: ${DUMMY_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                                    docker.withRegistry('https://registry.hub.docker.com', 'docker') {
+                                        backendImage.push()
+                                    }
+                                } else {
+                                    error "Docker build failed"
+                                }
+                        }
+                    }
+                }
+            }
+        }
         // stage('Build and Push the ai-recommend Docker Image') {
         //     steps {
         //         script {
