@@ -34,8 +34,8 @@ dependencies {
 	// logging
 	implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
 
-	// lombok
-//	implementation(org.springframework.)
+	//Swagger
+	implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 }
 
 tasks.withType<KotlinCompile> {
