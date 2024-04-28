@@ -1,7 +1,8 @@
 package com.ssafy.backend_dummy.auth_service.util
 
+
 class ListResult<T>(
-        var data: List<T>,
         code: Int,
-        message: String
+        message: String,
+        data: List<T>
 ) : CommonResult(code, message)

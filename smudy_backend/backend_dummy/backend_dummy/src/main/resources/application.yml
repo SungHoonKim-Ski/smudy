@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: backend_dummy
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB  # 필요에 따라 파일 크기 조절
+      max-request-size: 100MB  # 필요에 따라 요청 크기 조절
 
 logging:
   level:
