@@ -20,8 +20,7 @@ abstract class BaseHolder<T>(binding: ViewBinding): RecyclerView.ViewHolder(bind
 
 
 abstract class BaseAdapter<T : Any>(protected open var clickListener: BaseHolder.ItemClickListener
-    = object: BaseHolder.ItemClickListener{
-    override fun onClick(position: Int) {}}
+    = object: BaseHolder.ItemClickListener{ override fun onClick(position: Int) {} }
 ) : ListAdapter<T, BaseHolder<T>>(
     object: DiffUtil.ItemCallback<T>(){
         override fun areItemsTheSame(oldItem: T, newItem: T): Boolean {

@@ -7,16 +7,15 @@
     <color name="smudy_mint">#FF75E3D1</color>
     <color name="gray">#FFF3F3F3</color>
     <color name="charcoal">#5536454F</color>
-    <color name="navy_blue">#FF000080</color>
-    <color name="light_pink">#ABFFB6C1</color>
+    <color name="navy_blue">#E6000080</color>
+    <color name="light_pink">#B3FFB6C1</color>
     <color name="dark_purple">#FF5C007A</color>
     <color name="box_blue">#FFEBFAFF</color>
     <color name="progress_background">#2300B2FF</color>
     <color name="sentence_box">#FFFFD972</color>
-
     <color name="calender_selected_gray">#3436454F</color>
     <color name="calendar_day_background">#77D5D4DF</color>
     <color name="calendar_unselected_month_gray">#FFF2F3F7</color>
     <color name="calendar_unselected_month_text">#FFA8A8A8</color>
-
+    <color name="light_gray">#4D36454F</color>
 </resources>

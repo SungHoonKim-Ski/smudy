@@ -20,4 +20,12 @@
 
     <string name="login_btn_img_description">카카오 로그인 버튼 이미지</string>
     <string name="login_img_app_logo">로그인 화면 앱 로고</string>
+    <string name="study_fragment_title">나의 플레이리스트</string>
+    <string name="study_fragment_music_add">+ 곡추가</string>
+    <string name="all_album_jacket_img_description">앨범 재킷 사진</string>
+    <string name="item_visible_btn_img_description">공부 유형 버튼</string>
+    <string name="all_study_type_fill">FILL</string>
+    <string name="all_study_type_pick">PICK</string>
+    <string name="all_study_type_express">EXPRESS</string>
+    <string name="all_study_type_pronounce">PRONOUNCE</string>
 </resources>

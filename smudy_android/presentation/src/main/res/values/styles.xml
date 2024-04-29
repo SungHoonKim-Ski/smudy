@@ -168,13 +168,11 @@
         <item name="android:textSize">24sp</item>
     </style>
 
-    <style name="Widget.Material3.BottomNavigationView.Color" parent="Base.Widget.Material3.BottomNavigationView">
-        <item name="backgroundTint">@color/white</item>
-        <item name="itemIconTint">@color/sl_nav_item_color</item>
-        <item name="itemActiveIndicatorStyle">@style/CustomItemActiveIndicator</item>
-    </style>
-
-    <style name="CustomItemActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@android:color/transparent</item>
+    <style name="TextAppearance.MaterialComponents.Button.Color" parent="Dangrek.TEXT.R.12">
+        <item name="android:minHeight">0dp</item>
+        <item name="android:paddingHorizontal">0dp</item>
+        <item name="android:paddingVertical">0dp</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 </resources>
