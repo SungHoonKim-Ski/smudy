@@ -1,5 +1,7 @@
 package com.ssafy.backend_dummy.auth_service.util
 
-class SingleResult<T> : CommonResult() {
-    var data: T = TODO()
-}
+data class SingleResult<T>(
+        override var code: Int,
+        override var message: String,
+        var data: T
+) : CommonResult(code, message)
