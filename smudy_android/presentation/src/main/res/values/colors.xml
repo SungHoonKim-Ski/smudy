@@ -13,4 +13,5 @@
     <color name="box_blue">#FFEBFAFF</color>
     <color name="progress_background">#2300B2FF</color>
     <color name="sentence_box">#FFFFD972</color>
+    <color name="light_gray">#4D36454F</color>
 </resources>

@@ -67,25 +67,23 @@
         android:visibility="gone"
         tools:visibility="visible">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             style="@style/TextAppearance.MaterialComponents.Button.Color"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
             android:layout_weight="1"
             android:backgroundTint="@color/dark_purple"
-            android:text="@string/all_study_type_fill" />
+            android:text="@string/all_study_type_fill"/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             style="@style/TextAppearance.MaterialComponents.Button.Color"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
             android:layout_weight="1"
-            android:backgroundTint="@color/charcoal"
-            android:text="@string/all_study_type_pick" />
+            android:backgroundTint="@color/light_gray"
+            android:text="@string/all_study_type_pick"/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             style="@style/TextAppearance.MaterialComponents.Button.Color"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -93,12 +91,12 @@
             android:backgroundTint="@color/navy_blue"
             android:text="@string/all_study_type_express" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             style="@style/TextAppearance.MaterialComponents.Button.Color"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
             android:layout_weight="1"
+            android:layout_marginEnd="5dp"
             android:backgroundTint="@color/light_pink"
             android:text="@string/all_study_type_pronounce" />
     </LinearLayout>
