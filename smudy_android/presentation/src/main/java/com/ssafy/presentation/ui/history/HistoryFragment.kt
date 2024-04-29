@@ -11,6 +11,8 @@ import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.CalendarMonth
 import com.kizitonwose.calendar.core.DayPosition
 import com.kizitonwose.calendar.core.daysOfWeek
+import com.kizitonwose.calendar.core.nextMonth
+import com.kizitonwose.calendar.core.previousMonth
 import com.kizitonwose.calendar.view.MonthDayBinder
 import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
 import com.ssafy.presentation.R
@@ -104,6 +106,14 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(
                     with(container) {
                         monthYearText.text = data.yearMonth.displayText()
                         back.setOnClickListener {
+                            findFirstVisibleMonth()?.let {
+                                binding.cvCalendar.smoothScrollToMonth(it.yearMonth.previousMonth)
+                            }
+                        }
+                        forward.setOnClickListener {
+                            findFirstVisibleMonth()?.let {
+                                binding.cvCalendar.smoothScrollToMonth(it.yearMonth.nextMonth)
+                            }
 
                         }
                         if (layout.tag == null) {

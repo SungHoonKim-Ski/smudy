@@ -49,6 +49,9 @@ lifecycleLivedataKtx = "2.7.0"
 #Kakao
 kakao = "2.20.1"
 
+#Calendar
+calendar = "2.5.0"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
