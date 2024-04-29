@@ -1,18 +1,29 @@
-package com.ssafy.presentation.ui
+package com.ssafy.presentation.ui.login
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
 import com.ssafy.presentation.base.BaseActivity
 import com.ssafy.presentation.databinding.ActivityLoginBinding
+import com.ssafy.presentation.ui.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class LoginActivity : BaseActivity<ActivityLoginBinding>(
     ActivityLoginBinding::inflate
 ) {
+    private val viewModel by viewModels<LoginViewModel>()
+
     private val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
             Log.e("TAG", "카카오계정으로 로그인 실패", error)
@@ -21,14 +32,16 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(
             navigateToMain()
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.btnLogin.setOnClickListener {
             kakaoLogin()
         }
+        initCollect()
     }
 
-    private fun kakaoLogin(){
+    private fun kakaoLogin() {
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
             UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
                 if (error != null) {
@@ -44,7 +57,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(
                     UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
                 } else if (token != null) {
                     Log.i("TAG", "카카오톡으로 로그인 성공 ${token.accessToken}")
-                    navigateToMain()
+                    UserApiClient.instance.me { user, error ->
+                        if (error != null) {
+                            Log.e("TAG", "사용자 정보 요청 실패", error)
+                        } else if (user != null) {
+                            viewModel.login(user.id.toString())
+                        }
+                    }
                 }
             }
         } else {
@@ -52,7 +71,19 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(
         }
     }
 
-    private fun navigateToMain(){
+    private fun initCollect(){
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.loginSuccess.collectLatest {
+                    if (it){
+                        navigateToMain()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun navigateToMain() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
