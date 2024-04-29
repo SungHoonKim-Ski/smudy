@@ -1,0 +1,73 @@
+server:
+  port: 7000
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 1
+    lease-expiration-duration-in-seconds: 2
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8762/eureka
+
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: apigateway-service
+  cloud:
+    gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - 'https://xxxxxxxxxx'
+            allow-credentials: true
+            allowedHeaders: '*'
+            exposedHeaders: '*'
+            allowedMethods:
+              - POST
+              - GET
+              - PUT
+              - PATCH
+              - DELETE
+              - OPTIONS
+      default-filters:
+        - name: GlobalFilter
+          args:
+            baseMessage: Spring Cloud Gateway Global Filter
+            preLogger: true
+            postLogger: false
+
+      routes:
+        - id: study-service
+          uri: lb://STUDY-SERVICE
+          predicates:
+            - Path=/api/study/**
+          filters:
+            - RemoveRequestHeader=Cookie
+
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/user/**
+          filters:
+            - RemoveRequestHeader=Cookie
+
+        - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - RemoveRequestHeader=Cookie
+
+        - id: search-service
+          uri: lb://SEARCH-SERVICE
+          predicates:
+            - Path=/api/search/**
+          filters:
+            - RemoveRequestHeader=Cookie
