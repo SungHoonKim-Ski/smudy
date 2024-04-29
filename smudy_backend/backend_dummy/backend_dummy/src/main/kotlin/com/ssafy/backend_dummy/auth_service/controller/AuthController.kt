@@ -63,6 +63,12 @@ class AuthController (
         )
     }
 
+    @PostMapping("/login/fail")
+    fun loginFail(@RequestBody request: LoginRequest): ResponseEntity<SingleResult<TokenResponse>> {
+        logger.debug { "/login : $request"}
+        return ResponseEntity.notFound().build()
+    }
+
     @PostMapping("/autologin")
     fun autoLogin(@RequestHeader("Authorization") accessToken: String): ResponseEntity<CommonResult> {
         logger.debug { "/autologin : $accessToken"}
