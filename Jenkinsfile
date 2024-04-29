@@ -11,7 +11,7 @@ pipeline {
 
         // BACK_IMAGE_NAME = "${env.BACK_IMAGE_NAME}"
         // AI_IMAGE_NAME = "${env.AI_IMAGE_NAME}"
-        // CONTAINER_NAME = 'Back'
+        DUMMY_CONTAINER_NAME = 'Dummy'
         // AI_CONTAINER_NAME = 'AI'
         // DATABASE_URL = "${env.DATABASE_URL}"
     }
@@ -135,16 +135,16 @@ pipeline {
             
         // }     
     
-        // stage('Deploy') {
-        //     steps {
-        //         script {
-        //             sh 'docker rm -f Back || true'
-        //             sh "docker run -d --name ${CONTAINER_NAME} -p 8000:8000 ${BACK_IMAGE_NAME}:${env.BUILD_NUMBER}"
+        stage('Deploy') {
+            steps {
+                script {
+                    sh 'docker rm -f Dummy || true'
+                    sh "docker run -d --name ${DUMMY_CONTAINER_NAME} -p 8000:8000 ${DUMMY_IMAGE_NAME}:${env.BUILD_NUMBER}"
 
-        //             sh 'docker rm -f AI || true'
-        //             sh "docker run -d --name ${AI_CONTAINER_NAME} -p 8081:8081 ${AI_IMAGE_NAME}:${env.BUILD_NUMBER}"
-        //         }
-        //     }
-        // }
+                    // sh 'docker rm -f AI || true'
+                    // sh "docker run -d --name ${AI_CONTAINER_NAME} -p 8081:8081 ${AI_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                }
+            }
+        }
     }
 }
