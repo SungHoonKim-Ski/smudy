@@ -19,9 +19,11 @@ COPY build.gradle.kts /app/
 COPY settings.gradle.kts /app/
 COPY src /app/src
 
+
 # 권한 부여 및 빌드 도구 실행
 RUN chmod +x ./gradlew
 RUN ./gradlew build -x test
 
 # 빌드 결과물을 실행
-ENTRYPOINT ["java","-jar","/app/build/libs/backend_dummy-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "/app/backend_dummy-0.0.1-SNAPSHOT.jar"]
+
