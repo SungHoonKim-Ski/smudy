@@ -3,6 +3,8 @@ package com.ssafy.backend_dummy.config
 import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Info
+import io.swagger.v3.oas.models.security.SecurityRequirement
+import io.swagger.v3.oas.models.security.SecurityScheme
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -10,14 +12,18 @@ import org.springframework.context.annotation.Configuration
 open class SwaggerConfig {
     @Bean
     fun openAPI(): OpenAPI {
-        //        String jwt = "JWT";
-        //        SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwt);
-        //        Components components = new Components().addSecuritySchemes(jwt, new SecurityScheme()
+        val apiKey = SecurityScheme()
+                .type(SecurityScheme.Type.APIKEY)
+                .`in`(SecurityScheme.In.HEADER)
+                .name("Authorization")
+
+        val securityRequirement = SecurityRequirement()
+                .addList("Bearer Token")
+
         return OpenAPI()
-                .components(Components())
-                .info(apiInfo())
-        //                .addSecurityItem(securityRequirement)
-        //                .components(components);
+                .components(Components().addSecuritySchemes("Bearer Token", apiKey))
+                .addSecurityItem(securityRequirement)
+
     }
 
     private fun apiInfo(): Info {

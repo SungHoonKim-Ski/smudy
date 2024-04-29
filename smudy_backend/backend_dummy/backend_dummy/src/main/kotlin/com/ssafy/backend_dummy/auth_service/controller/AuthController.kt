@@ -29,8 +29,7 @@ class AuthController (
 
     @PostMapping("/signup")
     fun signup(
-            @RequestPart("file") image: MultipartFile
-            , @RequestPart("json") request: SignUpRequest
+            @RequestBody request: SignUpRequest
     )
     : ResponseEntity<SingleResult<TokenResponse>> {
 
