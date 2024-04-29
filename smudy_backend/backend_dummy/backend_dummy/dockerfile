@@ -10,21 +10,24 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# Gradle Wrapper와 관련 파일 복사
-COPY gradlew gradle-wrapper.jar gradle-wrapper.properties /app/
+# Gradle Wrapper와 관련 파일들을 올바른 경로에서 복사
+COPY gradlew /app/
+COPY gradle/wrapper/gradle-wrapper.jar /app/
+COPY gradle/wrapper/gradle-wrapper.properties /app/
 COPY gradle /app/gradle
 
 # 권한 설정 (Gradle Wrapper 실행 권한 부여)
 RUN chmod +x ./gradlew
 
-# 애플리케이션의 소스 코드와 리소스 파일 복사
+# 프로젝트의 빌드 설정 파일과 소스 코드 복사
+COPY build.gradle.kts /app/
+COPY settings.gradle.kts /app/
 COPY src /app/src
-COPY build.gradle.kts settings.gradle.kts /app/
 
-# Gradle을 사용하여 애플리케이션 빌드 (테스트 제외)
+# Gradle Wrapper를 사용하여 프로젝트 빌드 (테스트 제외)
 RUN ./gradlew build -x test --no-daemon
 
-# 빌드 결과물인 JAR 파일을 app 디렉토리로 이동
+# 빌드 결과로 생성된 JAR 파일을 app 디렉토리로 이동
 RUN mv build/libs/*SNAPSHOT.jar app.jar
 
 # 불필요한 파일 정리
