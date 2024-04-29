@@ -46,11 +46,14 @@ paging = "3.2.1"
 annotation = "1.7.1"
 lifecycleLivedataKtx = "2.7.0"
 
-#Recyclerview
+# Recyclerview
 recyvlerview = "1.3.2"
 
-#Kakao
+# Kakao
 kakao = "2.20.1"
+
+# DataStore
+dataStore = "1.0.0"
 
 #Calendar
 calendar = "2.5.0"
@@ -109,6 +112,8 @@ calendarView = { group = "com.kizitonwose.calendar", name="view", version.ref = 
 androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyvlerview" }
 # Kakao Login
 kakao = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao" }
+# DataStore
+dataStore = {group="androidx.datastore", name="datastore-preferences", version.ref="dataStore"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
