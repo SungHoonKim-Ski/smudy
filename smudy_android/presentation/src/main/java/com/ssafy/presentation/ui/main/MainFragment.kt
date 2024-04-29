@@ -2,6 +2,7 @@ package com.ssafy.presentation.ui.main
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseFragment
@@ -42,6 +43,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(
             }
             rvRecommendedMusic.apply {
                 adapter = recommendMusicAdapter
+            }
+
+            cvProfile.setOnClickListener {
+                findNavController().navigate(R.id.historyFragment)
             }
         }
     }

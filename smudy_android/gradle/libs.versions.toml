@@ -97,6 +97,8 @@ circleImageView = { group = "de.hdodenhof", name = "circleimageview", version = 
 androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "annotation" }
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
 
+# Calendar
+calendarView = { group = "com.kizitonwose.calendar", name="view", version.ref = "calendar" }
 # Kakao Login
 kakao = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao" }
 
@@ -126,4 +128,4 @@ hilt = ["hilt-android", "hilt-compiler", "hilt-navigation"]
 
 navigation = ["navigation-fragment", "navigation-ui"]
 
-presentationBundle = ["glide", "viewpager", "paging", "circleImageView"]
+presentationBundle = ["glide", "viewpager", "paging", "circleImageView", "calendarView"]

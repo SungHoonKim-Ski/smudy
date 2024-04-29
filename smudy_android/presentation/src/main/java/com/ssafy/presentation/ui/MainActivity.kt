@@ -7,7 +7,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseActivity
 import com.ssafy.presentation.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>(
     ActivityMainBinding::inflate
 ) {

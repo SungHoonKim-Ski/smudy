@@ -2,6 +2,7 @@
 
     <style name="Base.Theme.Smudy" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/smudy_mint</item>
+        <item name="android:colorBackground">@color/white</item>
     </style>
 
     <style name="Theme.Smudy" parent="Base.Theme.Smudy">
