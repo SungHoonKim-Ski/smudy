@@ -139,7 +139,7 @@ pipeline {
             steps {
                 script {
                     sh 'docker rm -f Dummy || true'
-                    sh "docker run -d --name ${DUMMY_CONTAINER_NAME} -p 8000:8000 ${DUMMY_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                    sh "docker run -d --name ${DUMMY_CONTAINER_NAME} -p 9090:9090 ${DUMMY_IMAGE_NAME}:${env.BUILD_NUMBER}"
 
                     // sh 'docker rm -f AI || true'
                     // sh "docker run -d --name ${AI_CONTAINER_NAME} -p 8081:8081 ${AI_IMAGE_NAME}:${env.BUILD_NUMBER}"
