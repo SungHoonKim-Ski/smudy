@@ -1,5 +1,6 @@
 package com.ssafy.smudy.retrofit_util
 
+import com.ssafy.util.NetworkException
 import okhttp3.Request
 import okio.Timeout
 import org.json.JSONObject

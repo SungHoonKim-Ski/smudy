@@ -3,6 +3,7 @@ package com.ssafy.smudy.module
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.ssafy.data.BuildConfig.BASE_URL
+import com.ssafy.data.api.AuthService
 import com.ssafy.data.api.UserService
 import com.ssafy.smudy.AuthInterceptor
 import com.ssafy.smudy.retrofit_util.NetworkResponseAdapterFactory
@@ -14,6 +15,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.create
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
@@ -72,6 +74,7 @@ object NetworkModule {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(client)
+            .addCallAdapterFactory(NetworkResponseAdapterFactory())
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
     }
@@ -81,4 +84,8 @@ object NetworkModule {
     fun provideUserService(retrofit: Retrofit): UserService =
         retrofit.create(UserService::class.java)
 
+    @Provides
+    @Singleton
+    fun provideAuthService(@AuthRetrofit retrofit: Retrofit): AuthService =
+        retrofit.create(AuthService::class.java)
 }

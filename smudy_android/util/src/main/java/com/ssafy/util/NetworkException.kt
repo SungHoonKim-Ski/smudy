@@ -1,4 +1,4 @@
-package com.ssafy.smudy.retrofit_util
+package com.ssafy.util
 
 class NetworkException(
     val code: String,
@@ -6,6 +6,6 @@ class NetworkException(
 ) : Exception(message) {
 
     companion object {
-
+        val NOT_FOUND_USER="404"
     }
 }
