@@ -1,32 +1,12 @@
-# 사용할 OpenJDK 버전의 베이스 이미지 선택
 FROM openjdk:17-jdk-buster
 
-# 필요한 패키지 설치
-RUN apt-get update && apt-get install -y \
-    findutils \
-    git \
-    curl \
-    unzip \
-    && rm -rf /var/lib/apt/lists/*
-
-# 작업 디렉토리 생성 및 설정
 WORKDIR /app
 
-# 필요한 파일 복사
-COPY gradle /app/gradle
-COPY gradlew /app/
-COPY build.gradle.kts /app/
-COPY settings.gradle.kts /app/
-COPY src /app/src
-COPY build/libs/*.jar /app/
+COPY . /app
 
-
-
-# 권한 부여 및 빌드 도구 실행
 RUN chmod +x ./gradlew
 RUN ./gradlew build -x test
 
-# 빌드 결과물을 실행
-ENTRYPOINT ["sh", "-c", "java -jar /app/*.jar"]
+COPY build/libs/*.jar /app/
 
-
+ENTRYPOINT ["java", "-jar", "backend_dummy-0.0.1-SNAPSHOT.jar"]
