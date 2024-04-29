@@ -44,7 +44,7 @@ pipeline {
             steps {
                 script {
                     sh 'echo "Starting Build Dummy Back Docker Image"'
-                    dir('smudy_backend/backend_dummy') {
+                    dir('smudy_backend/backend_dummy/backend_dummy') {
                             withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
                                 dummyImage = docker.build("${DUMMY_IMAGE_NAME}:${env.BUILD_NUMBER}", ".")
 
