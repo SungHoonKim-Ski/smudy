@@ -52,7 +52,7 @@ pipeline {
                                 if (dummyImage != 0) {
                                     echo "Docker build succeeded: ${DUMMY_IMAGE_NAME}:${env.BUILD_NUMBER}"
                                     docker.withRegistry('https://registry.hub.docker.com', 'docker') {
-                                        backendImage.push()
+                                        dummyImage.push()
                                     }
                                 } else {
                                     error "Docker build failed"
