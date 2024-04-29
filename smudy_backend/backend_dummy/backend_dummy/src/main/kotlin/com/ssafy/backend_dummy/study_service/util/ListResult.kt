@@ -1,5 +1,4 @@
-package com.ssafy.backend_dummy.auth_service.util
-
+package com.ssafy.backend_dummy.study_service.util
 
 class ListResult<T>(
         code: Int,

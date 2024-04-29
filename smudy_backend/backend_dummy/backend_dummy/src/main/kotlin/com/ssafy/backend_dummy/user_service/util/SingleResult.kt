@@ -1,4 +1,4 @@
-package com.ssafy.backend_dummy.auth_service.util
+package com.ssafy.backend_dummy.user_service.util
 
 data class SingleResult<T>(
         override var code: Int,
