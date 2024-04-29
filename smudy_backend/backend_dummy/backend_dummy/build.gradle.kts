@@ -19,6 +19,12 @@ repositories {
 	mavenCentral()
 }
 
+tasks.bootJar {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	archiveFileName.set("smudy.jar")
+	launchScript()
+}
+
 dependencies {
 //	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 //	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
