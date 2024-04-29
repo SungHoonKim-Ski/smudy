@@ -24,7 +24,7 @@ pipeline {
                         branches: [[name: '*/deploy']], 
                         userRemoteConfigs: [[
                             url: 'https://lab.ssafy.com/s10-final/S10P31D111.git',
-                            credentialsId: 'geunbo'
+                            credentialsId: 'gitlab'
                         ]]
                     ])
                 }
