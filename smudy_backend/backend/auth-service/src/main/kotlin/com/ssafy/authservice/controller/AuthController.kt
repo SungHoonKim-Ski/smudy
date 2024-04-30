@@ -3,12 +3,14 @@ package com.ssafy.authservice.controller
 import com.ssafy.authservice.dto.request.LoginRequest
 import com.ssafy.authservice.dto.request.SignUpRequest
 import com.ssafy.authservice.dto.response.TokenResponse
+import com.ssafy.authservice.service.UserService
 import com.ssafy.authservice.util.CommonResult
 import com.ssafy.authservice.util.SingleResult
 import com.ssafy.authservice.util.AuthResponseService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
@@ -16,41 +18,32 @@ import org.springframework.web.multipart.MultipartFile
 @RestController
 @RequestMapping("/api/auth")
 class AuthController (
-    private val responseService: AuthResponseService
+    private val userService: UserService,
+    private val responseService: AuthResponseService,
 ){
 
     private val logger = KotlinLogging.logger{ }
-    @GetMapping("/test")
-    fun test(): ResponseEntity<SingleResult<String>> {
-        var data = "auth"
-        logger.debug { "Hello! $data" }
-        return ResponseEntity.ok(responseService.getSuccessSingleResult("데이터","성공"))
-    }
 
     @PostMapping("/signup")
-    fun signup(
-            @RequestBody request: SignUpRequest
-    )
+    fun signup(@RequestBody request: SignUpRequest)
     : ResponseEntity<SingleResult<TokenResponse>> {
 
-        logger.debug { "/signup : $request"}
+        logger.info { "/signup : $request"}
+
+        val response = userService.registerUser(request.userSnsId, request.userSnsName, request.userImage)
         return ResponseEntity(
-                responseService.getSingleResult(
-                        TokenResponse(
-                                grantType = "Bearer",
-                                accessToken = "Bearer_adfgnklsdfgnklsdfdkssudgktpdy",
-                                refreshToken = "qksrkqtmqslsdfnklsdfsdfjklsdfjklek"
-                        )
-                        ,"회원 가입 성공"
-                        ,HttpStatus.CREATED.value()
-                ),
-                HttpStatus.CREATED
-        )
+            responseService.getSuccessSingleResult(
+                message = "회원 가입 완료",
+                data = response
+            ),
+            HttpStatus.CREATED)
     }
 
     @PostMapping("/login")
     fun login(@RequestBody request: LoginRequest): ResponseEntity<SingleResult<TokenResponse>> {
         logger.debug { "/login : $request"}
+
+
         return ResponseEntity.ok(
                 responseService.getSuccessSingleResult(
                         TokenResponse(
