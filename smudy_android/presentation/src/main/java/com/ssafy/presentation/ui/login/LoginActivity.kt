@@ -61,7 +61,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(
                         if (error != null) {
                             Log.e("TAG", "사용자 정보 요청 실패", error)
                         } else if (user != null) {
-                            viewModel.login(user.id.toString())
+                            viewModel.login(user.id.toString(), user.kakaoAccount?.name, user.kakaoAccount?.profile?.profileImageUrl)
                         }
                     }
                 }

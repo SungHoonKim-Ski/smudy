@@ -55,6 +55,7 @@ dependencies {
     ksp(libs.hilt.compiler)
 
     implementation(libs.bundles.retrofit)
+    implementation(libs.dataStore)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

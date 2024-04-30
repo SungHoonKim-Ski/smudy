@@ -4,7 +4,9 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.ssafy.data.BuildConfig.BASE_URL
 import com.ssafy.data.api.AuthService
+import com.ssafy.data.api.TokenService
 import com.ssafy.data.api.UserService
+import com.ssafy.smudy.AuthAuthenticator
 import com.ssafy.smudy.AuthInterceptor
 import com.ssafy.smudy.retrofit_util.NetworkResponseAdapterFactory
 import dagger.Module
@@ -38,6 +40,7 @@ object NetworkModule {
     fun providesRetrofitClient(
         moshi: Moshi,
         authInterceptor: AuthInterceptor,
+        authAuthenticator: AuthAuthenticator
     ): Retrofit {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
@@ -46,6 +49,7 @@ object NetworkModule {
         val client = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
             .addInterceptor(authInterceptor)
+            .authenticator(authAuthenticator)
             .build()
 
         return Retrofit.Builder()
@@ -86,6 +90,11 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideAuthService(@AuthRetrofit retrofit: Retrofit): AuthService =
+    fun provideAuthService(retrofit: Retrofit): AuthService =
         retrofit.create(AuthService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideTokenService(@AuthRetrofit retrofit: Retrofit): TokenService =
+        retrofit.create(TokenService::class.java)
 }

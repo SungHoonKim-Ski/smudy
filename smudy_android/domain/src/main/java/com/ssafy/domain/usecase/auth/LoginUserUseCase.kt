@@ -1,4 +1,4 @@
-package com.ssafy.domain.usecase
+package com.ssafy.domain.usecase.auth
 
 import com.ssafy.domain.repository.AuthRepository
 import javax.inject.Inject
