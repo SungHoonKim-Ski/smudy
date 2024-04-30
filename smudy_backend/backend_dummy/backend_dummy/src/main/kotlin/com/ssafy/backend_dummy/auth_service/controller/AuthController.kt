@@ -64,9 +64,15 @@ class AuthController (
     }
 
     @PostMapping("/login/fail")
-    fun loginFail(@RequestBody request: LoginRequest): ResponseEntity<SingleResult<TokenResponse>> {
+    fun loginFail(@RequestBody request: LoginRequest): ResponseEntity<Any> {
         logger.debug { "/login : $request"}
-        return ResponseEntity.notFound().build()
+        return ResponseEntity(
+                CommonResult(
+                        code = 404,
+                        message = "404 에러라는 뜻"
+                ),
+                HttpStatus.NOT_FOUND
+        )
     }
 
     @PostMapping("/autologin")
