@@ -97,6 +97,7 @@ viewpager = { group = "androidx.viewpager2", name = "viewpager2", version.ref = 
 
 #Paging
 paging = { group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "paging" }
+paging-domain = { group = "androidx.paging", name = "paging-common", version.ref = "paging" }
 
 # Coroutine
 coroutine = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutine" }

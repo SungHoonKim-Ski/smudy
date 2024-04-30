@@ -4,5 +4,6 @@ data class Study(
     val id: String,
     val thumbnail: String,
     val title: String,
-    val singer: String
+    val singer: String,
+    var expanded:Boolean
 )

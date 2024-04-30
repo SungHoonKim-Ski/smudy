@@ -1,4 +1,4 @@
-package com.ssafy.data.api
+package com.ssafy.data.model
 
 data class LoginInfoRequest(
     val userImage: String,

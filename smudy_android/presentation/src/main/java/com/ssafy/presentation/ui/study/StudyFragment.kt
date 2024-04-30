@@ -2,36 +2,43 @@ package com.ssafy.presentation.ui.study
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseFragment
 import com.ssafy.presentation.databinding.FragmentStudyBinding
-import com.ssafy.presentation.model.Study
 import com.ssafy.presentation.ui.study.adapter.StudyRecyclerAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
 class StudyFragment : BaseFragment<FragmentStudyBinding>(
     { FragmentStudyBinding.bind(it) }, R.layout.fragment_study
 ) {
-    private val studyRecyclerAdapter = StudyRecyclerAdapter()
+    private val studyRecyclerAdapter by lazy { StudyRecyclerAdapter() }
+    private val viewModel by viewModels<StudyViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        initObserve()
     }
 
-    private fun initView(){
-        with(binding){
+    private fun initObserve() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getMusicList().collect {
+                studyRecyclerAdapter.submitData(it)
+            }
+        }
+    }
+
+    private fun initView() {
+        with(binding) {
             rvStudyList.apply {
                 adapter = studyRecyclerAdapter
                 setHasFixedSize(true)
             }
-            studyRecyclerAdapter.submitList(
-                List(10){idx ->
-                    Study("$idx","https://i.namu.wiki/i/eamDG79K8EwGm1iSqf0RQQlVdgQ_1vLnIBFsHQ3Qc5euveyneE_524R0lN-JcTHN3tHBcK-aKCkfvU7M8_ZiuZrcte904uhLYGzKIMcTXvzEv1IZuZn1ECuTCixvzPA8vDVTs_NvQ5l0DhEntgu-6A.webp","$idx","$idx" )
-                }
-            )
         }
     }
 }

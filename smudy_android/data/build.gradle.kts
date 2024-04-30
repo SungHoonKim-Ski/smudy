@@ -57,6 +57,8 @@ dependencies {
     implementation(libs.bundles.retrofit)
     implementation(libs.dataStore)
 
+    implementation(libs.paging)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

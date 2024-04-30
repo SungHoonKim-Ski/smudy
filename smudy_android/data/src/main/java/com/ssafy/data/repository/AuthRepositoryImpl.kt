@@ -1,6 +1,6 @@
 package com.ssafy.data.repository
 
-import com.ssafy.data.api.LoginInfoRequest
+import com.ssafy.data.model.LoginInfoRequest
 import com.ssafy.data.datasource.auth.AuthRemoteDataSource
 import com.ssafy.data.datasource.datastore.PreferencesDataSource
 import com.ssafy.domain.model.ApiError

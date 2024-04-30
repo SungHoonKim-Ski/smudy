@@ -12,4 +12,5 @@ java {
 dependencies{
     implementation(libs.inject)
     implementation(libs.coroutine)
+    implementation(libs.paging.domain)
 }

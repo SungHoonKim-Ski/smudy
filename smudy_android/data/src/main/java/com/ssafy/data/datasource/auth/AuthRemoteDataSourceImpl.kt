@@ -1,7 +1,7 @@
 package com.ssafy.data.datasource.auth
 
 import com.ssafy.data.api.AuthService
-import com.ssafy.data.api.LoginInfoRequest
+import com.ssafy.data.model.LoginInfoRequest
 import com.ssafy.data.model.DefaultResponse
 import com.ssafy.data.model.auth.TokenResponse
 import javax.inject.Inject
