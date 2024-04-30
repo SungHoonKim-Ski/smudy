@@ -24,13 +24,13 @@ class AuthAuthenticator @Inject constructor(
         }
 
         return runBlocking {
-            val tokenResponse = tokenService.reissueToken(refreshToken!!)
+            val tokenResponse = tokenService.reissueToken(refreshToken)
             if (tokenResponse.isSuccessful && tokenResponse.body() != null) {
-                preferencesDataSource.setToken(tokenResponse.body()!!.data)
+                preferencesDataSource.setToken(tokenResponse.body()!!.data!!)
 
                 response.request
                     .newBuilder()
-                    .header("Authorization", tokenResponse.body()!!.data.accessToken)
+                    .header("Authorization", tokenResponse.body()!!.data!!.accessToken)
                     .build()
             } else {
                 // 토큰 삭제
