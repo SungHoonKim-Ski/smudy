@@ -21,7 +21,7 @@ class AuthRepositoryImpl @Inject constructor(
         val data = result.getOrNull()
         if (data != null) {
             // 토큰 저장
-            preferencesDataSource.setToken(data.data)
+            preferencesDataSource.setToken(data.data!!)
             emit(ApiResult.Success(true))
         } else {
             val exception = result.exceptionOrNull() as NetworkException
@@ -39,7 +39,7 @@ class AuthRepositoryImpl @Inject constructor(
             val data = result.getOrNull()
             if (data != null) {
                 // 토큰 저장
-                preferencesDataSource.setToken(data.data)
+                preferencesDataSource.setToken(data.data!!)
                 emit(ApiResult.Success(true))
             } else {
                 val exception = result.exceptionOrNull() as NetworkException
