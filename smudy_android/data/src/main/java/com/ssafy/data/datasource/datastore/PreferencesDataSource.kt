@@ -28,8 +28,15 @@ class PreferencesDataSource @Inject constructor(
 
     suspend fun getRefreshToken(): String? {
         return dataStore.data.map {
-            it[REFRESH_TOKEN_KEY] ?: ""
+            it[REFRESH_TOKEN_KEY]
         }.firstOrNull()
+    }
+
+    suspend fun deleteToken(){
+        dataStore.edit {
+            it.remove(ACCESS_TOKEN_KEY)
+            it.remove(REFRESH_TOKEN_KEY)
+        }
     }
 
     companion object {
