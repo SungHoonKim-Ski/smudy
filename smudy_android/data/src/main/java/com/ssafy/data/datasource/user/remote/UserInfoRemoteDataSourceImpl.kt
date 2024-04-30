@@ -1,4 +1,4 @@
-package com.ssafy.data.repository.user.remote
+package com.ssafy.data.datasource.user.remote
 
 import com.ssafy.data.api.UserService
 import com.ssafy.data.mapper.toNonDefault
