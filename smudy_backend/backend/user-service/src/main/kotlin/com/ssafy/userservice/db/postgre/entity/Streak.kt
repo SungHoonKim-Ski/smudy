@@ -1,10 +1,25 @@
 package com.ssafy.userservice.db.postgre.entity
 
+import jakarta.persistence.*
 import java.sql.Date
 
-class Streak {
-    var strictId: Long = 0
-    var userId: Long = 0
-    var songJacket: String? = null
-    var streakDate: Date? = null
-}
+@Entity
+@Table(name = "streak", schema = "public")
+class Streak(
+
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(name = "strict_id")
+        var streakId: Int,
+
+        @ManyToOne
+        @JoinColumn(name = "user_id")
+        var user: User,
+
+        @Column(name = "song_jacket", nullable = false)
+        var songJacket: String,
+
+        @Column(name = "streak_date", nullable = false)
+        @Temporal(TemporalType.DATE)
+        var streakDate: Date
+)
