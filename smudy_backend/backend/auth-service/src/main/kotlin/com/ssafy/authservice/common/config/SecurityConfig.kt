@@ -27,7 +27,6 @@ class SecurityConfig(private val jwtTokenProvider: JwtTokenProvider) {
 
             authorizeRequests {
 
-                authorize(AntPathRequestMatcher("/api/auth/autologin"), authenticated)
                 // 임시로 /api 요청은 모두 허용
                 authorize(AntPathRequestMatcher("/**", "GET"), permitAll)
                 authorize(AntPathRequestMatcher("/**", "POST"), permitAll)

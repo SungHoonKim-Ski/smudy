@@ -37,7 +37,7 @@ class JwtTokenProvider(
 
     // 토큰 생성
     @Transactional
-    fun createToken(internalId: UUID, authorities: String): TokenResponse {
+    fun createToken(internalId: String, authorities: String): TokenResponse {
         val now = System.currentTimeMillis()
 
         val accessToken = Jwts.builder()
@@ -46,7 +46,7 @@ class JwtTokenProvider(
             .setExpiration(Date(now + accessTokenExpireTime))
             .setSubject("access-token")
             .claim("url", true)
-            .claim("internal_id", internalId.toString())
+            .claim("internal_id", internalId)
             .claim("role", authorities)
             .signWith(signingKey, SignatureAlgorithm.HS512)
             .compact()
@@ -67,10 +67,13 @@ class JwtTokenProvider(
     }
 
     // 토큰 정보 추출
-    fun getAuthentication(token: String): Authentication {
-        val internalId = getClaims(token)["internal_id"].toString()
+    fun getAuthentication(token: String?): Authentication {
+        val internalId = getClaims(token!!)["internal_id"].toString()
         val userDetails = userDetailsService.loadUserByUsername(internalId)
-        return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities())
+        return UsernamePasswordAuthenticationToken(
+                userDetails.username,
+                userDetails.password,
+                userDetails.authorities)
     }
 
     fun getClaims(token: String): Claims {
@@ -103,7 +106,7 @@ class JwtTokenProvider(
         return false
     }
 
-    // 액세스 토큰 검증
+    // 액세스 토큰 검증 (Filter에서 사용)
     fun validateAccessToken(accessToken: String): Boolean {
         return try {
             if (redisService.getValues(accessToken) == "logout") {
@@ -119,9 +122,10 @@ class JwtTokenProvider(
         }
     }
 
-    fun validateAccessTokenOnlyExpired(accessToken: String): Boolean {
+    // 액세스 토큰 유효기간 검증 (재발급 시에 사용)
+    fun validateAccessTokenOnlyExpired(accessToken: String?): Boolean {
         return try {
-            getClaims(accessToken)
+            getClaims(accessToken!!)
                 .expiration
                 .before(Date())
         } catch (e: ExpiredJwtException) {

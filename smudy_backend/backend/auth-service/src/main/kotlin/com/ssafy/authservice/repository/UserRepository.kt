@@ -8,5 +8,6 @@ import java.util.*
 
 @Repository
 interface UserRepository : JpaRepository<User, Long> {
-    fun findByUserInternalId(internalId: UUID): User?
+    fun findByUserInternalId(userInternalId: String): User
+    fun findByUserSnsId(userSnsId: String): User
 }

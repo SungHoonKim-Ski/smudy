@@ -10,11 +10,11 @@ class UserDetailsImpl(
 ) : UserDetails{
 
     override fun getUsername(): String {
-        return user.userName
+        return user.userInternalId
     }
 
     override fun getPassword(): String {
-        return "" // No password since OAuth is handling it; or provide another mechanism if necessary
+        return user.userSnsId
     }
 
     override fun getAuthorities(): Collection<GrantedAuthority> {

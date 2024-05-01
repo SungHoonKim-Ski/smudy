@@ -11,7 +11,7 @@ class User(
     @Column(name = "user_id")
     val id: Long = 0, // Database primary key
 
-    val userInternalId: UUID, // Unique internal ID
+    val userInternalId: String, // Unique internal ID
 
     val userSnsId: String, // OAuth-provided ID
     val userName: String, // OAuth-provided name
