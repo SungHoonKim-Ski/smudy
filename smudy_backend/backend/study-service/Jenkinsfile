@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         STUDY_IMAGE_NAME = "${env.STUDY_IMAGE_NAME}"
-        CONTAINER_NAME = 'Search'
+        CONTAINER_NAME = 'Study'
     }
 
     stages {
