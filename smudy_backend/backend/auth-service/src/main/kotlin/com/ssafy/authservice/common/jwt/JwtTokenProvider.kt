@@ -2,16 +2,16 @@ package com.ssafy.authservice.common.jwt
 
 import com.ssafy.authservice.dto.response.TokenResponse
 import com.ssafy.authservice.service.RedisService
-import io.jsonwebtoken.Claims
-import io.jsonwebtoken.ExpiredJwtException
-import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
+import io.github.oshai.kotlinlogging.KotlinLogging
+import io.jsonwebtoken.*
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
+import io.jsonwebtoken.security.SignatureException
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.security.Key
@@ -25,7 +25,10 @@ class JwtTokenProvider(
     @Value("\${jwt.secret-key}") private val secretKey: String
 ) : InitializingBean {
 
-    private val accessTokenExpireTime = 1000 * 60 * 30              // 30분
+    private val logger = KotlinLogging.logger { }
+
+    private val accessTokenExpireTime = 1000 * 1            // 테스트용 1초
+//    private val accessTokenExpireTime = 1000 * 60 * 30              // 30분
     private val refreshTokenExpireTime = 1000 * 60 * 60 * 24 * 7    // 7일
     private lateinit var signingKey: Key
 
@@ -67,13 +70,21 @@ class JwtTokenProvider(
     }
 
     // 토큰 정보 추출
-    fun getAuthentication(token: String?): Authentication {
-        val internalId = getClaims(token!!)["internal_id"].toString()
-        val userDetails = userDetailsService.loadUserByUsername(internalId)
+    fun getAuthentication(accessToken: String?): Authentication {
+
+        val claims = getClaims(accessToken!!)
+
+//        if(claims["auth"] == null) {
+//            throw JwtException("권한 정보가 없는 토큰입니다.")
+//        }
+
+        val internalId = getClaims(accessToken)["internal_id"].toString()
+        val principal: UserDetails = userDetailsService.loadUserByUsername(internalId)
         return UsernamePasswordAuthenticationToken(
-                userDetails.username,
-                userDetails.password,
-                userDetails.authorities)
+            principal,
+            "",
+            principal.authorities
+        )
     }
 
     fun getClaims(token: String): Claims {
@@ -96,13 +107,24 @@ class JwtTokenProvider(
     fun validateRefreshToken(refreshToken: String): Boolean {
         try {
             if (redisService.getValues(refreshToken) == "delete") {
+                logger.error { "User has been deleted." }
                 return false
             }
             getClaims(refreshToken)
+
             return true
+        } catch (e: SignatureException) {
+            logger.error(e) { "Invalid JWT signature." }
+        } catch (e: MalformedJwtException) {
+            logger.error(e) { "Invalid JWT token." }
         } catch (e: ExpiredJwtException) {
-            e.claims
+            logger.error(e) { "Expired JWT token." }
+        } catch (e: UnsupportedJwtException) {
+            logger.error(e) { "Unsupported JWT token." }
+        } catch (e: IllegalArgumentException) {
+            logger.error(e) { "JWT claims string is empty." }
         }
+
         return false
     }
 
@@ -122,7 +144,7 @@ class JwtTokenProvider(
         }
     }
 
-    // 액세스 토큰 유효기간 검증 (재발급 시에 사용)
+    // 액세스 토큰 유효기간 검증 (재발급 시에 사용, 만료된 경우 true)
     fun validateAccessTokenOnlyExpired(accessToken: String?): Boolean {
         return try {
             getClaims(accessToken!!)

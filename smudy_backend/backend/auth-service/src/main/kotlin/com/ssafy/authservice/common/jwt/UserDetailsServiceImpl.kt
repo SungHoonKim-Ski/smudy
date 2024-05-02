@@ -14,9 +14,10 @@ class UserDetailsServiceImpl(
     private val userRepository: UserRepository
 ) : UserDetailsService {
 
-    override fun loadUserByUsername(internalId: String): UserDetailsImpl {
+    override fun loadUserByUsername(userInternalId: String): UserDetailsImpl {
+        val findUser = userRepository.findByUserInternalId(UUID.fromString(userInternalId))
+            ?: throw UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다: $userInternalId")
 
-        val findUser = userRepository.findByUserInternalId(internalId)
         return UserDetailsImpl(findUser)
     }
 }

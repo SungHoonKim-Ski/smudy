@@ -26,9 +26,12 @@ class AuthService(
     @Transactional
     fun login(request: LoginRequest): TokenResponse {
 
+        val userSnsId = request.userSnsId
+        val userInternalId = userService.extractInternalId(userSnsId)   // 못찾았을 때, Exception 처리 추가해야함
+
         val authenticationToken = UsernamePasswordAuthenticationToken(
-                userService.extractInternalId(request.userSnsId),
-                request.userSnsId)
+            userInternalId, ""
+        )
 
         val authentication: Authentication = authenticationManagerBuilder.getObject()
                 .authenticate(authenticationToken)
@@ -51,23 +54,24 @@ class AuthService(
             requestAccessTokenInHeader: String,
             requestRefreshToken: String
     ): TokenResponse? {
+
         val accessToken = resolveToken(requestAccessTokenInHeader)
         val authentication = jwtTokenProvider.getAuthentication(accessToken)
         val internalId = getPrincipal(accessToken)
         val refreshTokenInRedis = redisService.getValues("refresh-token:$internalId")
-                ?:          // Redis 에 저장되어 있는 Refresh-token 이 없을 경우
-                return null // 재로그인 요청
+            ?: return null // Redis에 저장된 Refresh-token이 없을 경우 재로그인 요청
 
-        // 리프래시 토큰 유효성 검사
-        if (!jwtTokenProvider.validateRefreshToken(requestRefreshToken)
-                || refreshTokenInRedis != requestRefreshToken) {
-            redisService.deleteValues("refresh-token:$internalId") // 탈취 가능성 -> 삭제
+        // Refresh-token 유효성 검증 및 Redis 토큰 비교
+        if (!jwtTokenProvider.validateRefreshToken(requestRefreshToken) || refreshTokenInRedis != requestRefreshToken) {
+            // 리프래시 토큰이 탈취당했을 수 있음
+            redisService.deleteValues("refresh-token:$internalId")
             return null // 재로그인 요청
         }
+
         SecurityContextHolder.getContext().authentication = authentication
         val authorities = getAuthorities(authentication)
 
-        // 토큰 재발급 및 Redis 업데이트
+        // Redis 업데이트 및 새로운 토큰 재발급
         redisService.deleteValues("refresh-token:$internalId")
         val tokenResponse = jwtTokenProvider.createToken(internalId, authorities)
         saveRefreshToken(internalId, tokenResponse.refreshToken)

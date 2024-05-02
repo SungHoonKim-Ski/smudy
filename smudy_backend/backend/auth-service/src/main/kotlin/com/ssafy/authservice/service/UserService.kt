@@ -17,8 +17,16 @@ class UserService(
 
     @Transactional
     fun registerUser(userSnsId: String, userSnsName: String, userImage: String): TokenResponse {
+
+        // Check if the user already exists
+        val existingUser = userRepository.findByUserSnsId(userSnsId)
+
+        if (existingUser != null) {
+            throw IllegalArgumentException("이미 가입된 회원입니다: $userSnsId")
+        }
+
         val user = User(
-            userInternalId = UUID.randomUUID().toString(), // Generate unique ID
+            userInternalId = UUID.randomUUID(), // Generate unique ID
             userSnsId = userSnsId,
             userName = userSnsName,
             userImage = userImage,
@@ -33,7 +41,7 @@ class UserService(
     @Transactional
     fun extractInternalId(userSnsId: String): String {
         // Request 로 userSnsId 를 받지만, Authentication 과정에선 userInternalId 필요
-        val user = userRepository.findByUserSnsId(userSnsId)
-        return user.userInternalId.toString()
+        val user: User? = userRepository.findByUserSnsId(userSnsId)
+        return user?.userInternalId.toString() ?: throw IllegalArgumentException("No user found with the given userSnsId")
     }
 }

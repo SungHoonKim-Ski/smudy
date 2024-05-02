@@ -10,11 +10,11 @@ class UserDetailsImpl(
 ) : UserDetails{
 
     override fun getUsername(): String {
-        return user.userInternalId
+        return user.userInternalId.toString()
     }
 
-    override fun getPassword(): String {
-        return user.userSnsId
+    override fun getPassword(): String? {
+        return null // 비밀번호 필요 없음
     }
 
     override fun getAuthorities(): Collection<GrantedAuthority> {
