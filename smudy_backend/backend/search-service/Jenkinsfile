@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DISCOVERY_IMAGE_NAME = "${env.DISCOVERY_IMAGE_NAME}"
-        CONTAINER_NAME = 'Discovery'
+        SEARCH_IMAGE_NAME = "${env.SEARCH_IMAGE_NAME}"
+        CONTAINER_NAME = 'Search'
     }
 
     stages {
@@ -16,16 +16,16 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'echo "Starting Build Discovery Service Docker Image"'
-                    dir('smudy_backend/backend/discovery-service') {
+                    sh 'echo "Starting Build Search Service Docker Image"'
+                    dir('smudy_backend/backend/search-service') {
                             withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
-                                discoveryImage = docker.build("${DISCOVERY_IMAGE_NAME}:${env.BUILD_NUMBER}", ".")
+                                searchImage = docker.build("${SEARCH_IMAGE_NAME}:${env.BUILD_NUMBER}", ".")
 
                                 // Docker 빌드 결과 출력
-                                if (discoveryImage != 0) {
-                                    echo "Docker build succeeded: ${DISCOVERY_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                                if (searchImage != 0) {
+                                    echo "Docker build succeeded: ${SEARCH_IMAGE_NAME}:${env.BUILD_NUMBER}"
                                     docker.withRegistry('https://registry.hub.docker.com', 'docker') {
-                                        discoveryImage.push()
+                                        searchImage.push()
                                     }
                                 } else {
                                     error "Docker build failed"
@@ -39,8 +39,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    sh 'docker rm -f Discovery || true'
-                    sh "docker run -d --name ${CONTAINER_NAME} --network smudy -p 8762:8762 ${DISCOVERY_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                    sh 'docker rm -f Search || true'
+                    sh "docker run -d --name ${CONTAINER_NAME} --network smudy -p 7072:7072 ${SEARCH_IMAGE_NAME}:${env.BUILD_NUMBER}"
                 }
             }
         }
