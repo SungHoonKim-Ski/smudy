@@ -19,7 +19,8 @@ pipeline {
                     sh 'echo "Starting Build Study Service Docker Image"'
                     dir('smudy_backend/backend/study-service') {
                             withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
-                                studyImage = docker.build("${STUDY_IMAGE_NAME}:${env.BUILD_NUMBER}", ".")
+                                studyImage = docker.build("${STUDY_IMAGE_NAME}:${env.BUILD_NUMBER}",
+                                "--build-arg BACK_URL=${env.BACK_URL} .")
 
                                 // Docker 빌드 결과 출력
                                 if (studyImage != 0) {

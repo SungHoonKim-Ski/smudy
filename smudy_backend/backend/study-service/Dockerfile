@@ -4,6 +4,9 @@ WORKDIR /home/gradle/src
 COPY --chown=gradle:gradle . /home/gradle/src
 RUN gradle clean build --no-daemon
 
+ARG BACK_URL
+ENV BACK_URL=${BACK_URL}
+
 # 두 번째 단계: 실행 스테이지
 FROM openjdk:17-slim
 EXPOSE 7073
