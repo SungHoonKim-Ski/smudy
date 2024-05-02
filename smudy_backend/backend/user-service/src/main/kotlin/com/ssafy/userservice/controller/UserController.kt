@@ -1,7 +1,6 @@
 package com.ssafy.userservice.controller
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.ssafy.userservice.db.mongodb.repository.SongRepository
 import com.ssafy.userservice.dto.request.AddStudyListRequest
 import com.ssafy.userservice.dto.response.*
 import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
@@ -25,7 +24,6 @@ import java.util.*
 class UserController (
         private val responseService: UserResponseService,
         private val userService: UserService,
-        private val songRepository: SongRepository,
         private val learnReportService: LearnReportService,
         private val wrongService: WrongService,
         private val studyListService: StudyListService,
@@ -37,14 +35,14 @@ class UserController (
     @GetMapping("/test")
     fun signup(): ResponseEntity<SingleResult<String>> {
         val data = "user"
-        logger.debug { "Hello! $data" }
+        logger.info { "Hello! $data" }
         return ResponseEntity.ok(responseService.getSuccessSingleResult("데이터","성공"))
     }
 
     @GetMapping("/info")
     fun getUserInfo(@RequestHeader("Authorization") accessToken: String): ResponseEntity<SingleResult<InfoResponse>> {
 
-        logger.debug { "/info/$accessToken" }
+        logger.info { "/info/$accessToken" }
 
         return ResponseEntity.ok(
                 responseService.getSuccessSingleResult(
@@ -56,7 +54,7 @@ class UserController (
     @GetMapping("/streak")
     fun getUserStreak(@RequestHeader("Authorization") accessToken: String): ResponseEntity<SingleResult<StreakResponse>> {
 
-        logger.debug { "/streak/$accessToken" }
+        logger.info { "/streak/$accessToken" }
 
         return ResponseEntity.ok(
                 responseService.getSuccessSingleResult(
@@ -70,7 +68,7 @@ class UserController (
     @GetMapping("/wrong")
     fun getUserWrong(@RequestHeader("Authorization") accessToken: String): ResponseEntity<SingleResult<WrongLyricResponse>> {
 
-        logger.debug { "/info/$accessToken" }
+        logger.info { "/info/$accessToken" }
 
         return ResponseEntity.ok(
                 responseService.getSuccessSingleResult(
@@ -85,7 +83,7 @@ class UserController (
             @RequestHeader("Authorization") accessToken: String
             , @RequestParam(value = "page", required = true) page: String
     ): ResponseEntity<SingleResult<StudyListResponse>> {
-        logger.debug { "/studylist/$page" }
+        logger.info { "/studylist/$page" }
 
         page.toIntOrNull()?.let {
             val pageable: Pageable = PageRequest.of(it, 20)
@@ -104,12 +102,14 @@ class UserController (
 
     @PostMapping("/studylist/add")
     fun addStudyList(@RequestBody request: AddStudyListRequest) : ResponseEntity<CommonResult> {
-        logger.debug { "/studylist/add $request" }
+        logger.info { "/studylist/add $request" }
+
+        val result = studyListService.addUserStudyList(userUUID, request.songIds)
 
         return ResponseEntity.ok(
                 responseService.getSuccessResult(
-                        "이미 리스트에 존재하는 0개의 곡을 제외한 " +
-                                "${request.songIds.size}개의 곡을 추가했습니다"
+                        "이미 리스트에 존재하는 ${result[1]}개의 곡을 제외한 " +
+                                "${result[0]}개의 곡을 추가했습니다"
                 )
         )
     }
@@ -119,113 +119,16 @@ class UserController (
             @RequestHeader("Authorization") accessToken: String
             , @RequestParam(value = "time", required = true) time: String
     ): ResponseEntity<SingleResult<HistoryResponse>> {
-        logger.debug { "/history/$time" }
 
-        val response = HistoryResponse()
-        val calender1 = Calendar.getInstance(Locale.KOREA)
-        val calender2 = Calendar.getInstance(Locale.KOREA)
-//        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-
-        calender1.add(Calendar.DAY_OF_MONTH, +1)
-        calender2.add(Calendar.DAY_OF_MONTH, -1)
-
-        response.learnReports.add(
-                LearnReport(
-                        learnReportId = 10
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e02f6e2ddb1cba9a5900de38cd1"
-                        , songName = "My Name Is Jonas"
-                        , songArtist = "Weezer"
-                        , problemType = "FILL"
-                        , learnReportDate = calender1.timeInMillis
-                )
-        )
-
-        response.learnReports.add(
-                LearnReport(
-                        learnReportId = 10
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e02f6e2ddb1cba9a5900de38cd1"
-                        , songName = "My Name Is Jonas"
-                        , songArtist = "Weezer"
-                        , problemType = "FILL"
-                        , learnReportDate = calender2.timeInMillis
-                )
-        )
-
-        calender1.add(Calendar.DAY_OF_MONTH, +3)
-        calender2.add(Calendar.DAY_OF_MONTH, -3)
-
-        response.learnReports.add(
-                LearnReport(
-                        learnReportId = 11
-                        , songArtist = "Ingrid Michaelson"
-                        , songName = "You And I"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e022f9b47bdc2b1c7cae7b014af"
-                        , problemType = "PICK"
-                        , learnReportDate = calender1.timeInMillis
-                )
-        )
-
-        response.learnReports.add(
-                LearnReport(
-                        learnReportId = 11
-                        , songArtist = "Ingrid Michaelson"
-                        , songName = "You And I"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e022f9b47bdc2b1c7cae7b014af"
-                        , problemType = "PRONOUNCE"
-                        , learnReportDate = calender1.timeInMillis
-                )
-        )
-
-        response.learnReports.add(
-                LearnReport(
-                        learnReportId = 11
-                        , songArtist = "Ingrid Michaelson"
-                        , songName = "You And I"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e022f9b47bdc2b1c7cae7b014af"
-                        , problemType = "PICK"
-                        , learnReportDate = calender2.timeInMillis
-                )
-        )
-
-        response.learnReports.add(
-                LearnReport(
-                        learnReportId = 11
-                        , songArtist = "Ingrid Michaelson"
-                        , songName = "You And I"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e022f9b47bdc2b1c7cae7b014af"
-                        , problemType = "PRONOUNCE"
-                        , learnReportDate = calender2.timeInMillis
-                )
-        )
-
-        calender1.add(Calendar.DAY_OF_MONTH, +2)
-        calender2.add(Calendar.DAY_OF_MONTH, -2)
-
-        response.learnReports.add(
-                LearnReport(
-                        learnReportId = 10
-                        , songArtist = "Ingrid Michaelson"
-                        , songName = "Everybody"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e0279f6239caf413738d82d3b0f"
-                        , problemType = "EXPRESS"
-                        , learnReportDate = calender1.timeInMillis
-                )
-        )
-
-        response.learnReports.add(
-                LearnReport(
-                        learnReportId = 10
-                        , songArtist = "Ingrid Michaelson"
-                        , songName = "Everybody"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e0279f6239caf413738d82d3b0f"
-                        , problemType = "EXPRESS"
-                        , learnReportDate = calender2.timeInMillis
-                )
-        )
-
-        return ResponseEntity.ok(
-                responseService.getSuccessSingleResult(response, "히스토리 조회 성공")
-        )
+        logger.info { "/history/$time" }
+        time.toLongOrNull()?.let {
+            return ResponseEntity.ok(
+                    responseService.getSuccessSingleResult(
+                            learnReportService.getUserLearnReport(userUUID, it)
+                            , "히스토리 조회 성공"
+                    )
+            )
+        } ?: throw RequestNotNumberException("시간은 Long Type이어야 합니다")
     }
 
     @GetMapping("/history/fill/{learnReportId}")
@@ -234,7 +137,7 @@ class UserController (
             , @PathVariable(value = "learnReportId", required = true) learnReportId: String
     ): ResponseEntity<SingleResult<HistoryFillResponse>>  {
 
-        logger.debug { "/history/fill $learnReportId" }
+        logger.info { "/history/fill $learnReportId" }
         val response = HistoryFillResponse(
                 totalSize = 52,
                 score = 48,
@@ -721,7 +624,7 @@ class UserController (
             @RequestHeader("Authorization") accessToken: String
             , @PathVariable(value = "learnReportId", required = true) learnReportId: String
     ): ResponseEntity<SingleResult<HistoryPickResponse>> {
-        logger.debug { "/history/pick/ $learnReportId" }
+        logger.info { "/history/pick/ $learnReportId" }
         val response = HistoryPickResponse(score = 3)
 
         response.correct.add(
@@ -768,7 +671,7 @@ class UserController (
             @RequestHeader("Authorization") accessToken: String
             , @PathVariable(value = "learnReportId", required = true) learnReportId: String
     ): ResponseEntity<SingleResult<HistoryExpressResponse>> {
-        logger.debug { "/history/express/$learnReportId" }
+        logger.info { "/history/express/$learnReportId" }
 
         val response = HistoryExpressResponse()
         response.userExpresses.add(
@@ -834,7 +737,7 @@ class UserController (
             @RequestHeader("Authorization") accessToken: String
             , @PathVariable(value = "learnReportId", required = true) learnReportId: String
     ): ResponseEntity<SingleResult<HistoryPronounceResponse>> {
-        logger.debug { "/history/pronounce/$learnReportId" }
+        logger.info { "/history/pronounce/$learnReportId" }
 
         val mapper = jacksonObjectMapper()
 

@@ -22,6 +22,7 @@ enum class CommonErrorCode (
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "C007", "SERVER ERROR"),
     SECURITY_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "C008", "SECURITY ERROR"),
     NO_CONTENT_ERROR(HttpStatus.NO_CONTENT, "C009", "NO Content"),
+    STUDY_LIST_ALL_EXIST(HttpStatus.CONFLICT, "C010", "Study All Exist"),
 
     // JWT
     JWT_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "J001", "Jwt Expired"),

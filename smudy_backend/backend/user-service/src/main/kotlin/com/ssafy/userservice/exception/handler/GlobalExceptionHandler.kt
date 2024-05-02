@@ -3,7 +3,9 @@ package com.ssafy.userservice.exception.handler
 import com.ssafy.userservice.exception.error.CommonErrorCode
 import com.ssafy.userservice.exception.error.ErrorResponse
 import com.ssafy.userservice.exception.exception.EndOfPageException
+import com.ssafy.userservice.exception.exception.HistoryNotFoundException
 import com.ssafy.userservice.exception.exception.RequestNotNumberException
+import com.ssafy.userservice.exception.exception.StudyListAllExistException
 import com.ssafy.userservice.service.ErrorResponseService
 import jakarta.ws.rs.core.NoContentException
 import org.springframework.http.HttpStatus
@@ -29,5 +31,15 @@ class GlobalExceptionHandler(
     @ExceptionHandler(EndOfPageException::class)
     protected fun handleEndOfPageException(e: EndOfPageException): ResponseEntity<ErrorResponse> {
         return errorResponseService.getErrorResponse(CommonErrorCode.END_OF_PAGE, e)
+    }
+
+    @ExceptionHandler(StudyListAllExistException::class)
+    protected fun handleStudyListAllExistException(e: StudyListAllExistException): ResponseEntity<ErrorResponse> {
+        return errorResponseService.getErrorResponse(CommonErrorCode.STUDY_LIST_ALL_EXIST, e)
+    }
+
+    @ExceptionHandler(HistoryNotFoundException::class)
+    protected fun handleHistoryNotFoundException(e: HistoryNotFoundException): ResponseEntity<ErrorResponse> {
+        return errorResponseService.getErrorResponse(CommonErrorCode.NO_CONTENT_ERROR, e)
     }
 }

@@ -1,6 +1,6 @@
 package com.ssafy.userservice.dto.response
 
-data class LearnReport(
+data class LearnReportResponse(
         val learnReportId: Int,
         val albumJacket: String,
         val songName: String,

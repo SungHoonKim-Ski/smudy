@@ -10,16 +10,9 @@ import java.util.*
 interface LearnReportRepository : JpaRepository<LearnReport, Int> {
     fun findTop4ByUserInternalId(userInternalId: UUID): List<LearnReport>
 
-//    @Query("" +
-//            "SELECT " +
-//                "e " +
-//            "FROM " +
-//                "LearnReport e " +
-//            "WHERE " +
-//                "e.learnReportDate >= :date " +
-//            "ORDER BY " +
-//                "e.learnReportDate ASC" +
-//            "")
-    fun findFirstByUserInternalIdAndLearnReportDateAfter(userInternalId: UUID
-                                                         , learnReportDate: Date): List<LearnReport>
+    fun findAllByUserInternalIdAndLearnReportDateBetween(
+            userInternalId: UUID
+            , startDate: Date
+            , endDate: Date
+    ) : List<LearnReport>
 }

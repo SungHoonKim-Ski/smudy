@@ -17,5 +17,5 @@ class StudyList(
         var userInternalId: UUID,
 
         @Column(name = "song_id", length = 30, nullable = false)
-        var songId: String = ""
+        var songId: String
 )

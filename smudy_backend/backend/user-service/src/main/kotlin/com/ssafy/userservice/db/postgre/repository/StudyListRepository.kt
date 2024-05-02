@@ -12,4 +12,7 @@ import java.util.UUID
 interface StudyListRepository : JpaRepository<StudyList, Int> {
 
     fun findAllByUserInternalId(userInternalId: UUID, pageable: Pageable): Page<SongIdMapping>
+
+    fun findAllByUserInternalIdAndSongIdIn(userInternalId: UUID, songIds: List<String>): List<SongIdMapping>
+
 }
