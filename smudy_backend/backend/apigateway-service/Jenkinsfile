@@ -20,8 +20,10 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Docker 이미지를 빌드합니다.
-                    docker.build(env.DOCKER_IMAGE)
+                    dir('smudy_backend/backend/apigateway-service') {
+                        // Docker 이미지를 빌드합니다.
+                        gatewayImage = docker.build(env.DOCKER_IMAGE)
+                    }
                 }
             }
         }
@@ -29,26 +31,25 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    // Docker 레지스트리에 로그인
-                    withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
-                                gatewayImage = docker.build(env.DOCKER_IMAGE)
-
-                                    // Docker 빌드 결과 출력
-                                    if (gatewayImage != 0) {
-                                        docker.withRegistry('https://registry.hub.docker.com', 'docker') {
-                                            backendImage.push()
-                                        }
-                                    } else {
-                                        error "Docker build failed"
-                                    }
-                                }
+                    dir('smudy_backend/backend/apigateway-service') {
+                        // Docker 레지스트리에 로그인 및 이미지 푸시
+                        withDockerRegistry(credentialsId: 'docker', url: env.DOCKER_REGISTRY) {
+                            if (gatewayImage != null) {
+                                gatewayImage.push()
+                            } else {
+                                error "Docker build failed"
+                            }
+                        }
+                    }
                 }
             }
         }
 
         stage('Cleanup') {
             steps {
-                sh 'docker rmi $DOCKER_IMAGE'
+                dir('smudy_backend/backend/apigateway-service') {
+                    sh 'docker rmi $DOCKER_IMAGE'
+                }
             }
         }
     }
