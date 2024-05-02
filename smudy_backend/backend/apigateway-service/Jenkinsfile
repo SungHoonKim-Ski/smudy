@@ -47,13 +47,4 @@ pipeline {
             }
         }
     }
-
-    post {
-        always {
-            // 항상 실행: 테스트 결과를 수집
-            junit '**/build/test-results/test/*.xml'
-            // 빌드 과정에서 생성된 아티팩트 정리
-            cleanWs()
-        }
-    }
 }
