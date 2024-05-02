@@ -2,7 +2,7 @@ package com.ssafy.data.api
 
 import com.ssafy.data.model.DefaultResponse
 import com.ssafy.data.model.music.AddStudyListRequest
-import com.ssafy.data.model.music.AutoCreateResponse
+import com.ssafy.data.model.music.KeywordResponse
 import com.ssafy.data.model.music.StudyListResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -19,7 +19,7 @@ interface MusicService {
     suspend fun addStudyList(@Body studyList: AddStudyListRequest): Result<DefaultResponse<Int>>
 
     @GET("search/autocreate")
-    suspend fun searchKeyWord(@Query("query") query: String): Result<DefaultResponse<AutoCreateResponse>>
+    suspend fun searchKeyWord(@Query("query") query: String): Result<DefaultResponse<KeywordResponse>>
 
     @GET("search")
     suspend fun getMusicList(
