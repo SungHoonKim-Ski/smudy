@@ -1,6 +1,7 @@
 package com.ssafy.userservice.controller
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.ssafy.userservice.db.mongodb.repository.SongRepository
 import com.ssafy.userservice.dto.request.AddStudyListRequest
 import com.ssafy.userservice.dto.response.*
 import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
@@ -15,7 +16,8 @@ import java.util.*
 @RestController
 @RequestMapping("/api/user")
 class UserController (
-        private val responseService: UserResponseService
+        private val responseService: UserResponseService,
+        private val songRepository: SongRepository
 ){
     private val logger = KotlinLogging.logger{ }
     @GetMapping("/test")
@@ -36,7 +38,7 @@ class UserController (
         )
 
         response.userStudyHistory.add(
-                Song(
+                SongSimple(
                         songArtist = "Ingrid Michaelson"
                         , songName = "You And I"
                         , spotifyId = "7aohwSiTDju51QmC54AUba"
@@ -45,7 +47,7 @@ class UserController (
         )
 
         response.userStudyHistory.add(
-                Song(
+                SongSimple(
                         songArtist = "Ingrid Michaelson"
                         , songName = "Everybody"
                         , spotifyId = "3SBzDgdTwHOMSik82ZI6L2"
@@ -54,7 +56,7 @@ class UserController (
         )
 
         response.userStudyHistory.add(
-                Song(
+                SongSimple(
                         songArtist = "Weezer"
                         , songName = "Say It Ain't So"
                         , spotifyId = "3qmncUJvABe0QDRwMZhbPt"
@@ -65,7 +67,7 @@ class UserController (
 
 
         response.userStudyHistory.add(
-                Song(
+                SongSimple(
                         songArtist = "Weezer"
                         , songName = "My Name Is Jonas"
                         , spotifyId = "08k0JhCj8oJLB7Xuclr57s"
@@ -152,7 +154,7 @@ class UserController (
         val response = StudyListResponse()
 
         response.userStudyList.add(
-                Song(
+                SongSimple(
                         songArtist = "Ingrid Michaelson"
                         , songName = "You And I"
                         , spotifyId = "7aohwSiTDju51QmC54AUba"
@@ -161,7 +163,7 @@ class UserController (
         )
 
         response.userStudyList.add(
-                Song(
+                SongSimple(
                         songArtist = "Ingrid Michaelson"
                         , songName = "Everybody"
                         , spotifyId = "3SBzDgdTwHOMSik82ZI6L2"
@@ -170,7 +172,7 @@ class UserController (
         )
 
         response.userStudyList.add(
-                Song(
+                SongSimple(
                         songArtist = "Weezer"
                         , songName = "Say It Ain't So"
                         , spotifyId = "3qmncUJvABe0QDRwMZhbPt"
@@ -181,7 +183,7 @@ class UserController (
 
 
         response.userStudyList.add(
-                Song(
+                SongSimple(
                         songArtist = "Weezer"
                         , songName = "My Name Is Jonas"
                         , spotifyId = "08k0JhCj8oJLB7Xuclr57s"
@@ -1159,6 +1161,30 @@ class UserController (
 
         return ResponseEntity.ok(
                 responseService.getSuccessSingleResult(response, "Pronounce 히스토리 조회 성공")
+        )
+    }
+
+    @GetMapping("/test/{spotifyId}")
+    fun userTest(@PathVariable spotifyId: String): ResponseEntity<Any> {
+        logger.info { spotifyId }
+        val song = songRepository.findBySpotifyId(spotifyId)
+        logger.info { "song : $song" }
+//        val song2 = songRepository.findById(spotifyId).orElseThrow { IllegalArgumentException("sad") }
+        val song2 = songRepository.findById(spotifyId)
+        logger.info { "song2 : $song2" }
+
+        val song3 = songRepository.count()
+        logger.info { "song3 : $song3" }
+
+        val song4 = songRepository.findSongBySongArtist(spotifyId)
+        logger.info { "song4 : $song4" }
+
+        return ResponseEntity.ok(
+                responseService.getSuccessSingleResult(
+//                songRepository.findAll()
+                        song
+                ,"괴롭다"
+            )
         )
     }
 }

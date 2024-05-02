@@ -18,7 +18,7 @@ fun main(args: Array<String>) {
 }
 
 @Bean
-fun feignLoggerLever(): Logger.Level? {
+fun feignLoggerLever(): Logger.Level {
 	return Logger.Level.FULL
 }
 
