@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        AUTH_IMAGE_NAME = "${env.AUTH_IMAGE_NAME}"
+        SEARCH_IMAGE_NAME = "${env.SEARCH_IMAGE_NAME}"
         CONTAINER_NAME = 'Search'
     }
 
@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     sh 'docker rm -f Search || true'
-                    sh "docker run -d --name ${CONTAINER_NAME} -p 8003:8003 ${SEARCH_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                    sh "docker run -d --name ${CONTAINER_NAME} --network smudy -p 7072:7072 ${SEARCH_IMAGE_NAME}:${env.BUILD_NUMBER}"
                 }
             }
         }
