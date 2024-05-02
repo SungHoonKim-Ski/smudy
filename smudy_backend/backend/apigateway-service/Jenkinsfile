@@ -5,6 +5,7 @@ pipeline {
 
     environment {
         APIGATEWAY_IMAGE_NAME = "${env.APIGATEWAY_IMAGE_NAME}"
+        BACK_URL = "${BACK_URL}"
         CONTAINER_NAME = 'Api_Gateway'
     }
 
@@ -21,7 +22,8 @@ pipeline {
                     sh 'echo "Starting Build Back Docker Image"'
                     dir('smudy_backend/backend/apigateway-service') {
                             withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
-                                apigatewayImage = docker.build("${APIGATEWAY_IMAGE_NAME}:${env.BUILD_NUMBER}", ".")
+                                apigatewayImage = docker.build("${APIGATEWAY_IMAGE_NAME}:${env.BUILD_NUMBER}",
+                                "--build-arg BACK_URL=${env.BACK_URL} .")
 
                                 // Docker 빌드 결과 출력
                                 if (apigatewayImage != 0) {
