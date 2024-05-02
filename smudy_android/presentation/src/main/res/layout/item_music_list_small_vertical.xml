@@ -5,6 +5,7 @@
     android:padding="@dimen/item_padding"
     android:background="@color/gray"
     android:orientation="vertical"
+    android:layout_marginEnd="@dimen/margin_regular"
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
@@ -23,7 +24,7 @@
 
         <TextView
             android:id="@+id/tv_album_title"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/jacket_size_regular"
             android:layout_height="wrap_content"
             android:textAppearance="@style/Noto_Sans.TEXT.B.12"
             android:includeFontPadding="false"
@@ -33,7 +34,8 @@
             />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_album_singer"
+            android:layout_width="@dimen/jacket_size_regular"
             android:layout_height="wrap_content"
             android:textAppearance="@style/Noto_Sans.TEXT.R.11"
             android:includeFontPadding="false"

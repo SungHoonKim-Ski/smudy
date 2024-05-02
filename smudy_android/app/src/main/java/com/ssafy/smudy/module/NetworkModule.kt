@@ -5,6 +5,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.ssafy.data.BuildConfig.BASE_URL
 import com.ssafy.data.api.AuthService
 import com.ssafy.data.api.MusicService
+import com.ssafy.data.api.StudyService
 import com.ssafy.data.api.TokenService
 import com.ssafy.data.api.UserService
 import com.ssafy.smudy.AuthAuthenticator
@@ -103,4 +104,9 @@ object NetworkModule {
     @Singleton
     fun provideMusicService(retrofit: Retrofit): MusicService =
         retrofit.create(MusicService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideStudyService(retrofit: Retrofit): StudyService =
+        retrofit.create(StudyService::class.java)
 }
