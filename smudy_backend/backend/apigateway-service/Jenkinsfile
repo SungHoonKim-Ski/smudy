@@ -4,10 +4,8 @@ pipeline {
     agent any
 
     environment {
-        // 도커 이미지 태그를 설정합니다. Git 커밋 ID를 사용할 수 있습니다.
-        DOCKER_IMAGE = 'API_GATEWAY:${GIT_COMMIT}'
-        // 도커 레지스트리 주소 설정
-        DOCKER_REGISTRY = 'https://registry.hub.docker.com'
+        APIGATEWAY_IMAGE_NAME = "${env.APIGATEWAY_IMAGE_NAME}"
+        CONTAINER_NAME = 'Api_Gateway'
     }
 
     stages {
@@ -20,35 +18,31 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
+                    sh 'echo "Starting Build Back Docker Image"'
                     dir('smudy_backend/backend/apigateway-service') {
-                        // Docker 이미지를 빌드합니다.
-                        gatewayImage = docker.build(env.DOCKER_IMAGE)
-                    }
-                }
-            }
-        }
+                            withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
+                                gatewayImage = docker.build("${APIGATEWAY_IMAGE_NAME}:${env.BUILD_NUMBER}", ".")
 
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    dir('smudy_backend/backend/apigateway-service') {
-                        // Docker 레지스트리에 로그인 및 이미지 푸시
-                        withDockerRegistry(credentialsId: 'docker', url: env.DOCKER_REGISTRY) {
-                            if (gatewayImage != null) {
-                                gatewayImage.push()
-                            } else {
-                                error "Docker build failed"
-                            }
+                                // Docker 빌드 결과 출력
+                                if (apigatewayImage != 0) {
+                                    echo "Docker build succeeded: ${APIGATEWAY_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                                    docker.withRegistry('https://registry.hub.docker.com', 'docker') {
+                                        apigatewayImage.push()
+                                    }
+                                } else {
+                                    error "Docker build failed"
+                                }
                         }
                     }
                 }
             }
         }
 
-        stage('Cleanup') {
+        stage('Deploy') {
             steps {
-                dir('smudy_backend/backend/apigateway-service') {
-                    sh 'docker rmi $DOCKER_IMAGE'
+                script {
+                    sh 'docker rm -f Api_Gateway || true'
+                    sh "docker run -d --name ${CONTAINER_NAME} -p 8000:8000 ${APIGATEWAY_IMAGE_NAME}:${env.BUILD_NUMBER}"
                 }
             }
         }
