@@ -1,6 +1,6 @@
 package com.ssafy.domain.model.user
 
-data class History(
+data class Song(
     val id: String,
     val jacket: String,
     val title: String,

@@ -2,6 +2,8 @@ package com.ssafy.smudy.module
 
 import com.ssafy.data.datasource.auth.AuthRemoteDataSource
 import com.ssafy.data.datasource.auth.AuthRemoteDataSourceImpl
+import com.ssafy.data.datasource.study.remote.StudyRemoteDataSource
+import com.ssafy.data.datasource.study.remote.StudyRemoteDataSourceImpl
 import com.ssafy.data.datasource.user.remote.UserInfoRemoteDataSource
 import com.ssafy.data.datasource.user.remote.UserInfoRemoteDataSourceImpl
 import dagger.Binds
@@ -19,5 +21,8 @@ abstract class RemoteDataSourceModule {
 
     @Binds
     abstract fun bindUserInfoRemoteDataSource(userInfoRemoteDataSourceImpl: UserInfoRemoteDataSourceImpl): UserInfoRemoteDataSource
+
+    @Binds
+    abstract fun bindStudyRemoteDataSource(studyRemoteDataSourceImpl: StudyRemoteDataSourceImpl): StudyRemoteDataSource
 
 }
