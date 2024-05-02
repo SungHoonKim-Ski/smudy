@@ -21,7 +21,10 @@ pipeline {
                     sh 'echo "Starting Build User Service Docker Image"'
                     dir('smudy_backend/backend/user-service') {
                             withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
-                                userImage = docker.build("${USER_IMAGE_NAME}:${env.BUILD_NUMBER}", "--build-arg JASYPT_PASSWORD=${env.JASYPT_PASSWORD}", "--build-arg MONGO_PORT=${env.MONGO_PORT} .")
+                                userImage = docker.build("${USER_IMAGE_NAME}:${env.BUILD_NUMBER}", 
+                                "--build-arg JASYPT_PASSWORD=${env.JASYPT_PASSWORD} " +
+                                "--build-arg MONGO_PORT=${env.MONGO_PORT} .")
+
 
                                 // Docker 빌드 결과 출력
                                 if (userImage != 0) {
