@@ -1,0 +1,48 @@
+pipeline {
+    agent any
+
+    environment {
+        USER_IMAGE_NAME = "${env.USER_IMAGE_NAME}"
+        CONTAINER_NAME = 'User'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh 'echo "Starting Build User Service Docker Image"'
+                    dir('smudy_backend/backend/user-service') {
+                            withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
+                                userImage = docker.build("${USER_IMAGE_NAME}:${env.BUILD_NUMBER}", ".")
+
+                                // Docker 빌드 결과 출력
+                                if (userImage != 0) {
+                                    echo "Docker build succeeded: ${USER_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                                    docker.withRegistry('https://registry.hub.docker.com', 'docker') {
+                                        userImage.push()
+                                    }
+                                } else {
+                                    error "Docker build failed"
+                                }
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    sh 'docker rm -f User || true'
+                    sh "docker run -d --name ${CONTAINER_NAME} -p 8005:8005 ${USER_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                }
+            }
+        }
+    }
+}
