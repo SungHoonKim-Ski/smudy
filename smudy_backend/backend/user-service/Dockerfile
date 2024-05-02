@@ -6,9 +6,11 @@ RUN gradle clean build --no-daemon
 
 ARG MONGO_PORT
 ARG JASYPT_PASSWORD
+ARG BACK_URL
 
 ENV MONGO_PORT=${MONGO_PORT}
 ENV JASYPT_PASSWORD=${JASYPT_PASSWORD}
+ARG BACK_URL=${BACK_URL}
 
 # 두 번째 단계: 실행 스테이지
 FROM openjdk:17-slim

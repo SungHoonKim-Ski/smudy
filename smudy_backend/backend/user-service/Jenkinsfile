@@ -23,6 +23,7 @@ pipeline {
                             withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
                                 userImage = docker.build("${USER_IMAGE_NAME}:${env.BUILD_NUMBER}", 
                                 "--build-arg JASYPT_PASSWORD=${env.JASYPT_PASSWORD} " +
+                                "--build-arg BACK_URL=${env.BACK_URL} " +
                                 "--build-arg MONGO_PORT=${env.MONGO_PORT} .")
 
 
