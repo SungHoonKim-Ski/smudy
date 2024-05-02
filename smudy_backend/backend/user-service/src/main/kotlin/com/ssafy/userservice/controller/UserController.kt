@@ -5,10 +5,17 @@ import com.ssafy.userservice.db.mongodb.repository.SongRepository
 import com.ssafy.userservice.dto.request.AddStudyListRequest
 import com.ssafy.userservice.dto.response.*
 import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
+import com.ssafy.userservice.exception.exception.RequestNotNumberException
+import com.ssafy.userservice.service.LearnReportService
+import com.ssafy.userservice.service.StudyListService
+import com.ssafy.userservice.service.UserService
+import com.ssafy.userservice.service.WrongService
 import com.ssafy.userservice.util.CommonResult
 import com.ssafy.userservice.util.SingleResult
 import com.ssafy.userservice.util.UserResponseService
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -17,9 +24,16 @@ import java.util.*
 @RequestMapping("/api/user")
 class UserController (
         private val responseService: UserResponseService,
-        private val songRepository: SongRepository
+        private val userService: UserService,
+        private val songRepository: SongRepository,
+        private val learnReportService: LearnReportService,
+        private val wrongService: WrongService,
+        private val studyListService: StudyListService,
+
 ){
     private val logger = KotlinLogging.logger{ }
+    private val userUUID = UUID.fromString("74cb4a7c-1751-4ede-829a-de5046ef4688")
+
     @GetMapping("/test")
     fun signup(): ResponseEntity<SingleResult<String>> {
         val data = "user"
@@ -31,52 +45,11 @@ class UserController (
     fun getUserInfo(@RequestHeader("Authorization") accessToken: String): ResponseEntity<SingleResult<InfoResponse>> {
 
         logger.debug { "/info/$accessToken" }
-        val response = InfoResponse(
-                userName = "성훈킴",
-                userImage = "https://www.fitpetmall.com/wp-content/uploads/2022/11/shutterstock_196467692-1024x819.jpg",
-                userExp = 500,
-        )
-
-        response.userStudyHistory.add(
-                SongSimple(
-                        songArtist = "Ingrid Michaelson"
-                        , songName = "You And I"
-                        , spotifyId = "7aohwSiTDju51QmC54AUba"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e022f9b47bdc2b1c7cae7b014af"
-                )
-        )
-
-        response.userStudyHistory.add(
-                SongSimple(
-                        songArtist = "Ingrid Michaelson"
-                        , songName = "Everybody"
-                        , spotifyId = "3SBzDgdTwHOMSik82ZI6L2"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e0279f6239caf413738d82d3b0f"
-                )
-        )
-
-        response.userStudyHistory.add(
-                SongSimple(
-                        songArtist = "Weezer"
-                        , songName = "Say It Ain't So"
-                        , spotifyId = "3qmncUJvABe0QDRwMZhbPt"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e023be73241fed381886709f761"
-                )
-        )
-
-
-
-        response.userStudyHistory.add(
-                SongSimple(
-                        songArtist = "Weezer"
-                        , songName = "My Name Is Jonas"
-                        , spotifyId = "08k0JhCj8oJLB7Xuclr57s"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e02f6e2ddb1cba9a5900de38cd1"
-                )
-        )
 
         return ResponseEntity.ok(
-                responseService.getSuccessSingleResult(response, "유저 정보 조회 완료")
+                responseService.getSuccessSingleResult(
+                        userService.getUserInfo(userUUID)
+                        , "유저 정보 조회 완료")
         )
     }
 
@@ -85,62 +58,25 @@ class UserController (
 
         logger.debug { "/streak/$accessToken" }
 
-        val response = StreakResponse()
-        val calender = Calendar.getInstance()
-//        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-
-        for (i in 0 until 90) {
-            response.streaks.add(
-                    Streak(
-//                            streakDate = dateFormat.format(calender.timeInMillis)
-                                streakDate = calender.timeInMillis
-                    )
-            )
-            calender.add(Calendar.DAY_OF_MONTH, +1)
-        }
-
-        response.streaks[0].albumJacket = "https://i.scdn.co/image/ab67616d00001e022f9b47bdc2b1c7cae7b014af"
-        response.streaks[3].albumJacket = "https://i.scdn.co/image/ab67616d00001e0279f6239caf413738d82d3b0f"
-        response.streaks[7].albumJacket = "https://i.scdn.co/image/ab67616d00001e023be73241fed381886709f761"
-        response.streaks[14].albumJacket = "https://i.scdn.co/image/ab67616d00001e02f6e2ddb1cba9a5900de38cd1"
-        response.streaks[29].albumJacket = "https://i.scdn.co/image/ab67616d00001e022f9b47bdc2b1c7cae7b014af"
-
         return ResponseEntity.ok(
-                responseService.getSuccessSingleResult(response, "스트릭 조회 성공")
+                responseService.getSuccessSingleResult(
+                        learnReportService.getUserStreak(
+                                userUUID
+                        )
+                        , "스트릭 조회 성공")
         )
     }
 
     @GetMapping("/wrong")
     fun getUserWrong(@RequestHeader("Authorization") accessToken: String): ResponseEntity<SingleResult<WrongLyricResponse>> {
+
         logger.debug { "/info/$accessToken" }
 
-        val randomList = mutableListOf<WrongLyricResponse>()
-
-        randomList.add(
-                WrongLyricResponse(
-                        wrongLyricsEn = "I used to ruled the world",
-                        wrongLyricsKo = "나는 세계를 지배하곤 했지"
-                )
-        )
-
-        randomList.add(
-                WrongLyricResponse(
-                        wrongLyricsEn = "I want to go home",
-                        wrongLyricsKo = "나는 집을 가고싶었지"
-                )
-        )
-
-        randomList.add(
-                WrongLyricResponse(
-                        wrongLyricsEn = "bye bye",
-                        wrongLyricsKo = "그래서 집을 갔지"
-                )
-        )
-
-        val response = randomList[((Math.random() * 100 % 3).toInt())]
-
         return ResponseEntity.ok(
-                responseService.getSuccessSingleResult(response, "틀린 표현 조회 성공")
+                responseService.getSuccessSingleResult(
+                        wrongService.getRandomWrongSentence(userUUID)
+                        , "틀린 표현 조회 성공"
+                )
         )
     }
 
@@ -151,49 +87,19 @@ class UserController (
     ): ResponseEntity<SingleResult<StudyListResponse>> {
         logger.debug { "/studylist/$page" }
 
-        val response = StudyListResponse()
+        page.toIntOrNull()?.let {
+            val pageable: Pageable = PageRequest.of(it, 20)
 
-        response.userStudyList.add(
-                SongSimple(
-                        songArtist = "Ingrid Michaelson"
-                        , songName = "You And I"
-                        , spotifyId = "7aohwSiTDju51QmC54AUba"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e022f9b47bdc2b1c7cae7b014af"
-                )
-        )
+            return ResponseEntity.ok(
+                    responseService.getSuccessSingleResult(
+                            studyListService.getUserStudyList(
+                                    userUUID
+                                    , pageable)
+                            , "스터디 리스트 조회 성공"
+                    )
+            )
+        } ?: throw RequestNotNumberException("StudyList의 페이지는 숫자여야 합니다.")
 
-        response.userStudyList.add(
-                SongSimple(
-                        songArtist = "Ingrid Michaelson"
-                        , songName = "Everybody"
-                        , spotifyId = "3SBzDgdTwHOMSik82ZI6L2"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e0279f6239caf413738d82d3b0f"
-                )
-        )
-
-        response.userStudyList.add(
-                SongSimple(
-                        songArtist = "Weezer"
-                        , songName = "Say It Ain't So"
-                        , spotifyId = "3qmncUJvABe0QDRwMZhbPt"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e023be73241fed381886709f761"
-                )
-        )
-
-
-
-        response.userStudyList.add(
-                SongSimple(
-                        songArtist = "Weezer"
-                        , songName = "My Name Is Jonas"
-                        , spotifyId = "08k0JhCj8oJLB7Xuclr57s"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e02f6e2ddb1cba9a5900de38cd1"
-                )
-        )
-
-        return ResponseEntity.ok(
-                responseService.getSuccessSingleResult(response, "스터디 리스트 조회 성공")
-        )
     }
 
     @PostMapping("/studylist/add")
@@ -1164,27 +1070,4 @@ class UserController (
         )
     }
 
-    @GetMapping("/test/{spotifyId}")
-    fun userTest(@PathVariable spotifyId: String): ResponseEntity<Any> {
-        logger.info { spotifyId }
-        val song = songRepository.findBySpotifyId(spotifyId)
-        logger.info { "song : $song" }
-//        val song2 = songRepository.findById(spotifyId).orElseThrow { IllegalArgumentException("sad") }
-        val song2 = songRepository.findById(spotifyId)
-        logger.info { "song2 : $song2" }
-
-        val song3 = songRepository.count()
-        logger.info { "song3 : $song3" }
-
-        val song4 = songRepository.findSongBySongArtist(spotifyId)
-        logger.info { "song4 : $song4" }
-
-        return ResponseEntity.ok(
-                responseService.getSuccessSingleResult(
-//                songRepository.findAll()
-                        song
-                ,"괴롭다"
-            )
-        )
-    }
 }

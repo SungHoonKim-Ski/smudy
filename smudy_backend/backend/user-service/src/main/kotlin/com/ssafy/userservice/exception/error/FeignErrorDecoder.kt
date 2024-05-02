@@ -1,4 +1,4 @@
-package com.ssafy.userservice.config
+package com.ssafy.userservice.exception.error
 
 import feign.Response
 import feign.codec.ErrorDecoder

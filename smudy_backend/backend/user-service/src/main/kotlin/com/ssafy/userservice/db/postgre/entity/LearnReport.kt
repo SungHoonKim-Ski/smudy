@@ -1,7 +1,9 @@
 package com.ssafy.userservice.db.postgre.entity
 
+import com.ssafy.userservice.exception.exception.StudyIllegalTypeException
 import jakarta.persistence.*
 import java.sql.Date
+import java.util.UUID
 
 @Entity
 @Table(name = "learn_report", schema = "public")
@@ -12,9 +14,9 @@ class LearnReport(
         @Column(name = "learn_report_id")
         var learnReportId: Int = 0,
 
-        @ManyToOne
-        @JoinColumn(name = "user_id")
-        var user: User,
+//        @ManyToOne
+        @JoinColumn(name = "user_internal_id")
+        var userInternalId: UUID,
 
         @Column(name = "song_id", length = 30, nullable = false)
         var songId: String,
@@ -37,7 +39,7 @@ class LearnReport(
         private fun validateProblemType() {
                 val validTypes = listOf("FILL", "PICK", "EXPRESS", "PRONOUNCE")
                 if (problemType !in validTypes) {
-                        throw IllegalArgumentException("Invalid problem type.")
+                        throw StudyIllegalTypeException("Invalid problem type.")
                 }
         }
 }
