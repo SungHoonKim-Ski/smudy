@@ -12,7 +12,7 @@ ENV JASYPT_PASSWORD=${JASYPT_PASSWORD}
 
 # 두 번째 단계: 실행 스테이지
 FROM openjdk:17-slim
-EXPOSE 8085
+EXPOSE 7070
 WORKDIR /app
 COPY --from=build /home/gradle/src/build/libs/*.jar app.jar
 CMD ["java", "-jar", "app.jar"]

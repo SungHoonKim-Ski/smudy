@@ -45,7 +45,7 @@ pipeline {
             steps {
                 script {
                     sh 'docker rm -f User || true'
-                    sh "docker run -d --name ${CONTAINER_NAME} -p 8005:8005 ${USER_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                    sh "docker run -d --name ${CONTAINER_NAME} --network smudy -p 7070:7070 ${USER_IMAGE_NAME}:${env.BUILD_NUMBER}"
                 }
             }
         }
