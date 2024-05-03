@@ -15,7 +15,6 @@ RUN gradle clean build --no-daemon
 
 # 두 번째 단계: 실행 스테이지
 FROM openjdk:17-slim
-EXPOSE 7070
 WORKDIR /app
 ARG MONGO_PORT
 ARG JASYPT_PASSWORD
