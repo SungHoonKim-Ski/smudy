@@ -9,7 +9,6 @@ ENV EUREKA_URL=${EUREKA_URL}
 
 # 두 번째 단계: 실행 스테이지
 FROM openjdk:17-slim
-EXPOSE 7071
 WORKDIR /app
 ARG EUREKA_URL
 ENV EUREKA_URL=${EUREKA_URL}

@@ -42,7 +42,7 @@ pipeline {
             steps {
                 script {
                     sh 'docker rm -f Auth || true'
-                    sh "docker run -d --name ${CONTAINER_NAME} --network smudy -p 7071:7071 ${AUTH_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                    sh "docker run -d --name ${CONTAINER_NAME} --network smudy ${AUTH_IMAGE_NAME}:${env.BUILD_NUMBER}"
                 }
             }
         }
