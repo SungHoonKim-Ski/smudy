@@ -11,7 +11,7 @@ eureka:
         register-with-eureka: true
         fetch-registry: true
         service-url:
-            defaultZone: ${BACK_URL}:8762/eureka
+            defaultZone: ${EUREKA_URL}/eureka
 
 spring:
     main:
