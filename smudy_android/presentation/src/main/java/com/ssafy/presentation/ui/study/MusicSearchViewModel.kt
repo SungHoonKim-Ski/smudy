@@ -35,4 +35,8 @@ class MusicSearchViewModel @Inject constructor(
             }
         }
     }
+
+    fun deleteKeywords(){
+        _keywords.value = emptyList()
+    }
 }

@@ -1,16 +1,13 @@
 package com.ssafy.presentation.ui.study
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
-import android.view.MotionEvent
+import android.util.Log
 import android.view.View
-import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseFragment
@@ -31,6 +28,7 @@ class MusicSearchFragment : BaseFragment<FragmentMusicSearchBinding>(
             mutableListOf()
         )
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
@@ -45,24 +43,37 @@ class MusicSearchFragment : BaseFragment<FragmentMusicSearchBinding>(
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun initEvent() {
         with(binding) {
             btnNavigateStudyList.setOnClickListener {
                 // 저장하는 통신
             }
             actvKeywordSearch.apply {
+                // dropdown 아이템 눌렀을 때 해당 텍스트로 검색 통신
                 setOnItemClickListener { _, _, position, _ ->
                     // 검색어로 서버 통신
                     hideKeyboard()
-                    this.clearFocus()
+                    clearFocus()
                 }
-                setOnTouchListener { _, event ->
-                    if (event.action == MotionEvent.ACTION_DOWN){
-                        this.showDropDown()
+                // 아이템 선택등의 이유로 focus가 없어졌다가 생길때 dropdown 보여주기
+                setOnFocusChangeListener { _, isFocus ->
+                    Log.e("TAG", "initEvent: $isFocus")
+                    if (isFocus){
+                        showDropDown()
                     }
-                    false
                 }
+                // 키보드를 통해 검색을 했을 때 동작 방신 구현
+                setOnEditorActionListener { _, actionId, _ ->
+                    if (actionId == EditorInfo.IME_ACTION_DONE){
+                        hideKeyboard()
+                        clearFocus()
+                        dismissDropDown()
+                        true
+                    } else {
+                        false
+                    }
+                }
+                // 글자가 변경되면 추천 검색어를 서버 통신을 통해 가져옴
                 addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(
                         s: CharSequence,
@@ -78,9 +89,10 @@ class MusicSearchFragment : BaseFragment<FragmentMusicSearchBinding>(
                         before: Int,
                         count: Int
                     ) {
-                        if (s.isNotEmpty()){
+                        if (s.isNotEmpty()) {
                             viewModel.searchKeyword(s.toString())
-                        }else{
+                        } else {
+                            viewModel.deleteKeywords()
                             keywordsAdapter.clear()
                             keywordsAdapter.notifyDataSetChanged()
                         }
@@ -88,7 +100,6 @@ class MusicSearchFragment : BaseFragment<FragmentMusicSearchBinding>(
 
                     override fun afterTextChanged(s: Editable?) {
                     }
-
                 })
             }
         }

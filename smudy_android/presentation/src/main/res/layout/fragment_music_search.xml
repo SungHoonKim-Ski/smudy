@@ -7,12 +7,14 @@
     android:orientation="vertical"
     tools:context=".ui.study.MusicSearchFragment">
 
-    <AutoCompleteTextView
+    <com.google.android.material.textfield.MaterialAutoCompleteTextView
         android:id="@+id/actv_keyword_search"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginHorizontal="@dimen/fragment_padding"
+        android:backgroundTint="@color/smudy_mint"
         android:hint="검색어를 입력해주세요."
+        android:inputType="text"
         android:maxLines="1"
         android:completionThreshold="1"
         app:layout_constraintEnd_toEndOf="parent"
