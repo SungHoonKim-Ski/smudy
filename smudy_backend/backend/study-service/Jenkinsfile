@@ -42,7 +42,7 @@ pipeline {
             steps {
                 script {
                     sh 'docker rm -f Study || true'
-                    sh "docker run -d --name ${CONTAINER_NAME} --network smudy -p 7073:7073 ${STUDY_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                    sh "docker run -d --name ${CONTAINER_NAME} --network smudy ${STUDY_IMAGE_NAME}:${env.BUILD_NUMBER}"
                 }
             }
         }
