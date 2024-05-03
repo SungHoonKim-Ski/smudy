@@ -6,6 +6,9 @@ import com.ssafy.domain.model.Study
 import kotlinx.coroutines.flow.Flow
 
 interface MusicRepository {
-    fun getMusicPagingData(): Flow<PagingData<Study>>
+    fun getStudyPagingData(): Flow<PagingData<Study>>
     suspend fun searchKeyword(query: String): Flow<ApiResult<List<String>>>
+    fun getMusicPagingDate(query: String): Flow<PagingData<Study>>
+
+    suspend fun addStudyList(musicList:List<String>): Flow<ApiResult<Boolean>>
 }
