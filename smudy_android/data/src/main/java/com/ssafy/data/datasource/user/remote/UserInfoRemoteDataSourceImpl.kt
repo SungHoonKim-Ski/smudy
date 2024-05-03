@@ -2,6 +2,7 @@ package com.ssafy.data.datasource.user.remote
 
 import com.ssafy.data.api.UserService
 import com.ssafy.data.mapper.toNonDefault
+import com.ssafy.data.model.user.HistoryResponse
 import com.ssafy.data.model.user.RecommendedSongsResponse
 import com.ssafy.data.model.user.StreakDto
 import com.ssafy.data.model.user.StreakResponse
@@ -26,5 +27,9 @@ class UserInfoRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getRecommendedSongs(): Result<RecommendedSongsResponse> {
         return userService.getRecommendedSong().toNonDefault()
+    }
+
+    override suspend fun getHistory(date: Long): Result<HistoryResponse> {
+        return userService.getHistory(date).toNonDefault()
     }
 }

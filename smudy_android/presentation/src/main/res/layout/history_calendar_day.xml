@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/calendar_day_background">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/calendar_day_background"
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/day_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_margin="1dp"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:layout_weight="1">
 
         <TextView
             android:id="@+id/tv_day"
@@ -21,27 +24,20 @@
             android:layout_marginEnd="4dp"
             android:gravity="center"
             android:textSize="10sp"
-            tools:text="24"
-            tools:ignore="SmallSp" />
+            tools:ignore="SmallSp"
+            tools:text="24" />
 
-        <View
-            android:id="@+id/v_day_top"
+        <ImageView
+            android:id="@+id/iv_album_jacket"
             android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="18dp"
-            android:background="@color/smudy_mint" />
-
-        <View
-            android:id="@+id/v_day_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="8dp"
-            android:background="@color/box_blue" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="@dimen/item_padding"
+            android:layout_marginBottom="@dimen/item_padding"
+            tools:ignore="ContentDescription" />
 
     </FrameLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
 
 

@@ -82,17 +82,9 @@ class MainFragment : BaseFragment<FragmentMainBinding>(
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     userInfo.collect {
                         when (it) {
-                            is ApiResult.Success -> {
-                                setUserData(it.data)
-                            }
-
-                            is ApiResult.Failure -> {
-                                Log.d(TAG, "registerObservers: Failure")
-                            }
-
-                            is ApiResult.Loading -> {
-                                Log.d(TAG, "registerObservers: Loading")
-                            }
+                            is ApiResult.Success -> { setUserData(it.data) }
+                            is ApiResult.Failure -> { Log.d(TAG, "registerObservers: Failure") }
+                            is ApiResult.Loading -> { Log.d(TAG, "registerObservers: Loading") }
                         }
                     }
                 }
@@ -102,17 +94,9 @@ class MainFragment : BaseFragment<FragmentMainBinding>(
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     streak.collect {
                         when (it) {
-                            is ApiResult.Success -> {
-                                streakAdapter.submitList(it.data)
-                            }
-
-                            is ApiResult.Failure -> {
-                                Log.d(TAG, "registerObservers: Failure")
-                            }
-
-                            is ApiResult.Loading -> {
-                                Log.d(TAG, "registerObservers: Loading")
-                            }
+                            is ApiResult.Success -> { streakAdapter.submitList(it.data) }
+                            is ApiResult.Failure -> { Log.d(TAG, "registerObservers: Failure") }
+                            is ApiResult.Loading -> { Log.d(TAG, "registerObservers: Loading") }
                         }
                     }
                 }
@@ -122,20 +106,11 @@ class MainFragment : BaseFragment<FragmentMainBinding>(
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     dailyLyric.collect {
                         when (it) {
-                            is ApiResult.Success -> {
-                                setDailyLyric(it.data)
-                            }
-
-                            is ApiResult.Failure -> {
-                                Log.d(TAG, "registerObservers: Failure")
-                            }
-
-                            is ApiResult.Loading -> {
-                                Log.d(TAG, "registerObservers: Loading")
-                            }
+                            is ApiResult.Success -> { setDailyLyric(it.data) }
+                            is ApiResult.Failure -> { Log.d(TAG, "registerObservers: Failure") }
+                            is ApiResult.Loading -> { Log.d(TAG, "registerObservers: Loading") }
                         }
                     }
-
                 }
             }
 
