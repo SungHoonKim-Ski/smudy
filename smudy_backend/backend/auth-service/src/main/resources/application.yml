@@ -5,24 +5,26 @@ spring:
   application:
     name: auth-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/smudy
-    username: ssafy
-    password: ssafy
+    url: ENC(LOQ8dn9ei6+pX752IFd56v/dZi1VSH2nxeiAlgia3cptBT6YJ0zNRl1Dgwk6Ou6XWH7V9OlZKFSsbGBQ7aTrsg==)
+    username: ENC(U1prS9CmmDnKNHS7OJdYtw==)
+    password: ENC(G/jBy28DXfR039pmAt8RLn6V6vmQWVhJ)
     driver-class-name: org.postgresql.Driver
   jpa:
-#    hibernate:
-#      ddl-auto: update
-    show-sql: true
+    hibernate:
+      ddl-auto: none
     properties:
-      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+      hibernate:
+        format_sql: true #To beautify or pretty print the SQL
+        show_sql: true #show sql
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   data:
     redis:
-      host: k10d111.p.ssafy.io
+      host: ENC(Qp2Qjwju79uZqZoRRM+VVWJoz7lvyfawXt2a8DEQ2yU=)
       port: 9736
-      password: dnrjsdkehfdkdhk
+      password: ENC(3E9aOPuhala96rXjTVqHa721HtNVGGay)
 
 jwt:
-  secret-key: VGhpcyBpcyBhIGRlbW8gcHJvamVjdCBmb3IgaW1wbGVtZW50aW5nIGp3dC4=VGhpcyBpcyBhIGRlbW8gcHJvamVjdCBmb3IgaW1wbGVtZW50aW5nIGp3dC4=
+  secret-key: ENC(+ebEWdCqIhlFeh2InAoDO8eKE9YTAk9L9vTOk5p9unmreZG3u1P2Lya2PTS9jfEtTUx2rziDI/3UuesNgNJA0QFgb5uJV2XiIo1FRaDv/IGhWHPij+AgXUXkYebPwzT1vvu7ndrwzh4=)
 
 eureka:
   client:

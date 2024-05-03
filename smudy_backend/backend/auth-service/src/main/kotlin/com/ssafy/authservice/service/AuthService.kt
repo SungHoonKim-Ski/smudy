@@ -1,8 +1,12 @@
 package com.ssafy.authservice.service
 
+import com.ssafy.authservice.common.exception.CustomException
+import com.ssafy.authservice.common.exception.ExceptionType
 import com.ssafy.authservice.common.jwt.JwtTokenProvider
 import com.ssafy.authservice.dto.request.LoginRequest
 import com.ssafy.authservice.dto.response.TokenResponse
+import com.ssafy.authservice.entity.User
+import com.ssafy.authservice.repository.UserRepository
 import org.springframework.http.HttpHeaders.SERVER
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -18,7 +22,7 @@ import java.util.stream.Collectors
 class AuthService(
         private val jwtTokenProvider: JwtTokenProvider,
         private val authenticationManagerBuilder: AuthenticationManagerBuilder,
-        private val userService: UserService,
+        private val userRepository: UserRepository,
         private val redisService: RedisService
 ) {
 
@@ -26,11 +30,11 @@ class AuthService(
     @Transactional
     fun login(request: LoginRequest): TokenResponse {
 
-        val userSnsId = request.userSnsId
-        val userInternalId = userService.extractInternalId(userSnsId)   // 못찾았을 때, Exception 처리 추가해야함
+        val userInternalId = userRepository.findByUserSnsId(request.userSnsId)?.userInternalId
+            ?: throw CustomException(ExceptionType.USER_NOT_FOUND_EXCEPTION)    // User가 없으면 404
 
         val authenticationToken = UsernamePasswordAuthenticationToken(
-            userInternalId, ""
+            userInternalId.toString(), ""
         )
 
         val authentication: Authentication = authenticationManagerBuilder.getObject()

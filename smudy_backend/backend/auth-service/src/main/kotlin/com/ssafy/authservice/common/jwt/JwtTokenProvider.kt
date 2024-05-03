@@ -139,6 +139,8 @@ class JwtTokenProvider(
             true
         } catch (e: ExpiredJwtException) {
             true // 만료된 토큰은 특정 경우에 유효하다고 간주할 수 있음
+        } catch (e: SignatureException) {
+            false
         } catch (e: Exception) {
             false
         }
@@ -152,6 +154,8 @@ class JwtTokenProvider(
                 .before(Date())
         } catch (e: ExpiredJwtException) {
             true
+        } catch (e: SignatureException) {
+            false
         } catch (e: Exception) {
             false
         }

@@ -48,6 +48,7 @@ dependencies {
 
 	implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
 	implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+	implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5")
 }
 
 dependencyManagement {

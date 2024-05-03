@@ -1,5 +1,7 @@
 package com.ssafy.authservice.service
 
+import com.ssafy.authservice.common.exception.CustomException
+import com.ssafy.authservice.common.exception.ExceptionType
 import com.ssafy.authservice.common.jwt.JwtTokenProvider
 import com.ssafy.authservice.dto.response.TokenResponse
 import com.ssafy.authservice.entity.Role
@@ -11,7 +13,7 @@ import java.util.*
 
 @Service
 class UserService(
-    private val jwtTokenProvider: JwtTokenProvider,
+    private val authService: AuthService,
     private val userRepository: UserRepository
 ) {
 
@@ -22,7 +24,8 @@ class UserService(
         val existingUser = userRepository.findByUserSnsId(userSnsId)
 
         if (existingUser != null) {
-            throw IllegalArgumentException("이미 가입된 회원입니다: $userSnsId")
+            // 이미 가입된 회원인 경우
+            throw CustomException(ExceptionType.DUPLICATE_USER_EXCEPTION)
         }
 
         val user = User(
@@ -35,13 +38,6 @@ class UserService(
 
         userRepository.save(user) // Save new user
 
-        return jwtTokenProvider.createToken(user.userInternalId.toString(), user.userRole.key)
-    }
-
-    @Transactional
-    fun extractInternalId(userSnsId: String): String {
-        // Request 로 userSnsId 를 받지만, Authentication 과정에선 userInternalId 필요
-        val user: User? = userRepository.findByUserSnsId(userSnsId)
-        return user?.userInternalId.toString() ?: throw IllegalArgumentException("No user found with the given userSnsId")
+        return authService.generateToken(user.userInternalId.toString(), user.userRole.key)
     }
 }
