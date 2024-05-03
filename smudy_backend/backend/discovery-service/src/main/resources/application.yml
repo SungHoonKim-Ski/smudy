@@ -10,4 +10,4 @@ eureka:
         register-with-eureka: false
         fetch-registry: false
         service-url:
-            defaultZone: ${BACK_URL}/eureka
+            defaultZone: ${EUREKA_URL}

@@ -4,7 +4,7 @@ pipeline {
     environment {
         DISCOVERY_IMAGE_NAME = "${env.DISCOVERY_IMAGE_NAME}"
         CONTAINER_NAME = 'Discovery'
-        BACK_URL = "${env.BACK_URL}"
+        EUREKA_URL = "${env.EUREKA_URL}"
     }
 
     stages {
@@ -21,7 +21,7 @@ pipeline {
                     dir('smudy_backend/backend/discovery-service') {
                             withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
                                 discoveryImage = docker.build("${DISCOVERY_IMAGE_NAME}:${env.BUILD_NUMBER}", 
-                                "--build-arg BACK_URL=${env.BACK_URL} .") 
+                                "--build-arg EUREKA_URL=${env.EUREKA_URL} .") 
 
                                 // Docker 빌드 결과 출력
                                 if (discoveryImage != 0) {
