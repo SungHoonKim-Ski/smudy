@@ -4,6 +4,7 @@ pipeline {
     environment {
         DISCOVERY_IMAGE_NAME = "${env.DISCOVERY_IMAGE_NAME}"
         CONTAINER_NAME = 'Discovery'
+        BACK_URL = "${env.BACK_URL}"
     }
 
     stages {
