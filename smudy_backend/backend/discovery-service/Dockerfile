@@ -12,5 +12,6 @@ FROM openjdk:17-slim
 EXPOSE 8762
 WORKDIR /app
 COPY --from=build /home/gradle/src/build/libs/*.jar app.jar
+ARG EUREKA_URL
 ENV EUREKA_URL=${EUREKA_URL}
 CMD ["java", "-jar", "app.jar"]
