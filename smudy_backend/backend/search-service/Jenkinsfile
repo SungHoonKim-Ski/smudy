@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         SEARCH_IMAGE_NAME = "${env.SEARCH_IMAGE_NAME}"
+        EUREKA_URL = "${EUREKA_URL}"
         CONTAINER_NAME = 'Search'
     }
 
@@ -20,7 +21,7 @@ pipeline {
                     dir('smudy_backend/backend/search-service') {
                             withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
                                 searchImage = docker.build("${SEARCH_IMAGE_NAME}:${env.BUILD_NUMBER}",
-                                "--build-arg BACK_URL=${env.BACK_URL} .")
+                                "--build-arg EUREKA_URL=${env.EUREKA_URL} .")
 
                                 // Docker 빌드 결과 출력
                                 if (searchImage != 0) {
