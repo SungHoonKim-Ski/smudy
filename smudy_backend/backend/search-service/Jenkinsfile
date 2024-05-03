@@ -42,7 +42,7 @@ pipeline {
             steps {
                 script {
                     sh 'docker rm -f Search || true'
-                    sh "docker run -d --name ${CONTAINER_NAME} --network smudy -p 7072:7072 ${SEARCH_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                    sh "docker run -d --name ${CONTAINER_NAME} --network smudy ${SEARCH_IMAGE_NAME}:${env.BUILD_NUMBER}"
                 }
             }
         }
