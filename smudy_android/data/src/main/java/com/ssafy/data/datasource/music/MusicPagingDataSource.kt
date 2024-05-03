@@ -4,11 +4,15 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.ssafy.data.api.MusicService
 import com.ssafy.data.mapper.toStudy
+import com.ssafy.data.model.music.MusicListResponse
+import com.ssafy.data.model.music.StudyListResponse
 import com.ssafy.domain.model.Study
 import com.ssafy.util.NetworkException
 
 class MusicPagingDataSource(
-    private val musicService: MusicService
+    private val musicService: MusicService,
+    private val isSearch:Boolean = false,
+    private val query:String = ""
 ) : PagingSource<Int, Study>() {
     override fun getRefreshKey(state: PagingState<Int, Study>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
@@ -21,9 +25,15 @@ class MusicPagingDataSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Study> {
         val page = params.key ?: STARTING_PAGE_INDEX
         return try {
-            val response = musicService.getStudyList(page)
+            val response = if (isSearch) musicService.getMusicList(query,page) else musicService.getStudyList(page)
             val musicList =
-                if (response.isSuccessful) response.body()?.data?.toStudy().orEmpty() else emptyList()
+                if (response.isSuccessful) {
+                    if (response.body()?.data is MusicListResponse){
+                        (response.body()?.data as MusicListResponse).toStudy()
+                    } else {
+                        (response.body()?.data as StudyListResponse).toStudy()
+                    }
+                } else emptyList()
             if (musicList.isNotEmpty()) {
                 LoadResult.Page(
                     data = musicList,
