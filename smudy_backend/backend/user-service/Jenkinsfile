@@ -5,6 +5,7 @@ pipeline {
         USER_IMAGE_NAME = "${env.USER_IMAGE_NAME}"
         JASYPT_PASSWORD = "${env.JASYPT_PASSWORD}"
         MONGO_PORT = "${env.MONGO_PORT}"
+        EUREKA_URL = "${env.EUREKA_URL}"
         CONTAINER_NAME = 'User'
     }
 
@@ -23,7 +24,7 @@ pipeline {
                             withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
                                 userImage = docker.build("${USER_IMAGE_NAME}:${env.BUILD_NUMBER}", 
                                 "--build-arg JASYPT_PASSWORD=${env.JASYPT_PASSWORD} " +
-                                "--build-arg BACK_URL=${env.BACK_URL} " +
+                                "--build-arg EUREKA_URL=${env.EUREKA_URL} " +
                                 "--build-arg MONGO_PORT=${env.MONGO_PORT} .")
 
 

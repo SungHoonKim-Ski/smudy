@@ -29,7 +29,7 @@ eureka:
         register-with-eureka: true
         fetch-registry: true
         service-url:
-            defaultZone: ${BACK_URL}:8762
+            defaultZone: ${EUREKA_URL}/eureka
     instance:
         instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
         prefer-ip-address: true
