@@ -19,8 +19,8 @@ pipeline {
                     sh 'echo "Starting Build Discovery Service Docker Image"'
                     dir('smudy_backend/backend/discovery-service') {
                             withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
-                                discoveryImage = docker.build("${DISCOVERY_IMAGE_NAME}:${env.BUILD_NUMBER}",
-                                "--build-arg BACK_URL=${env.BACK_URL} .")
+                                discoveryImage = docker.build("${DISCOVERY_IMAGE_NAME}:${env.BUILD_NUMBER}", 
+                                "--build-arg BACK_URL=${env.BACK_URL} .") 
 
                                 // Docker 빌드 결과 출력
                                 if (discoveryImage != 0) {
