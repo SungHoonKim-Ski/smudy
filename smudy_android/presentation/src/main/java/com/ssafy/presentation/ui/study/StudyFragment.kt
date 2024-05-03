@@ -29,7 +29,7 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>(
 
     private fun initObserve() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getMusicList().collect {
+            viewModel.getStudyList().collect {
                 studyRecyclerAdapter.submitData(it)
             }
         }

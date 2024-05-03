@@ -5,6 +5,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.ssafy.data.api.MusicService
 import com.ssafy.data.datasource.music.MusicPagingDataSource
+import com.ssafy.data.datasource.music.MusicRemoteDataSource
+import com.ssafy.data.model.music.AddStudyListRequest
+import com.ssafy.data.model.music.SongIdResponse
 import com.ssafy.domain.model.ApiError
 import com.ssafy.domain.model.ApiResult
 import com.ssafy.domain.model.Study
@@ -16,9 +19,10 @@ import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 class MusicRepositoryImpl @Inject constructor(
-    private val musicService: MusicService
+    private val musicService: MusicService,
+    private val musicRemoteDataSource: MusicRemoteDataSource
 ) : MusicRepository {
-    override fun getMusicPagingData(): Flow<PagingData<Study>> {
+    override fun getStudyPagingData(): Flow<PagingData<Study>> {
         return Pager(PagingConfig(pageSize = 10)) {
             MusicPagingDataSource(musicService)
         }.flow
@@ -26,7 +30,7 @@ class MusicRepositoryImpl @Inject constructor(
 
     override suspend fun searchKeyword(query: String): Flow<ApiResult<List<String>>> =
         flow {
-            val response = musicService.searchKeyWord(query)
+            val response = musicRemoteDataSource.searchKeyword(query)
             val data = response.getOrNull()
             if (data != null) {
                 emit(
@@ -39,4 +43,28 @@ class MusicRepositoryImpl @Inject constructor(
                 emit(ApiResult.Failure(ApiError(exception.code, exception.message)))
             }
         }.onStart { emit(ApiResult.Loading()) }
+
+    override fun getMusicPagingDate(query: String): Flow<PagingData<Study>> {
+        return Pager(PagingConfig(pageSize = 10)) {
+            MusicPagingDataSource(musicService, true, query)
+        }.flow
+    }
+
+    override suspend fun addStudyList(musicList: List<String>): Flow<ApiResult<Boolean>> =
+        flow {
+            val request = AddStudyListRequest(musicList.map { SongIdResponse(it) })
+            val response = musicRemoteDataSource.addStudyList(request)
+            val data = response.getOrNull()
+            if (data != null) {
+                emit(ApiResult.Success(true))
+            } else {
+                val exception = response.exceptionOrNull() as NetworkException
+                if (exception.code == "409") {
+                    emit(ApiResult.Success(false))
+                } else {
+                    emit(ApiResult.Failure(ApiError(exception.code, exception.message)))
+                }
+            }
+        }.onStart { emit(ApiResult.Loading()) }
+
 }
