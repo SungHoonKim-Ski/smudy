@@ -4,6 +4,7 @@ pipeline {
     environment {
         STUDY_IMAGE_NAME = "${env.STUDY_IMAGE_NAME}"
         CONTAINER_NAME = 'Study'
+        EUREKA_URL = "${env.EUREKA_URL}"
     }
 
     stages {
@@ -20,7 +21,7 @@ pipeline {
                     dir('smudy_backend/backend/study-service') {
                             withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
                                 studyImage = docker.build("${STUDY_IMAGE_NAME}:${env.BUILD_NUMBER}",
-                                "--build-arg BACK_URL=${env.BACK_URL} .")
+                                "--build-arg EUREKA_URL=${env.EUREKA_URL} .")
 
                                 // Docker 빌드 결과 출력
                                 if (studyImage != 0) {
