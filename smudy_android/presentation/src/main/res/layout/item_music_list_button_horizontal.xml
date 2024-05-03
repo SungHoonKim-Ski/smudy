@@ -55,7 +55,7 @@
             android:layout_width="@dimen/icon_size_regular"
             android:layout_height="@dimen/icon_size_regular"
             android:contentDescription="@string/item_visible_btn_img_description"
-            tools:src="@drawable/ic_bottom_calendar_month" />
+            android:src="@drawable/ic_study_expand" />
     </LinearLayout>
 
     <LinearLayout
