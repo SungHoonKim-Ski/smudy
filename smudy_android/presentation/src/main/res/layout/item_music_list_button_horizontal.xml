@@ -69,6 +69,7 @@
 
         <com.google.android.material.button.MaterialButton
             style="@style/TextAppearance.MaterialComponents.Button.Color"
+            android:id="@+id/btn_fill_study"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -77,6 +78,7 @@
 
         <com.google.android.material.button.MaterialButton
             style="@style/TextAppearance.MaterialComponents.Button.Color"
+            android:id="@+id/btn_pick_study"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -85,6 +87,7 @@
 
         <com.google.android.material.button.MaterialButton
             style="@style/TextAppearance.MaterialComponents.Button.Color"
+            android:id="@+id/btn_express_study"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -93,6 +96,7 @@
 
         <com.google.android.material.button.MaterialButton
             style="@style/TextAppearance.MaterialComponents.Button.Color"
+            android:id="@+id/btn_pronounce_study"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

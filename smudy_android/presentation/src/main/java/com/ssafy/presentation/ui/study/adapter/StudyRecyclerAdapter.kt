@@ -11,11 +11,10 @@ import com.bumptech.glide.Glide
 import com.ssafy.presentation.databinding.ItemMusicListButtonHorizontalBinding
 import com.ssafy.presentation.model.Study
 
-class StudyRecyclerAdapter :
+class StudyRecyclerAdapter(private val studyTypeClickListener : StudyTypeClickListener) :
     PagingDataAdapter<Study, StudyRecyclerAdapter.PagingViewHolder>(diffCallback) {
     inner class PagingViewHolder(private val binding: ItemMusicListButtonHorizontalBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
         fun bind(musicInfo: Study, position: Int) = with(binding) {
             Log.e("TAG", "bind: $musicInfo")
             tvAlbumTitle.text = musicInfo.title
@@ -26,7 +25,30 @@ class StudyRecyclerAdapter :
                 llStudyType.isVisible = !llStudyType.isVisible
                 musicInfo.flag = !musicInfo.flag
             }
+            btnFillStudy.setOnClickListener {
+                Log.e("TAG", "bind: ${musicInfo.title}")
+                studyTypeClickListener.fillStudy()
+            }
+            btnPickStudy.setOnClickListener {
+                Log.e("TAG", "bind: ${musicInfo.title}")
+                studyTypeClickListener.pickStudy()
+            }
+            btnExpressStudy.setOnClickListener {
+                Log.e("TAG", "bind: ${musicInfo.title}")
+                studyTypeClickListener.expressStudy()
+            }
+            btnPronounceStudy.setOnClickListener {
+                Log.e("TAG", "bind: ${musicInfo.title}")
+                studyTypeClickListener.pronounceStudy()
+            }
         }
+    }
+
+    interface StudyTypeClickListener{
+        fun fillStudy()
+        fun pickStudy()
+        fun expressStudy()
+        fun pronounceStudy()
     }
 
     companion object {

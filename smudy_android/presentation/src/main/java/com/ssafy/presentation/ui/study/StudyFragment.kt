@@ -1,6 +1,7 @@
 package com.ssafy.presentation.ui.study
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,8 +17,8 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class StudyFragment : BaseFragment<FragmentStudyBinding>(
     { FragmentStudyBinding.bind(it) }, R.layout.fragment_study
-) {
-    private val studyRecyclerAdapter by lazy { StudyRecyclerAdapter() }
+),StudyRecyclerAdapter.StudyTypeClickListener {
+    private val studyRecyclerAdapter by lazy { StudyRecyclerAdapter(this) }
     private val viewModel by viewModels<StudyViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -50,5 +51,21 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>(
                 findNavController().navigate(R.id.action_studyFragment_to_musicSearchFragment)
             }
         }
+    }
+
+    override fun fillStudy() {
+        findNavController().navigate(R.id.action_studyFragment_to_fillFragment)
+    }
+
+    override fun pickStudy() {
+        findNavController().navigate(R.id.action_studyFragment_to_pickFragment)
+    }
+
+    override fun expressStudy() {
+        findNavController().navigate(R.id.action_studyFragment_to_expressFragment)
+    }
+
+    override fun pronounceStudy() {
+        findNavController().navigate(R.id.action_studyFragment_to_pronounceFragment)
     }
 }

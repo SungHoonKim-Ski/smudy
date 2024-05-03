@@ -20,6 +20,18 @@
             app:destination="@id/musicSearchFragment"
             app:popUpTo="@id/studyFragment"
             app:popUpToInclusive="false"/>
+        <action
+            android:id="@+id/action_studyFragment_to_fillFragment"
+            app:destination="@id/fillFragment" />
+        <action
+            android:id="@+id/action_studyFragment_to_pickFragment"
+            app:destination="@id/pickFragment" />
+        <action
+            android:id="@+id/action_studyFragment_to_expressFragment"
+            app:destination="@id/expressFragment" />
+        <action
+            android:id="@+id/action_studyFragment_to_pronounceFragment"
+            app:destination="@id/pronounceFragment" />
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
@@ -32,4 +44,24 @@
         android:label="fragment_music_search"
         tools:layout="@layout/fragment_music_search" >
     </fragment>
+    <fragment
+        android:id="@+id/fillFragment"
+        android:name="com.ssafy.presentation.ui.study.fill.FillFragment"
+        android:label="fragment_fill"
+        tools:layout="@layout/fragment_fill" />
+    <fragment
+        android:id="@+id/pickFragment"
+        android:name="com.ssafy.presentation.ui.study.pick.PickFragment"
+        android:label="fragment_pick"
+        tools:layout="@layout/fragment_pick" />
+    <fragment
+        android:id="@+id/expressFragment"
+        android:name="com.ssafy.presentation.ui.study.express.ExpressFragment"
+        android:label="fragment_express"
+        tools:layout="@layout/fragment_express" />
+    <fragment
+        android:id="@+id/pronounceFragment"
+        android:name="com.ssafy.presentation.ui.study.pronounce.PronounceFragment"
+        android:label="fragment_pronounce"
+        tools:layout="@layout/fragment_pronounce" />
 </navigation>
