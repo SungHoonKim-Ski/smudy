@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         AUTH_IMAGE_NAME = "${env.AUTH_IMAGE_NAME}"
-        BACK_URL = "${env.BACK_URL}"
+        EUREKA_URL = "${EUREKA_URL}"
         CONTAINER_NAME = 'Auth'
     }
 
@@ -21,7 +21,7 @@ pipeline {
                     dir('smudy_backend/backend/auth-service') {
                             withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
                                 authImage = docker.build("${AUTH_IMAGE_NAME}:${env.BUILD_NUMBER}",
-                                "--build-arg BACK_URL=${env.BACK_URL} .")
+                                "--build-arg EUREKA_URL=${env.EUREKA_URL} .")
 
                                 // Docker 빌드 결과 출력
                                 if (authImage != 0) {
