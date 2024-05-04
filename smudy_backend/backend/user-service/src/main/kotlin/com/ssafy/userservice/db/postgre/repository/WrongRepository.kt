@@ -13,7 +13,7 @@ interface WrongRepository : JpaRepository<Wrong, Int> {
             "SELECT " +
             "* " +
             "FROM " +
-            "streak " +
+            "wrong " +
             "WHERE " +
             "user_internal_id = :userInternalId " +
             "ORDER BY " +

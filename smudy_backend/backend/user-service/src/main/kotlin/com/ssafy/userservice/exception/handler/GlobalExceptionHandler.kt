@@ -2,10 +2,7 @@ package com.ssafy.userservice.exception.handler
 
 import com.ssafy.userservice.exception.error.CommonErrorCode
 import com.ssafy.userservice.exception.error.ErrorResponse
-import com.ssafy.userservice.exception.exception.EndOfPageException
-import com.ssafy.userservice.exception.exception.HistoryNotFoundException
-import com.ssafy.userservice.exception.exception.RequestNotNumberException
-import com.ssafy.userservice.exception.exception.StudyListAllExistException
+import com.ssafy.userservice.exception.exception.*
 import com.ssafy.userservice.service.ErrorResponseService
 import jakarta.ws.rs.core.NoContentException
 import org.springframework.http.HttpStatus
@@ -42,4 +39,15 @@ class GlobalExceptionHandler(
     protected fun handleHistoryNotFoundException(e: HistoryNotFoundException): ResponseEntity<ErrorResponse> {
         return errorResponseService.getErrorResponse(CommonErrorCode.NO_CONTENT_ERROR, e)
     }
+
+    @ExceptionHandler(LearnReportNotFoundException::class)
+    protected fun handleLearnReportNotFoundException(e: LearnReportNotFoundException): ResponseEntity<ErrorResponse> {
+        return errorResponseService.getErrorResponse(CommonErrorCode.INVALID_INPUT_VALUE, e)
+    }
+
+    @ExceptionHandler(FeignException::class)
+    protected fun handleFeignException(e: FeignException): ResponseEntity<ErrorResponse> {
+        return errorResponseService.getErrorResponse(CommonErrorCode.INTERNAL_SERVER_ERROR, e)
+    }
+
 }

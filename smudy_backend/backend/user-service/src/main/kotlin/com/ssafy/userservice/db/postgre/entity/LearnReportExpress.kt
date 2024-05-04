@@ -14,29 +14,29 @@ class LearnReportExpress(
         @Column(name = "learn_report_id")
         var learnReportId: Int,
 
-        @ManyToOne
+        @OneToOne
         @MapsId
         @JoinColumn(name = "learn_report_id")
         var learnReport: LearnReport,
 
         @Column(name = "problem_box_id", nullable = false)
-        var problemBoxId: Long,
+        var problemBoxId: Int,
 
-        @Column(name = "learn_report_express_suggest", nullable = false)
-        var learnReportExpressSuggest: String,
+        @Column(name = "learn_report_express_suggest", columnDefinition = "TEXT[]", nullable = false)
+        var learnReportExpressSuggest: List<String>,
 
 //        @Convert(converter = StringArrayType::class)
-        @Type(value = StringArrayType::class)
+//        @Type(value = StringArrayType::class)
         @Column(name = "learn_report_pick_user_en", columnDefinition = "TEXT[]", nullable = false)
-        var learnReportPickUserEn: List<String> = listOf(),
+        var learnReportPickUserEn: List<String>,
 
 //        @Convert(converter = StringArrayType::class)
-        @Type(value = StringArrayType::class)
+//        @Type(value = StringArrayType::class)
         @Column(name = "learn_report_pick_user_ko", columnDefinition = "TEXT[]", nullable = false)
-        var learnReportPickUserKo: List<String> = listOf(),
+        var learnReportPickUserKo: List<String>,
 
 //        @Convert(converter = IntArrayType::class)
-        @Type(value = IntArrayType::class)
+//        @Type(value = IntArrayType::class)
         @Column(name = "learn_report_express_score", columnDefinition = "INT[]", nullable = false)
-        var learnReportExpressScore: List<Int> = listOf()
+        var learnReportExpressScore: List<Int>,
 )

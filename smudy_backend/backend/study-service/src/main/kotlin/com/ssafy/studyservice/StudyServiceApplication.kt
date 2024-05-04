@@ -1,6 +1,6 @@
 package com.ssafy.studyservice
 
-import com.ssafy.studyservice.feign.FeignErrorDecoder
+import com.ssafy.studyservice.exception.error.FeignErrorDecoder
 import feign.Logger
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
