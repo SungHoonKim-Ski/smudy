@@ -1,4 +1,4 @@
-package com.ssafy.studyservice.dto.request
+package com.ssafy.userservice.dto.request
 
 data class UserExpress (
         val userLyricSentenceKo: String,

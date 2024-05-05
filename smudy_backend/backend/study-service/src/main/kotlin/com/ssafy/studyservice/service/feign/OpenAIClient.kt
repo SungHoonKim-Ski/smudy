@@ -1,6 +1,5 @@
-package com.ssafy.userservice.service.feign
+package com.ssafy.studyservice.service.feign
 
-import com.ssafy.userservice.dto.gpt.ChatCompletionResponse
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

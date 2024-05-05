@@ -1,6 +1,6 @@
-package com.ssafy.studyservice.dto.response
+package com.ssafy.userservice.dto.response
 
-import com.ssafy.studyservice.dto.response.ai.LyricAiAnalyze
+import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
 
 data class SubmitPronounceResponse (
         val userPronounce: String,

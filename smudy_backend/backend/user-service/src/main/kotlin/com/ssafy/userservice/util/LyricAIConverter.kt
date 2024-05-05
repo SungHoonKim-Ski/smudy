@@ -1,12 +1,10 @@
 package com.ssafy.userservice.util
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ssafy.userservice.config.ObjectMapperConfig
 import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
 import jakarta.persistence.AttributeConverter
 import jakarta.persistence.Converter
-import org.slf4j.LoggerFactory
 
 @Converter(autoApply = true)
 class LyricAIConverter<T : Any> : AttributeConverter<LyricAiAnalyze, String> {

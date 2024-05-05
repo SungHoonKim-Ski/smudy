@@ -11,14 +11,13 @@ import org.hibernate.annotations.Type
 class LearnReportFill(
 
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "learn_report_id")
         var learnReportId: Int,
 
-        @OneToOne
-        @MapsId
-        @JoinColumn(name = "learn_report_id")
-        var learnReport: LearnReport,
+//        @OneToOne
+//        @MapsId
+//        @JoinColumn(name = "learn_report_id")
+//        var learnReport: LearnReport,
 
         @Column(name = "song_id", length = 30, nullable = false)
         var songId: String,
@@ -26,7 +25,7 @@ class LearnReportFill(
 //        @Convert(converter = StringArrayType::class)
 //        @Type(value = StringArrayType::class)
         @Column(name = "learn_report_fill_user", columnDefinition = "text[]", nullable = false)
-        var learnReportFillUser: Array<String>,
+        var learnReportFillUser: List<String>,
 
 
 //        @Type(value = BooleanArrayType::class)

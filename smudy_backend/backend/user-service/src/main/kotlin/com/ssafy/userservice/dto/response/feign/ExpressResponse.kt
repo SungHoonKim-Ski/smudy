@@ -1,4 +1,6 @@
-package com.ssafy.studyservice.dto.response
+package com.ssafy.userservice.dto.response.feign
+
+import com.ssafy.userservice.dto.response.ProblemResponse
 
 data class ExpressResponse(
         val problemBoxId: Int,
@@ -6,5 +8,5 @@ data class ExpressResponse(
         val songId: String,
         val songName: String,
         val albumJacket: String,
-        val problemResponses: List<ProblemResponse>
+        val problems: List<ProblemResponse>
 )

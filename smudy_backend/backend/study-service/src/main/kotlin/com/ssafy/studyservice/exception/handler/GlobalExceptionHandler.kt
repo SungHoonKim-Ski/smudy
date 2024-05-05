@@ -1,19 +1,27 @@
 package com.ssafy.studyservice.exception.handler
 
+import com.ssafy.studyservice.config.ObjectMapperConfig
 import com.ssafy.studyservice.exception.error.CommonErrorCode
 import com.ssafy.studyservice.exception.error.ErrorResponse
 import com.ssafy.studyservice.exception.exception.*
 import com.ssafy.studyservice.service.ErrorResponseService
+import feign.FeignException
 import jakarta.ws.rs.core.NoContentException
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class GlobalExceptionHandler(
-        private val errorResponseService: ErrorResponseService
+        private val errorResponseService: ErrorResponseService,
+        private val objectMapperConfig: ObjectMapperConfig,
 ) {
+
+    @ExceptionHandler(Exception::class)
+    protected fun handleException(e: Exception): ResponseEntity<ErrorResponse> {
+        e.printStackTrace()
+        return errorResponseService.getErrorResponse(CommonErrorCode.INTERNAL_SERVER_ERROR, e)
+    }
 
     @ExceptionHandler(NoContentException::class)
     protected fun handleNoContentException(e: NoContentException): ResponseEntity<ErrorResponse> {
@@ -43,5 +51,15 @@ class GlobalExceptionHandler(
     @ExceptionHandler(LearnReportNotFoundException::class)
     protected fun handleLearnReportNotFoundException(e: LearnReportNotFoundException): ResponseEntity<ErrorResponse> {
         return errorResponseService.getErrorResponse(CommonErrorCode.INVALID_INPUT_VALUE, e)
+    }
+
+    @ExceptionHandler(FeignException::class)
+    protected fun handleFeignException(e: FeignException): ResponseEntity<Any> {
+        val responseJson = e.contentUTF8()
+        val responseMap = objectMapperConfig.getObjectMapper().readValue(responseJson, Map::class.java)
+
+        return ResponseEntity
+                .status(e.status())
+                .body(responseMap)
     }
 }

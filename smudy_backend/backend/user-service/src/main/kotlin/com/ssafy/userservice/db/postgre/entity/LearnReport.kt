@@ -26,7 +26,7 @@ class LearnReport(
 
         @Column(name = "learn_report_date", nullable = false)
         @Temporal(TemporalType.DATE)
-        var learnReportDate: Date,
+        var learnReportDate: Date = Date(System.currentTimeMillis()),
 
         @Column(name = "learn_report_score", nullable = false)
         var learnReportScore: Int,

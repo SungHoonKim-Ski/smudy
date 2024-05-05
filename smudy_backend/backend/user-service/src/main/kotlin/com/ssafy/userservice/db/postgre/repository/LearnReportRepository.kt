@@ -8,7 +8,7 @@ import java.util.*
 
 @Repository
 interface LearnReportRepository : JpaRepository<LearnReport, Int> {
-    fun findTop4ByUserInternalId(userInternalId: UUID): List<LearnReport>
+    fun findTop4ByUserInternalId(userInternalId: UUID) : List<LearnReport>
 
     fun findAllByUserInternalIdAndLearnReportDateBetween(
             userInternalId: UUID

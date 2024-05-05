@@ -9,20 +9,12 @@ import org.hibernate.annotations.Type
 class LearnReportPick(
 
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "learn_report_id")
         var learnReportId: Int,
-
-        @OneToOne
-        @MapsId
-        @JoinColumn(name = "learn_report_id")
-        var learnReport: LearnReport,
 
         @Column(name = "problem_box_id", nullable = false)
         var problemBoxId: Int,
 
-//        @Convert(converter = StringArrayType::class)
-//        @Type(value = StringArrayType::class)
         @Column(name = "learn_report_pick_user", columnDefinition = "TEXT[]", nullable = false)
         var learnReportPickUser: List<String>,
 

@@ -18,7 +18,7 @@ class Song(
         var songArtist: String,
 
         @Field(name = "song_duration_ms")
-        var songDurationMs: String,
+        var songDuration: String,
 
         @Field(name = "song_explicit")
         var songExplicit: Boolean = false,

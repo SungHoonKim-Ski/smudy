@@ -1,8 +1,8 @@
-package com.ssafy.userservice.service
+package com.ssafy.studyservice.service
 
-import com.ssafy.userservice.config.ObjectMapperConfig
-import com.ssafy.userservice.dto.gpt.ChatCompletionResponse
-import com.ssafy.userservice.service.feign.OpenAIClient
+import com.ssafy.studyservice.config.ObjectMapperConfig
+import com.ssafy.studyservice.dto.gpt.ChatCompletionResponse
+import com.ssafy.studyservice.service.feign.OpenAIClient
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service

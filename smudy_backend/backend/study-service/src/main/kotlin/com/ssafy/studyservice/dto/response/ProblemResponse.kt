@@ -1,6 +1,6 @@
 package com.ssafy.studyservice.dto.response
 
-data class Problem(
+data class ProblemResponse(
         val lyricSentenceEn: String,
         val lyricSentenceKo: String
 )
