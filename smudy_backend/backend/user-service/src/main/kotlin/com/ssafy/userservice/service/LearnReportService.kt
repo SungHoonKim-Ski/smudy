@@ -186,8 +186,8 @@ class LearnReportService (
 
         val expresses = problems.mapIndexed { index, problem ->
             UserExpress(
-                    userLyricSentenceKo = details.learnReportPickUserKo[index],
-                    userLyricSentenceEn = details.learnReportPickUserEn[index],
+                    userLyricSentenceKo = details.learnReportExpressUserKo[index],
+                    userLyricSentenceEn = details.learnReportExpressUserEn[index],
                     suggestLyricSentence = details.learnReportExpressSuggest[index],
                     score = details.learnReportExpressScore[index],
                     lyricSentenceKo = problem.sentenceKo,

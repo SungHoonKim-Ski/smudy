@@ -204,6 +204,10 @@ class UserService(
                 )
         )
 
+        if (userLearnReport.learnReportId == -1) {
+            throw LearnReportNotSavedException("EXPRESS 제출 에러")
+        }
+
         learnReportService.saveLearnReportExpress(
                 LearnReportExpress(
                         learnReportId = userLearnReport.learnReportId,
