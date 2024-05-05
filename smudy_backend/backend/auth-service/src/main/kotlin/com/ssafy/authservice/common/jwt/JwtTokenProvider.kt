@@ -70,13 +70,7 @@ class JwtTokenProvider(
     }
 
     // 토큰 정보 추출
-    fun getAuthentication(accessToken: String?): Authentication {
-
-        val claims = getClaims(accessToken!!)
-
-//        if(claims["auth"] == null) {
-//            throw JwtException("권한 정보가 없는 토큰입니다.")
-//        }
+    fun getAuthentication(accessToken: String): Authentication {
 
         val internalId = getClaims(accessToken)["internal_id"].toString()
         val principal: UserDetails = userDetailsService.loadUserByUsername(internalId)

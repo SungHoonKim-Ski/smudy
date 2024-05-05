@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: search-service
+  elasticsearch:
+    uris: ENC(7T0qUSOj2oEz+37r40gXHw098A8orVSU4lhVoPpOszlAcF3qEQjDcw==)
+    username: ENC(Lu01ZKBRI/LDxQV7TGL1tw==)
+    password: ENC(lAOGk9gc8PTKBWHz4ZFNSVvKd1OiCF/h)
 
 eureka:
   client:
