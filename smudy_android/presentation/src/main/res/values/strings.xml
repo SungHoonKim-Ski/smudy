@@ -28,4 +28,5 @@
     <string name="all_study_type_pick">PICK</string>
     <string name="all_study_type_express">EXPRESS</string>
     <string name="all_study_type_pronounce">PRONOUNCE</string>
+    <string name="study_pronounce_title">PRONOUNCE! 문장을 선택해 발음 연습을 해보세요.</string>
 </resources>

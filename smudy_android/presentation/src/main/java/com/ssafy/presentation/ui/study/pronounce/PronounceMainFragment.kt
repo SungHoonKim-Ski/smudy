@@ -4,7 +4,7 @@ import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseFragment
 import com.ssafy.presentation.databinding.FragmentPronounceBinding
 
-class PronounceFragment : BaseFragment<FragmentPronounceBinding>(
+class PronounceMainFragment : BaseFragment<FragmentPronounceBinding>(
     { FragmentPronounceBinding.bind(it)}, R.layout.fragment_pronounce
 ) {
 
