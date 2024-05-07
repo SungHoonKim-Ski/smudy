@@ -6,5 +6,5 @@ data class ExpressResponse(
         val songId: String,
         val songName: String,
         val albumJacket: String,
-        val problems: MutableList<Problem> = mutableListOf()
+        val problemResponses: List<ProblemResponse>
 )

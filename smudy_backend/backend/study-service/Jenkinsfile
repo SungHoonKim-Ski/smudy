@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    environment {
+        STUDY_IMAGE_NAME = "${env.STUDY_IMAGE_NAME}"
+        CONTAINER_NAME = 'Study'
+        EUREKA_URL = "${env.EUREKA_URL}"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh 'echo "Starting Build Study Service Docker Image"'
+                    dir('smudy_backend/backend/study-service') {
+                            withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
+                                studyImage = docker.build("${STUDY_IMAGE_NAME}:${env.BUILD_NUMBER}",
+                                "--build-arg EUREKA_URL=${env.EUREKA_URL} .")
+
+                                // Docker 빌드 결과 출력
+                                if (studyImage != 0) {
+                                    echo "Docker build succeeded: ${STUDY_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                                    docker.withRegistry('https://registry.hub.docker.com', 'docker') {
+                                        studyImage.push()
+                                    }
+                                } else {
+                                    error "Docker build failed"
+                                }
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    sh 'docker rm -f Study || true'
+                    sh "docker run -d --name ${CONTAINER_NAME} --network smudy ${STUDY_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                }
+            }
+        }
+    }
+}

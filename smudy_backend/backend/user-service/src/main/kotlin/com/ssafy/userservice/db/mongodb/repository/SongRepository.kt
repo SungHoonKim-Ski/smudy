@@ -10,4 +10,6 @@ interface SongRepository : MongoRepository<Song, String> {
     fun findSongBySongArtist(songArtist: String): List<Song>
 
     fun findAllBySpotifyIdIn(spotifyId: List<String>) : List<Song>
+//    fun deleteAllBySpotifyIdNotIn(spotifyId: List<String>): Int
+    fun findAllBySpotifyIdNotIn(spotifyId: List<String>): List<Song>
 }

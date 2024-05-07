@@ -4,5 +4,5 @@ data class InfoResponse (
         val userName: String,
         val userImage: String,
         val userExp: Int,
-        val userStudyHistory: MutableList<SongSimple> = mutableListOf()
+        val userStudyHistory: List<SongSimple>
 )
