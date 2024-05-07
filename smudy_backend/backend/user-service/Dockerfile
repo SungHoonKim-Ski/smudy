@@ -24,4 +24,4 @@ ENV MONGO_PORT=${MONGO_PORT}
 ENV JASYPT_PASSWORD=${JASYPT_PASSWORD}
 ENV EUREKA_URL=${EUREKA_URL}
 COPY --from=build /home/gradle/src/build/libs/*.jar app.jar
-CMD ["java", "-jar", "Dspring.profiles.active=prod", "app.jar"]
+CMD ["java", "-jar", "-Dspring.profiles.active=prod", "app.jar"]
