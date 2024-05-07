@@ -4,7 +4,7 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-//    alias(libs.plugins.kapt)
+    alias(libs.plugins.kapt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.daggerHilt)
 //    alias(libs.plugins.googleservice)
@@ -25,6 +25,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "NATIVE_APP_KEY", getProperty("NATIVE_APP_KEY"))
+
+        manifestPlaceholders["redirectSchemeName"] = "http://localhost:8888"
+        manifestPlaceholders["redirectHostName"] = "callback"
     }
 
     buildTypes {
@@ -73,7 +76,9 @@ dependencies {
 
     // Hilt
     implementation(libs.bundles.hilt)
-    ksp(libs.hilt.compiler)
+//    ksp(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
+//    ksp(libs.dagger.compiler)
 
     implementation(libs.kakao)
 

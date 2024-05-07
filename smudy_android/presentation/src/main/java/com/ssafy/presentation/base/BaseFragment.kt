@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
 import com.ssafy.presentation.base.LoadingDialog
+import dagger.hilt.android.AndroidEntryPoint
+
 
 
 abstract class BaseFragment<B : ViewBinding>(

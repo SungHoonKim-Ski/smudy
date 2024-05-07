@@ -54,7 +54,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(
             }
 
             cvProfile.setOnClickListener {
-                findNavController().navigate(R.id.historyFragment)
+//                findNavController().navigate(R.id.historyFragment)
+                findNavController().navigate(R.id.fillFragment)
             }
 
             cvDailySentence.setOnClickListener{

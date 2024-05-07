@@ -20,3 +20,10 @@ fun DayOfWeek.displayText(uppercase: Boolean = false): String {
         if (uppercase) value.uppercase(Locale.ENGLISH) else value
     }
 }
+
+fun String.toMilliSecond(): Long{
+    val end = this.split(":")
+    val minute = end[0].toInt()
+    val second = end[1].toInt()
+    return (minute * 60 + second)*1000L
+}

@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+//    alias(libs.plugins.ksp)
+//    alias(libs.plugins.daggerHilt)
 }
 
 android {
@@ -12,6 +14,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        manifestPlaceholders["redirectSchemeName"] = "http://localhost:8888"
+        manifestPlaceholders["redirectHostName"] = "callback"
     }
 
     buildTypes {
@@ -30,14 +35,21 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+
 }
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation( fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar"))))
+//    implementation(libs.androidx.annotation)
+//
+//    implementation(libs.hilt.android)
+//    ksp(libs.hilt.compiler)
+
+
 }

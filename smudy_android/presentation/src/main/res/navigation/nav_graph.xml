@@ -9,7 +9,11 @@
         android:id="@+id/mainFragment"
         android:name="com.ssafy.presentation.ui.main.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_fillFragment"
+            app:destination="@id/fillFragment" />
+    </fragment>
     <fragment
         android:id="@+id/studyFragment"
         android:name="com.ssafy.presentation.ui.study.StudyFragment"
@@ -32,4 +36,9 @@
         android:label="fragment_music_search"
         tools:layout="@layout/fragment_music_search" >
     </fragment>
+    <fragment
+        android:id="@+id/fillFragment"
+        android:name="com.ssafy.presentation.ui.study.fill.FillFragment"
+        android:label="fragment_fill"
+        tools:layout="@layout/fragment_fill" />
 </navigation>

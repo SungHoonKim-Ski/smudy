@@ -4,6 +4,7 @@ import com.ssafy.data.datasource.study.remote.StudyRemoteDataSource
 import com.ssafy.domain.model.ApiError
 import com.ssafy.domain.model.ApiResult
 import com.ssafy.domain.model.Lyric
+import com.ssafy.domain.model.SongWithBlank
 import com.ssafy.domain.repository.StudyRepository
 import com.ssafy.util.NetworkException
 import kotlinx.coroutines.flow.Flow
@@ -20,5 +21,9 @@ class StudyRepositoryImpl @Inject constructor(
     override suspend fun getDailyLyric() = buildFlow(
         studyRemoteDataSource.getDailyLyric(), ""
     ) as Flow<ApiResult<Lyric>>
+
+    override suspend fun getSongWithBlank(songId: String) = buildFlow(
+        studyRemoteDataSource.getSongWithBlank(songId), ""
+    ) as Flow<ApiResult<SongWithBlank>>
 
 }

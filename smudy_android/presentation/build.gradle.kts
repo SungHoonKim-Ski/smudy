@@ -1,10 +1,11 @@
 import java.util.Properties
-
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.ksp)
     alias(libs.plugins.daggerHilt)
+    alias(libs.plugins.kapt)
 
 }
 
@@ -24,6 +25,10 @@ android {
             localProperties.load(localPropertiesFile.inputStream())
         }
         manifestPlaceholders["NATIVE_APP_KEY"] = localProperties["NATIVE_APP_KEY"] as String
+
+        manifestPlaceholders["redirectSchemeName"] = "http://localhost:8888"
+        manifestPlaceholders["redirectHostName"] = "callback"
+
     }
 
     buildTypes {
@@ -51,12 +56,16 @@ android {
 
 dependencies {
     implementation(project(mapOf("path" to ":domain")))
+    implementation(project(":util"))
 
     implementation(libs.bundles.androidx)
     implementation(libs.hilt.android)
     implementation(libs.androidx.annotation)
     implementation(libs.androidx.lifecycle.livedata.ktx)
-    ksp(libs.hilt.compiler)
+//    ksp(libs.hilt.compiler)
+//    ksp(libs.dagger.compiler)
+
+    kapt(libs.hilt.compiler)
 
     implementation(libs.bundles.presentationBundle)
 
