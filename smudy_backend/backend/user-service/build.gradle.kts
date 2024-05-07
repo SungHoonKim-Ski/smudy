@@ -42,13 +42,14 @@ dependencies {
 	// text[] type parsing
 	implementation("io.hypersistence:hypersistence-utils-hibernate-62:3.6.0")
 	implementation("org.hibernate.orm:hibernate-core:6.2.8.Final")
-
-	// https://mvnrepository.com/artifact/org.jasypt/jasypt
-//	implementation("org.jasypt:jasypt:1.9.2")
+	implementation("com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations")
 
 	// https://mvnrepository.com/artifact/com.github.ulisesbocchio/jasypt-spring-boot-starter
-//	implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4")
 	implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5")
+
+	// http 통신
+//	implementation("khttp:khttp:1.0.0")
+//	implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 }
 
 dependencyManagement {

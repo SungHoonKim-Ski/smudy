@@ -1,6 +1,3 @@
-server:
-    port: 0
-
 spring:
     application:
         name: user-service
@@ -8,6 +5,14 @@ spring:
         multipart:
             max-file-size: 100MB
             max-request-size: 100MB
+    jpa:
+      hibernate:
+        ddl-auto: none
+      properties:
+        hibernate:
+          format_sql: true #To beautify or pretty print the SQL
+          show_sql: true #show sql
+          dialect: org.hibernate.dialect.PostgreSQLDialect
 
     datasource:
         url: ENC(LOQ8dn9ei6+pX752IFd56v/dZi1VSH2nxeiAlgia3cptBT6YJ0zNRl1Dgwk6Ou6XWH7V9OlZKFSsbGBQ7aTrsg==)
@@ -16,22 +21,25 @@ spring:
         driver-class-name: org.postgresql.Driver
 
     data:
-        mongodb:
-            host: ENC(yShAuKyz3zIKoVfc4ziqT6xVQSXXYuLmweQqS96xHfA=)
-            port: ${MONGO_PORT}
-            authentication-database: ENC(VU+PicUTWOuC/oDTeDQqng==)
-            database: ENC(XXx2efl26LFLrUJKaKlCMA==)
-            username: ENC(RCqgUnR3zVGKs7wAmzAmAw==)
-            password: ENC(fnLscKJDfmi24jpS6um5dWC70TuDihWm)
+      mongodb:
+        host: ENC(yShAuKyz3zIKoVfc4ziqT6xVQSXXYuLmweQqS96xHfA=)
+        port: ${MONGO_PORT}
+        authentication-database: ENC(VU+PicUTWOuC/oDTeDQqng==)
+        database: ENC(XXx2efl26LFLrUJKaKlCMA==)
+        username: ENC(RCqgUnR3zVGKs7wAmzAmAw==)
+        password: ENC(fnLscKJDfmi24jpS6um5dWC70TuDihWm)
+
+openAI:
+  key:
+    ENC(xu6+KbV1SydVKv3/90LbAVe/rL72sXTScajRz+qQui1pqcbEq6+iKpfX5sAw6YgpatR0VJm13K1hJRhaKzQRwqvAD4tkBOO1)
 
 eureka:
-    client:
-        register-with-eureka: true
-        fetch-registry: true
-        service-url:
-            defaultZone: ${EUREKA_URL}/eureka
-    instance:
-        instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-        prefer-ip-address: true
-#    lease-renewal-interval-in-seconds: 1
-#    lease-expiration-duration-in-seconds: 2
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 1
+    lease-expiration-duration-in-seconds: 2

@@ -11,18 +11,19 @@ class LearnReportPick(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "learn_report_id")
-        var learnReportId: Int = 0,
+        var learnReportId: Int,
 
-        @ManyToOne
+        @OneToOne
         @MapsId
         @JoinColumn(name = "learn_report_id")
         var learnReport: LearnReport,
 
         @Column(name = "problem_box_id", nullable = false)
-        var problemBoxId: Long = 0,
+        var problemBoxId: Int,
 
 //        @Convert(converter = StringArrayType::class)
-        @Type(value = StringArrayType::class)
+//        @Type(value = StringArrayType::class)
         @Column(name = "learn_report_pick_user", columnDefinition = "TEXT[]", nullable = false)
-        var learnReportPickUser: List<String> = listOf()
+        var learnReportPickUser: List<String>,
+
 )

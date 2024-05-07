@@ -1,6 +1,6 @@
 package com.ssafy.userservice
 
-import com.ssafy.userservice.config.FeignErrorDecoder
+import com.ssafy.userservice.exception.error.FeignErrorDecoder
 import feign.Logger
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
