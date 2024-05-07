@@ -2,7 +2,6 @@ package com.ssafy.studyservice.controller
 
 import com.ssafy.studyservice.db.postgre.entity.Problem
 import com.ssafy.studyservice.service.ProblemService
-import com.ssafy.studyservice.service.SongService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.web.bind.annotation.*
 import java.util.*

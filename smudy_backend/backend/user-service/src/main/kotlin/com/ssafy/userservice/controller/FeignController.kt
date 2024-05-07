@@ -1,8 +1,12 @@
 package com.ssafy.userservice.controller
 
+import com.ssafy.userservice.db.mongodb.entity.Song
 import com.ssafy.userservice.dto.request.SignUpRequest
+import com.ssafy.userservice.dto.request.SongId
 import com.ssafy.userservice.dto.request.SongIdsRequest
 import com.ssafy.userservice.dto.response.*
+import com.ssafy.userservice.dto.response.feign.FillResponse
+import com.ssafy.userservice.dto.response.feign.PronounceResponse
 import com.ssafy.userservice.service.SongService
 import com.ssafy.userservice.service.UserService
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -17,9 +21,24 @@ class FeignController (
 ){
     private val logger = KotlinLogging.logger{ }
 
-    @PostMapping("/songs")
-    fun getSongs(@RequestBody request: SongIdsRequest) : List<SongSimple> {
-        return songService.findAllBySongIds(request.songIds)
+    @GetMapping("/fill/{songId}")
+    fun getFillQuiz(@PathVariable("songId") songId: String) : FillResponse {
+        return songService.getFillQuiz(songId)
+    }
+
+    @GetMapping("/pick/{songId}")
+    fun getPickQuiz(@PathVariable("songId") songId: String) : SongSimple {
+        return songService.getPickQuiz(songId)
+    }
+
+    @GetMapping("/express/{songId}")
+    fun getExpressQuiz(@PathVariable("songId") songId: String) : SongSimple {
+        return songService.getExpressQuiz(songId)
+    }
+
+    @GetMapping("/pronounce/{songId}")
+    fun getPronounceQuiz(@PathVariable("songId") songId: String) : PronounceResponse {
+        return songService.getPronounceQuiz(songId)
     }
 
     @PostMapping("/signup")

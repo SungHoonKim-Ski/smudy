@@ -1,14 +1,8 @@
 package com.ssafy.userservice.service
 
-import com.fasterxml.jackson.core.JsonProcessingException
-import com.ssafy.userservice.config.ObjectMapperConfig
-import com.ssafy.userservice.db.feign.Problem
-import com.ssafy.userservice.db.mongodb.repository.SongRepository
-import com.ssafy.userservice.db.postgre.entity.LearnReport
+import com.ssafy.userservice.db.postgre.entity.*
 import com.ssafy.userservice.db.postgre.repository.*
 import com.ssafy.userservice.dto.response.*
-import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
-import com.ssafy.userservice.exception.exception.FeignException
 import com.ssafy.userservice.exception.exception.HistoryNotFoundException
 import com.ssafy.userservice.exception.exception.LearnReportNotFoundException
 import com.ssafy.userservice.service.feign.StudyServiceClient
@@ -24,14 +18,15 @@ import kotlin.jvm.optionals.getOrNull
 @Service
 class LearnReportService (
         private val learnReportRepository: LearnReportRepository,
-        private val songRepository: SongRepository,
         private val streakRepository: StreakRepository,
+        private val studyServiceClient: StudyServiceClient,
+        private val songService: SongService,
+
         private val fillRepository: LearnReportFillRepository,
         private val pronounceRepository: LearnReportPronounceRepository,
         private val pickRepository: LearnReportPickRepository,
         private val expressRepository: LearnReportExpressRepository,
-        private val studyServiceClient: StudyServiceClient,
-        private val objectMapperConfig: ObjectMapperConfig,
+
 ) {
     val logger = KotlinLogging.logger {  }
     @Transactional
@@ -73,7 +68,6 @@ class LearnReportService (
         val endDate = currentLocalDate.lengthOfMonth()
         val formatterEnd = DateTimeFormatter.ofPattern("yyyy-MM-$endDate")
         val endLocalDate = LocalDate.parse(currentLocalDate.format(formatterEnd))
-
         val oneDay = 86400000
         logger.info { "start : ${Date(startLocalDate.toEpochDay() * oneDay)}" }
 
@@ -87,7 +81,7 @@ class LearnReportService (
 
         if (userLearnReports.isEmpty()) throw HistoryNotFoundException("해당 날짜에 히스토리가 존재하지 않음")
 
-        val songIdSongMap = songRepository.findAllBySpotifyIdIn(
+        val songIdSongMap = songService.findAllBySongIdsIn(
                 userLearnReports.map { it.songId }
         ).associateBy { it.spotifyId }
 
@@ -109,6 +103,7 @@ class LearnReportService (
         return learnReportRepository.findById(userLeanHistoryId).getOrNull()
                 ?: throw LearnReportNotFoundException("해당하는 학습 기록 ID가 존재하지 않음")
     }
+
     @Transactional
     fun getUserFillHistory(userLeanHistoryId: Int) : HistoryFillResponse {
 
@@ -116,8 +111,7 @@ class LearnReportService (
         val detail = fillRepository.findByLearnReportId(history.learnReportId)
                 ?: throw LearnReportNotFoundException("FILL에 해당하는 학습 기록 ID가 존재하지 않음")
 
-        val song = songRepository.findBySpotifyId(history.songId)
-                ?: throw LearnReportNotFoundException("학습 기록에 해당하는 노래가 존재하지 않음")
+        val song = songService.findSongBySongId(history.songId)
 
         val fillResult = song.songLyrics
                 .zip(detail.learnReportFillUser) { lyric, userWord ->
@@ -148,15 +142,7 @@ class LearnReportService (
                 ?: throw LearnReportNotFoundException("PICK에 해당하는 학습 기록 상세 ID가 존재하지 않음")
         logger.info { "box : ${details.problemBoxId}" }
 
-        lateinit var problems: List<Problem>
-
-        try {
-            problems = studyServiceClient.getProblemsByProblemBoxId(details.problemBoxId)
-        } catch (e: JsonProcessingException) {
-            throw FeignException("문제 리스트 조회 실패")
-        }
-
-        if (problems.isEmpty()) throw FeignException("문제 리스트 조회 실패")
+        val problems = studyServiceClient.getProblemsByProblemBoxId(details.problemBoxId)
 
         val correctList = mutableListOf<ProblemResponse>()
         val wrongList = mutableListOf<WrongProblem>()
@@ -189,7 +175,6 @@ class LearnReportService (
         )
     }
 
-    @Transactional
     fun getUserExpressHistory(userLeanHistoryId: Int) : HistoryExpressResponse {
 
         val history = getUserHistory(userLeanHistoryId)
@@ -197,31 +182,22 @@ class LearnReportService (
                 ?: throw LearnReportNotFoundException("Express에 해당하는 학습 기록 상세 ID가 존재하지 않음")
         logger.info { "box : ${details.problemBoxId}" }
 
-        lateinit var problems: List<Problem>
-
-        try {
-            problems = studyServiceClient.getProblemsByProblemBoxId(details.problemBoxId)
-        } catch (e: JsonProcessingException) {
-            throw FeignException("문제 리스트 조회 실패")
-        }
-
-        if (problems.isEmpty()) throw FeignException("문제 리스트 조회 실패")
+        val problems = studyServiceClient.getProblemsByProblemBoxId(details.problemBoxId)
 
         val expresses = problems.mapIndexed { index, problem ->
             UserExpress(
-                    userLyricSentenceKo = details.learnReportPickUserKo[index],
-                    userLyricSentenceEn = details.learnReportPickUserEn[index],
+                    userLyricSentenceKo = details.learnReportExpressUserKo[index],
+                    userLyricSentenceEn = details.learnReportExpressUserEn[index],
                     suggestLyricSentence = details.learnReportExpressSuggest[index],
                     score = details.learnReportExpressScore[index],
+                    lyricSentenceKo = problem.sentenceKo,
                     lyricSentenceEn = problem.sentenceEn,
-                    lyricSentenceKo = problem.sentenceKo
             )
         }
 
         return HistoryExpressResponse(expresses)
     }
 
-    @Transactional
     fun getUserPronounceHistory(userLeanHistoryId: Int): HistoryPronounceResponse {
 
         val details = pronounceRepository.findById(userLeanHistoryId).getOrNull()
@@ -236,5 +212,30 @@ class LearnReportService (
                 lyricSentenceKo = details.lyricSentenceKo,
                 lyricAiAnalyze = details.lyricAiAnalyze,
         )
+    }
+
+    fun getUserTop4History(userInternalId: UUID) : List<LearnReport> {
+        return learnReportRepository.findTop4ByUserInternalId(userInternalId)
+    }
+
+
+    fun saveLearnReport(userLearnReport: LearnReport) : LearnReport {
+        return learnReportRepository.save(userLearnReport)
+    }
+
+    fun saveLearnReportFill(userFill: LearnReportFill) {
+        fillRepository.save(userFill)
+    }
+
+    fun saveLearnReportPick(userPick: LearnReportPick) {
+        pickRepository.save(userPick)
+    }
+
+    fun saveLearnReportPronounce(userPronounce: LearnReportPronounce) {
+        pronounceRepository.save(userPronounce)
+    }
+
+    fun saveLearnReportExpress(userExpress: LearnReportExpress) {
+        expressRepository.save(userExpress)
     }
 }

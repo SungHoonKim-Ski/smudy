@@ -12,14 +12,8 @@ import org.hibernate.annotations.Type
 class LearnReportPronounce(
 
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "learn_report_id")
         var learnReportId: Int,
-
-        @OneToOne
-        @MapsId
-        @JoinColumn(name = "learn_report_id")
-        var learnReport: LearnReport,
 
         @Column(name = "learn_report_pronounce_stt_en", nullable = false)
         var learnReportPronounceSttEn: String,

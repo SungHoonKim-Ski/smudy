@@ -1,20 +1,28 @@
 package com.ssafy.userservice.exception.handler
 
+import com.ssafy.userservice.config.ObjectMapperConfig
 import com.ssafy.userservice.exception.error.CommonErrorCode
 import com.ssafy.userservice.exception.error.ErrorResponse
 import com.ssafy.userservice.exception.exception.*
 import com.ssafy.userservice.service.ErrorResponseService
+import feign.FeignException
 import jakarta.ws.rs.core.NoContentException
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
 class GlobalExceptionHandler(
-        private val errorResponseService: ErrorResponseService
+        private val errorResponseService: ErrorResponseService,
+        private val objectMapperConfig: ObjectMapperConfig,
+
 ) {
 
+    @ExceptionHandler(Exception::class)
+    protected fun handleException(e: Exception): ResponseEntity<ErrorResponse> {
+        e.printStackTrace()
+        return errorResponseService.getErrorResponse(CommonErrorCode.INTERNAL_SERVER_ERROR, e)
+    }
     @ExceptionHandler(NoContentException::class)
     protected fun handleNoContentException(e: NoContentException): ResponseEntity<ErrorResponse> {
         return errorResponseService.getErrorResponse(CommonErrorCode.NO_CONTENT_ERROR, e)
@@ -45,9 +53,23 @@ class GlobalExceptionHandler(
         return errorResponseService.getErrorResponse(CommonErrorCode.INVALID_INPUT_VALUE, e)
     }
 
-    @ExceptionHandler(FeignException::class)
-    protected fun handleFeignException(e: FeignException): ResponseEntity<ErrorResponse> {
+    @ExceptionHandler(SongNotFoundException::class)
+    protected fun handleSongNotFoundException(e: SongNotFoundException): ResponseEntity<ErrorResponse> {
         return errorResponseService.getErrorResponse(CommonErrorCode.INTERNAL_SERVER_ERROR, e)
     }
 
+    @ExceptionHandler(LearnReportNotSavedException::class)
+    protected fun handleLearnReportNotSavedException(e: LearnReportNotSavedException): ResponseEntity<ErrorResponse> {
+        return errorResponseService.getErrorResponse(CommonErrorCode.INTERNAL_SERVER_ERROR, e)
+    }
+
+    @ExceptionHandler(FeignException::class)
+    protected fun handleFeignException(e: FeignException): ResponseEntity<Any> {
+        val responseJson = e.contentUTF8()
+        val responseMap = objectMapperConfig.getObjectMapper().readValue(responseJson, Map::class.java)
+
+        return ResponseEntity
+                .status(e.status())
+                .body(responseMap)
+    }
 }

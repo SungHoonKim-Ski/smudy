@@ -24,9 +24,6 @@ class Problem(
         @Column(name = "lyric_sentence_ko", nullable = true, columnDefinition = "TEXT")
         var sentenceKo: String,
 
-//        @ManyToOne(fetch = FetchType.LAZY)
-//        @JoinColumn(name = "problem_box_id", referencedColumnName = "problem_box_id", insertable = false, updatable = false)
-//        val problemBox: ProblemBox
 ) {
 
         fun changesSentenceKo(translate: String) {

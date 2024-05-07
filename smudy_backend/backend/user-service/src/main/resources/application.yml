@@ -29,10 +29,6 @@ spring:
         username: ENC(RCqgUnR3zVGKs7wAmzAmAw==)
         password: ENC(fnLscKJDfmi24jpS6um5dWC70TuDihWm)
 
-openAI:
-  key:
-    ENC(xu6+KbV1SydVKv3/90LbAVe/rL72sXTScajRz+qQui1pqcbEq6+iKpfX5sAw6YgpatR0VJm13K1hJRhaKzQRwqvAD4tkBOO1)
-
 eureka:
   client:
     register-with-eureka: true
