@@ -5,6 +5,7 @@ import com.ssafy.userservice.db.mongodb.repository.SongRepository
 import com.ssafy.userservice.dto.response.SongSimple
 import com.ssafy.userservice.dto.response.feign.*
 import com.ssafy.userservice.exception.exception.SongNotFoundException
+import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service
 class SongService(
         private val songRepository: SongRepository,
 ) {
+
+    private val log = KotlinLogging.logger {  }
     @Transactional
     fun getFillQuiz(songId: String) : FillResponse {
         return songRepository.findBySpotifyId(songId)?.let { song ->
@@ -22,7 +25,7 @@ class SongService(
                     songDuration = song.songDuration,
                     songName = song.albumName,
                     albumJacket = song.albumJacket,
-                    lyricEnd = song.songDuration,
+                    lyricEnd = song.lyricEnd,
                     lyricsBlank = song.songLyrics.map { lyric ->
                         LyricBlank(
                                 lyricStartTimeStamp = lyric.lyricTimestamp,
@@ -87,4 +90,5 @@ class SongService(
         return songRepository.findBySpotifyId(songId)
                 ?: throw SongNotFoundException("spotify Id가 ${songId}인 노래가 존재하지 않음")
     }
+
 }

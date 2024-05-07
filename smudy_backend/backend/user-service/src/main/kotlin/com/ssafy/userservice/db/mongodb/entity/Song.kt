@@ -5,11 +5,11 @@ import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
 import org.springframework.data.mongodb.core.mapping.MongoId
 
-@Document(collection = "trackinfo_v2")
+@Document(collection = "track_v3")
 class Song(
 
         @MongoId
-        var id: String,
+        var id: String? = null,
 
         @Field(name = "album_name")
         var albumName: String,
@@ -17,8 +17,11 @@ class Song(
         @Field(name = "song_artist")
         var songArtist: String,
 
-        @Field(name = "song_duration_ms")
+        @Field(name = "song_duration")
         var songDuration: String,
+
+        @Field(name = "lyric_end")
+        var lyricEnd: String,
 
         @Field(name = "song_explicit")
         var songExplicit: Boolean = false,
@@ -28,7 +31,7 @@ class Song(
 
         @Embedded
         @Field(name = "song_lyrics")
-        var songLyrics: List<Lyric> = listOf(),
+        var songLyrics: List<Lyric>,
 
         @Field(name = "song_name")
         var songName: String,

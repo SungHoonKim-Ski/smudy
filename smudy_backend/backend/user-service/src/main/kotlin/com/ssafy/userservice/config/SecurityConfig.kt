@@ -24,7 +24,8 @@ class SecurityConfig(
             formLogin { disable() }
 
             authorizeRequests {
-                authorize("/api/study/**", authenticated)
+                authorize("/api/user/**", authenticated)
+                authorize("/api/user/mongoUpdate", permitAll)
             }
 
             sessionManagement {

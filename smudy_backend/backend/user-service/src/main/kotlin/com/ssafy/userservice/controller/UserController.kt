@@ -26,6 +26,7 @@ class UserController (
         private val wrongService: WrongService,
         private val studyListService: StudyListService,
         private val jwtService: JwtService,
+        private val songService: SongService,
 ){
     private val logger = KotlinLogging.logger{ }
 
