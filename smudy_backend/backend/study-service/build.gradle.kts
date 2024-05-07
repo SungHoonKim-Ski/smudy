@@ -37,7 +37,6 @@ dependencies {
 
 	// DB
 	implementation("org.postgresql:postgresql")
-	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 
 	// jasypt https://mvnrepository.com/artifact/com.github.ulisesbocchio/jasypt-spring-boot-starter
 	implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5")
