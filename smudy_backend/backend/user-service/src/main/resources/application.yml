@@ -1,0 +1,37 @@
+server:
+  port: 7070
+
+spring:
+  application:
+    name: user-service
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+  datasource:
+    url: ENC(LOQ8dn9ei6+pX752IFd56v/dZi1VSH2nxeiAlgia3cptBT6YJ0zNRl1Dgwk6Ou6XWH7V9OlZKFSsbGBQ7aTrsg==)
+    username: ENC(U1prS9CmmDnKNHS7OJdYtw==)
+    password: ENC(G/jBy28DXfR039pmAt8RLn6V6vmQWVhJ)
+    driver-class-name: org.postgresql.Driver
+
+  data:
+    mongodb:
+      host: ENC(yShAuKyz3zIKoVfc4ziqT6xVQSXXYuLmweQqS96xHfA=)
+      port: ${MONGO_PORT}
+      authentication-database: ENC(VU+PicUTWOuC/oDTeDQqng==)
+      database: ENC(XXx2efl26LFLrUJKaKlCMA==)
+      username: ENC(RCqgUnR3zVGKs7wAmzAmAw==)
+      password: ENC(fnLscKJDfmi24jpS6um5dWC70TuDihWm)
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8762
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    prefer-ip-address: true
+#    lease-renewal-interval-in-seconds: 1
+#    lease-expiration-duration-in-seconds: 2
