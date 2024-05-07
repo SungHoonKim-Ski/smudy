@@ -6,6 +6,8 @@ import com.ssafy.data.datasource.music.MusicRemoteDataSource
 import com.ssafy.data.datasource.music.MusicRemoteDataSourceImpl
 import com.ssafy.data.datasource.study.remote.StudyRemoteDataSource
 import com.ssafy.data.datasource.study.remote.StudyRemoteDataSourceImpl
+import com.ssafy.data.datasource.study.remote.pronounce.PronounceRemoteDataSource
+import com.ssafy.data.datasource.study.remote.pronounce.PronounceRemoteDataSourceImpl
 import com.ssafy.data.datasource.user.remote.UserInfoRemoteDataSource
 import com.ssafy.data.datasource.user.remote.UserInfoRemoteDataSourceImpl
 import dagger.Binds
@@ -29,4 +31,7 @@ abstract class RemoteDataSourceModule {
 
     @Binds
     abstract fun bindMusicRemoteDataSource(musicRemoteDataSourceImpl: MusicRemoteDataSourceImpl): MusicRemoteDataSource
+
+    @Binds
+    abstract fun bindPronounceRemoteDataSource(pronounceRemoteDataSourceImpl: PronounceRemoteDataSourceImpl): PronounceRemoteDataSource
 }

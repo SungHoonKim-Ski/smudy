@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_pronounce"
+    app:startDestination="@id/pronounceProblemFragment">
+    <fragment
+        android:id="@+id/pronounceProblemFragment"
+        android:name="com.ssafy.presentation.ui.study.pronounce.PronounceProblemFragment"
+        android:label="fragment_pronounce_problem"
+        tools:layout="@layout/fragment_pronounce_problem" >
+        <action
+            android:id="@+id/action_pronounceProblemFragment_to_pronouncePracticeFragment"
+            app:destination="@id/pronouncePracticeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pronouncePracticeFragment"
+        android:name="com.ssafy.presentation.ui.study.pronounce.PronouncePracticeFragment"
+        android:label="fragment_pronounce_practice"
+        tools:layout="@layout/fragment_pronounce_practice" >
+        <action
+            android:id="@+id/action_pronouncePracticeFragment_to_pronounceResultFragment"
+            app:destination="@id/pronounceResultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pronounceResultFragment"
+        android:name="com.ssafy.presentation.ui.study.pronounce.PronounceResultFragment"
+        android:label="fragment_pronounce_result"
+        tools:layout="@layout/fragment_pronounce_result" />
+</navigation>

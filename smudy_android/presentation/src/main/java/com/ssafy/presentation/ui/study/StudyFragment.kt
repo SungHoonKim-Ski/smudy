@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseFragment
@@ -17,7 +19,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class StudyFragment : BaseFragment<FragmentStudyBinding>(
     { FragmentStudyBinding.bind(it) }, R.layout.fragment_study
-),StudyRecyclerAdapter.StudyTypeClickListener {
+), StudyRecyclerAdapter.StudyTypeClickListener {
     private val studyRecyclerAdapter by lazy { StudyRecyclerAdapter(this) }
     private val viewModel by viewModels<StudyViewModel>()
 
@@ -30,8 +32,10 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>(
 
     private fun initObserve() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getStudyList().collect {
-                studyRecyclerAdapter.submitData(it)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.getStudyList().collect {
+                    studyRecyclerAdapter.submitData(it)
+                }
             }
         }
     }
@@ -53,19 +57,19 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>(
         }
     }
 
-    override fun fillStudy() {
-        findNavController().navigate(R.id.action_studyFragment_to_fillFragment)
+    override fun fillStudy(id: Bundle) {
+        findNavController().navigate(R.id.action_studyFragment_to_fillFragment, id)
     }
 
-    override fun pickStudy() {
-        findNavController().navigate(R.id.action_studyFragment_to_pickFragment)
+    override fun pickStudy(id: Bundle) {
+        findNavController().navigate(R.id.action_studyFragment_to_pickFragment, id)
     }
 
-    override fun expressStudy() {
-        findNavController().navigate(R.id.action_studyFragment_to_expressFragment)
+    override fun expressStudy(id: Bundle) {
+        findNavController().navigate(R.id.action_studyFragment_to_expressFragment, id)
     }
 
-    override fun pronounceStudy() {
-        findNavController().navigate(R.id.action_studyFragment_to_pronounceFragment)
+    override fun pronounceStudy(id: Bundle) {
+        findNavController().navigate(R.id.action_studyFragment_to_pronounceMainFragment, id)
     }
 }
