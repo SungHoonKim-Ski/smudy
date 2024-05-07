@@ -7,6 +7,7 @@ import com.ssafy.studyservice.exception.exception.*
 import com.ssafy.studyservice.service.ErrorResponseService
 import feign.FeignException
 import jakarta.ws.rs.core.NoContentException
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -52,6 +53,12 @@ class GlobalExceptionHandler(
     protected fun handleLearnReportNotFoundException(e: LearnReportNotFoundException): ResponseEntity<ErrorResponse> {
         return errorResponseService.getErrorResponse(CommonErrorCode.INVALID_INPUT_VALUE, e)
     }
+
+    @ExceptionHandler(JwtExpiredException::class)
+    protected fun handleJwtExpiredException(e: JwtExpiredException): ResponseEntity<ErrorResponse> {
+        return errorResponseService.getErrorResponse(CommonErrorCode.JWT_TOKEN_EXPIRED, e)
+    }
+
 
     @ExceptionHandler(FeignException::class)
     protected fun handleFeignException(e: FeignException): ResponseEntity<Any> {

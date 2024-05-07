@@ -5,6 +5,7 @@ import com.ssafy.studyservice.dto.response.ExpressResponse
 import com.ssafy.studyservice.dto.request.*
 import com.ssafy.studyservice.dto.response.ai.LyricAiAnalyze
 import com.ssafy.studyservice.dto.response.*
+import com.ssafy.studyservice.service.JwtService
 import com.ssafy.studyservice.service.ProblemService
 import com.ssafy.studyservice.util.CommonResult
 import com.ssafy.studyservice.util.SingleResult
@@ -19,8 +20,6 @@ import org.springframework.web.multipart.MultipartFile
 class StudyController (
         private val responseService: StudyResponseService,
         private val problemService: ProblemService,
-
-
 ){
     private val logger = KotlinLogging.logger{ }
     @GetMapping("/test")

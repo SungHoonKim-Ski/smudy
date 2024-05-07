@@ -1,6 +1,6 @@
 package com.ssafy.authservice
 
-import com.ssafy.authservice.config.FeignErrorDecoder
+import com.ssafy.authservice.common.config.FeignErrorDecoder
 import feign.Logger
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

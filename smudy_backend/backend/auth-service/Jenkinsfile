@@ -1,0 +1,51 @@
+pipeline {
+    agent any
+
+    environment {
+        AUTH_IMAGE_NAME = "${env.AUTH_IMAGE_NAME}"
+        EUREKA_URL = "${EUREKA_URL}"
+        CONTAINER_NAME = 'Auth'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh 'echo "Starting Build Auth Service Docker Image"'
+                    dir('smudy_backend/backend/auth-service') {
+                            withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
+                                authImage = docker.build("${AUTH_IMAGE_NAME}:${env.BUILD_NUMBER}",
+                                "--build-arg JASYPT_PASSWORD=${env.JASYPT_PASSWORD} " +
+                                "--build-arg EUREKA_URL=${env.EUREKA_URL} .")
+
+                                // Docker 빌드 결과 출력
+                                if (authImage != 0) {
+                                    echo "Docker build succeeded: ${AUTH_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                                    docker.withRegistry('https://registry.hub.docker.com', 'docker') {
+                                        authImage.push()
+                                    }
+                                } else {
+                                    error "Docker build failed"
+                                }
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    sh 'docker rm -f Auth || true'
+                    sh "docker run -d --name ${CONTAINER_NAME} --network smudy ${AUTH_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                }
+            }
+        }
+    }
+}
