@@ -38,12 +38,12 @@ class SecurityConfig(
             authorizeRequests {
 
                 // 임시로 /api 요청은 모두 허용
-                authorize(AntPathRequestMatcher("/**", "GET"), permitAll)
-                authorize(AntPathRequestMatcher("/**", "POST"), permitAll)
-                authorize(AntPathRequestMatcher("/**", "PUT"), permitAll)
-                authorize(AntPathRequestMatcher("/**", "DELETE"), permitAll)
+                authorize(AntPathRequestMatcher("/api/auth/login", "POST"), permitAll)
+                authorize(AntPathRequestMatcher("/api/auth/signup", "POST"), permitAll)
+//                authorize(AntPathRequestMatcher("/**", "PUT"), permitAll)
+//                authorize(AntPathRequestMatcher("/**", "DELETE"), permitAll)
                 // 그외의 요청은 모두 차단
-//                authorize(anyRequest, authenticated)
+                authorize(anyRequest, authenticated)
             }
 
             sessionManagement {

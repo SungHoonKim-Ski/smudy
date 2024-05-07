@@ -27,8 +27,8 @@ class JwtTokenProvider(
 
     private val logger = KotlinLogging.logger { }
 
-//    private val accessTokenExpireTime = 1000 * 1            // 테스트용 1초
-    private val accessTokenExpireTime = 1000 * 60 * 30              // 30분
+    private val accessTokenExpireTime = 1000 * 30            // 테스트용 1초
+//    private val accessTokenExpireTime = 1000 * 60 * 30              // 30분
     private val refreshTokenExpireTime = 1000 * 60 * 60 * 24 * 7    // 7일
     private lateinit var signingKey: Key
 
@@ -88,15 +88,11 @@ class JwtTokenProvider(
     }
 
     fun getClaims(token: String): Claims {
-        return try {
-            Jwts.parserBuilder()
+        return Jwts.parserBuilder()
                 .setSigningKey(signingKey)
                 .build()
                 .parseClaimsJws(token)
                 .body
-        } catch (e: ExpiredJwtException) {
-            e.claims
-        }
     }
 
     fun getTokenExpirationTime(token: String): Long {
@@ -130,20 +126,12 @@ class JwtTokenProvider(
 
     // 액세스 토큰 검증 (Filter에서 사용)
     fun validateAccessToken(accessToken: String): Boolean {
-        return try {
-            if (redisService.getValues(accessToken) == "logout") {
-                return false
-            }
-
-            getClaims(accessToken)
-            true
-        } catch (e: ExpiredJwtException) {
-            true // 만료된 토큰은 특정 경우에 유효하다고 간주할 수 있음
-        } catch (e: SignatureException) {
-            false
-        } catch (e: Exception) {
-            false
+        if (redisService.getValues(accessToken) == "logout") {
+            return false
         }
+
+        getClaims(accessToken)
+        return true
     }
 
     // 액세스 토큰 유효기간 검증 (재발급 시에 사용, 만료된 경우 true)
