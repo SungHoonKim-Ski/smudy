@@ -6,10 +6,17 @@ import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
 import java.security.Key
 import java.util.*
+import java.util.stream.Collectors
 
 @Service
 class JwtService(
@@ -68,4 +75,22 @@ class JwtService(
                 .parseClaimsJws(token)
         return true
     }
+
+    fun getAuthentication(accessToken: String): Authentication {
+        val claims = parseClaims(accessToken)  // JWT에서 클레임을 추출하는 메서드 필요
+
+        val internalId = claims["internal_id"] as String?  // 클레임에서 internal_id 추출
+        val roles = claims["role"] as String?  // 클레임에서 권한 정보 추출
+
+        if (internalId == null || roles == null) {
+            throw JwtException("토큰에 필요한 클레임 정보가 없습니다.")
+        }
+
+        val authorities = roles.map { SimpleGrantedAuthority(it.toString()) }  // 권한 정보를 GrantedAuthority 객체 리스트로 변환
+
+        val principal = User(internalId, "", authorities)  // Spring Security의 User 객체 사용
+
+        return UsernamePasswordAuthenticationToken(principal, null, authorities)  // Authentication 객체 생성
+    }
+
 }

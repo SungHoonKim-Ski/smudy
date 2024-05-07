@@ -31,7 +31,10 @@ class JwtAuthenticationFilter(
                 // 헤더에서 토큰 추출
                 val accessToken = authHeader.substring(7)
                 jwtService.validateToken(accessToken)
+                val authentication = jwtService.getAuthentication(accessToken) // 사용자 인증 정보 가져오기
+                SecurityContextHolder.getContext().authentication = authentication
             }
+            filterChain.doFilter(request, response)
         } catch (e: ExpiredJwtException) {
             SecurityContextHolder.clearContext();
             setErrorResponse(response, CommonErrorCode.JWT_TOKEN_EXPIRED)
@@ -48,8 +51,6 @@ class JwtAuthenticationFilter(
             e.printStackTrace()
             setErrorResponse(response, CommonErrorCode.JWT_ERROR)
         }
-
-        filterChain.doFilter(request, response)
     }
 
     private fun setErrorResponse(
