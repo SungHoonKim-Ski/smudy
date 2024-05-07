@@ -5,9 +5,9 @@ spring:
   application:
     name: search-service
   elasticsearch:
-    uris: ENC(7T0qUSOj2oEz+37r40gXHw098A8orVSU4lhVoPpOszlAcF3qEQjDcw==)
-    username: ENC(Lu01ZKBRI/LDxQV7TGL1tw==)
-    password: ENC(lAOGk9gc8PTKBWHz4ZFNSVvKd1OiCF/h)
+    host: ENC(HYVuZhvNLWUgCqyhpnUHxiqc1MUof9LLppeQ0qq1GWc=)
+    username: ENC(KeOTITX4sKXdVbbBx2BOeg==)
+    password: ENC(vqsLu1q/v3qxoJw3/qM4nMyaTUPIWGKZ)
 
 eureka:
   client:

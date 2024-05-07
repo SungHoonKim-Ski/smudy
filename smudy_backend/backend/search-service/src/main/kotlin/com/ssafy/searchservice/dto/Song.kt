@@ -1,4 +1,4 @@
-package com.ssafy.searchservice.dto.response
+package com.ssafy.searchservice.dto
 
 data class Song(
         val spotifyId: String,
