@@ -1,6 +1,6 @@
-package com.ssafy.studyservice.service
+package com.ssafy.userservice.service
 
-import com.ssafy.studyservice.exception.exception.JwtExpiredException
+import com.ssafy.userservice.exception.exception.JwtExpiredException
 import io.jsonwebtoken.*
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
@@ -8,15 +8,12 @@ import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
 import java.security.Key
 import java.util.*
-import java.util.stream.Collectors
 
 @Service
 class JwtService(
@@ -29,9 +26,8 @@ class JwtService(
         key = Keys.hmacShaKeyFor(keyBytes)
     }
 
-    fun getUserInternalId(request: HttpServletRequest): String {
+    fun getUserInternalId(accessToken: String): String {
         return try {
-            val accessToken = resolveToken(request)
             val claims = parseClaims(accessToken)
             val userInternalId = claims["internal_id"].toString()
             userInternalId

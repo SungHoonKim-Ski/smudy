@@ -39,3 +39,6 @@ eureka:
     prefer-ip-address: true
     lease-renewal-interval-in-seconds: 1
     lease-expiration-duration-in-seconds: 2
+
+jwt:
+  secret: ENC(+ebEWdCqIhlFeh2InAoDO8eKE9YTAk9L9vTOk5p9unmreZG3u1P2Lya2PTS9jfEtTUx2rziDI/3UuesNgNJA0QFgb5uJV2XiIo1FRaDv/IGhWHPij+AgXUXkYebPwzT1vvu7ndrwzh4=)

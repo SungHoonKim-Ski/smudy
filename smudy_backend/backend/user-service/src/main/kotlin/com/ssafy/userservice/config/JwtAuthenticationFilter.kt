@@ -1,10 +1,10 @@
-package com.ssafy.studyservice.config
+package com.ssafy.userservice.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.ssafy.studyservice.exception.error.CommonErrorCode
-import com.ssafy.studyservice.exception.error.ErrorCode
-import com.ssafy.studyservice.exception.error.ErrorResponse
-import com.ssafy.studyservice.service.JwtService
+import com.ssafy.userservice.exception.error.CommonErrorCode
+import com.ssafy.userservice.exception.error.ErrorCode
+import com.ssafy.userservice.exception.error.ErrorResponse
+import com.ssafy.userservice.service.JwtService
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.IncorrectClaimException
 import jakarta.servlet.FilterChain
