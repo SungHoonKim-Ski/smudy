@@ -2,6 +2,7 @@ package com.ssafy.userservice.db.postgre.entity
 
 import jakarta.persistence.*
 import java.sql.Date
+import java.util.*
 
 @Entity
 @Table(name = "streak", schema = "public")
@@ -12,9 +13,9 @@ class Streak(
         @Column(name = "strict_id")
         var streakId: Int,
 
-        @ManyToOne
-        @JoinColumn(name = "user_id")
-        var user: User,
+//        @ManyToOne
+        @JoinColumn(name = "user_internal_id")
+        var userInternalId: UUID,
 
         @Column(name = "song_jacket", nullable = false)
         var songJacket: String,

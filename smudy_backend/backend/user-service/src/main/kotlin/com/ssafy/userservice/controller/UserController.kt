@@ -1,146 +1,81 @@
 package com.ssafy.userservice.controller
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.ssafy.userservice.db.mongodb.repository.SongRepository
-import com.ssafy.userservice.dto.request.AddStudyListRequest
+import com.ssafy.userservice.dto.request.*
 import com.ssafy.userservice.dto.response.*
 import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
+import com.ssafy.userservice.exception.exception.RequestNotNumberException
+import com.ssafy.userservice.service.LearnReportService
+import com.ssafy.userservice.service.StudyListService
+import com.ssafy.userservice.service.UserService
+import com.ssafy.userservice.service.WrongService
 import com.ssafy.userservice.util.CommonResult
 import com.ssafy.userservice.util.SingleResult
 import com.ssafy.userservice.util.UserResponseService
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
 @RestController
 @RequestMapping("/api/user")
 class UserController (
         private val responseService: UserResponseService,
-        private val songRepository: SongRepository
+        private val userService: UserService,
+        private val learnReportService: LearnReportService,
+        private val wrongService: WrongService,
+        private val studyListService: StudyListService,
+
 ){
     private val logger = KotlinLogging.logger{ }
+    private val userUUID = UUID.fromString("74cb4a7c-1751-4ede-829a-de5046ef4688")
+
     @GetMapping("/test")
     fun signup(): ResponseEntity<SingleResult<String>> {
         val data = "user"
-        logger.debug { "Hello! $data" }
+        logger.info { "Hello! $data" }
         return ResponseEntity.ok(responseService.getSuccessSingleResult("데이터","성공"))
     }
 
     @GetMapping("/info")
     fun getUserInfo(@RequestHeader("Authorization") accessToken: String): ResponseEntity<SingleResult<InfoResponse>> {
 
-        logger.debug { "/info/$accessToken" }
-        val response = InfoResponse(
-                userName = "성훈킴",
-                userImage = "https://www.fitpetmall.com/wp-content/uploads/2022/11/shutterstock_196467692-1024x819.jpg",
-                userExp = 500,
-        )
-
-        response.userStudyHistory.add(
-                SongSimple(
-                        songArtist = "Ingrid Michaelson"
-                        , songName = "You And I"
-                        , spotifyId = "7aohwSiTDju51QmC54AUba"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e022f9b47bdc2b1c7cae7b014af"
-                )
-        )
-
-        response.userStudyHistory.add(
-                SongSimple(
-                        songArtist = "Ingrid Michaelson"
-                        , songName = "Everybody"
-                        , spotifyId = "3SBzDgdTwHOMSik82ZI6L2"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e0279f6239caf413738d82d3b0f"
-                )
-        )
-
-        response.userStudyHistory.add(
-                SongSimple(
-                        songArtist = "Weezer"
-                        , songName = "Say It Ain't So"
-                        , spotifyId = "3qmncUJvABe0QDRwMZhbPt"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e023be73241fed381886709f761"
-                )
-        )
-
-
-
-        response.userStudyHistory.add(
-                SongSimple(
-                        songArtist = "Weezer"
-                        , songName = "My Name Is Jonas"
-                        , spotifyId = "08k0JhCj8oJLB7Xuclr57s"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e02f6e2ddb1cba9a5900de38cd1"
-                )
-        )
+        logger.info { "/info/$accessToken" }
 
         return ResponseEntity.ok(
-                responseService.getSuccessSingleResult(response, "유저 정보 조회 완료")
+                responseService.getSuccessSingleResult(
+                        userService.getUserInfo(userUUID)
+                        , "유저 정보 조회 완료")
         )
     }
 
     @GetMapping("/streak")
     fun getUserStreak(@RequestHeader("Authorization") accessToken: String): ResponseEntity<SingleResult<StreakResponse>> {
 
-        logger.debug { "/streak/$accessToken" }
-
-        val response = StreakResponse()
-        val calender = Calendar.getInstance()
-//        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-
-        for (i in 0 until 90) {
-            response.streaks.add(
-                    Streak(
-//                            streakDate = dateFormat.format(calender.timeInMillis)
-                                streakDate = calender.timeInMillis
-                    )
-            )
-            calender.add(Calendar.DAY_OF_MONTH, +1)
-        }
-
-        response.streaks[0].albumJacket = "https://i.scdn.co/image/ab67616d00001e022f9b47bdc2b1c7cae7b014af"
-        response.streaks[3].albumJacket = "https://i.scdn.co/image/ab67616d00001e0279f6239caf413738d82d3b0f"
-        response.streaks[7].albumJacket = "https://i.scdn.co/image/ab67616d00001e023be73241fed381886709f761"
-        response.streaks[14].albumJacket = "https://i.scdn.co/image/ab67616d00001e02f6e2ddb1cba9a5900de38cd1"
-        response.streaks[29].albumJacket = "https://i.scdn.co/image/ab67616d00001e022f9b47bdc2b1c7cae7b014af"
+        logger.info { "/streak/$accessToken" }
 
         return ResponseEntity.ok(
-                responseService.getSuccessSingleResult(response, "스트릭 조회 성공")
+                responseService.getSuccessSingleResult(
+                        learnReportService.getUserStreak(
+                                userUUID
+                        )
+                        , "스트릭 조회 성공")
         )
     }
 
     @GetMapping("/wrong")
     fun getUserWrong(@RequestHeader("Authorization") accessToken: String): ResponseEntity<SingleResult<WrongLyricResponse>> {
-        logger.debug { "/info/$accessToken" }
 
-        val randomList = mutableListOf<WrongLyricResponse>()
-
-        randomList.add(
-                WrongLyricResponse(
-                        wrongLyricsEn = "I used to ruled the world",
-                        wrongLyricsKo = "나는 세계를 지배하곤 했지"
-                )
-        )
-
-        randomList.add(
-                WrongLyricResponse(
-                        wrongLyricsEn = "I want to go home",
-                        wrongLyricsKo = "나는 집을 가고싶었지"
-                )
-        )
-
-        randomList.add(
-                WrongLyricResponse(
-                        wrongLyricsEn = "bye bye",
-                        wrongLyricsKo = "그래서 집을 갔지"
-                )
-        )
-
-        val response = randomList[((Math.random() * 100 % 3).toInt())]
+        logger.info { "/info/$accessToken" }
 
         return ResponseEntity.ok(
-                responseService.getSuccessSingleResult(response, "틀린 표현 조회 성공")
+                responseService.getSuccessSingleResult(
+                        wrongService.getRandomWrongSentence(userUUID)
+                        , "틀린 표현 조회 성공"
+                )
         )
     }
 
@@ -149,61 +84,33 @@ class UserController (
             @RequestHeader("Authorization") accessToken: String
             , @RequestParam(value = "page", required = true) page: String
     ): ResponseEntity<SingleResult<StudyListResponse>> {
-        logger.debug { "/studylist/$page" }
+        logger.info { "/studylist/$page" }
 
-        val response = StudyListResponse()
+        page.toIntOrNull()?.let {
+            val pageable: Pageable = PageRequest.of(it, 20)
 
-        response.userStudyList.add(
-                SongSimple(
-                        songArtist = "Ingrid Michaelson"
-                        , songName = "You And I"
-                        , spotifyId = "7aohwSiTDju51QmC54AUba"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e022f9b47bdc2b1c7cae7b014af"
-                )
-        )
+            return ResponseEntity.ok(
+                    responseService.getSuccessSingleResult(
+                            studyListService.getUserStudyList(
+                                    userUUID
+                                    , pageable)
+                            , "스터디 리스트 조회 성공"
+                    )
+            )
+        } ?: throw RequestNotNumberException("StudyList의 페이지는 숫자여야 합니다.")
 
-        response.userStudyList.add(
-                SongSimple(
-                        songArtist = "Ingrid Michaelson"
-                        , songName = "Everybody"
-                        , spotifyId = "3SBzDgdTwHOMSik82ZI6L2"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e0279f6239caf413738d82d3b0f"
-                )
-        )
-
-        response.userStudyList.add(
-                SongSimple(
-                        songArtist = "Weezer"
-                        , songName = "Say It Ain't So"
-                        , spotifyId = "3qmncUJvABe0QDRwMZhbPt"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e023be73241fed381886709f761"
-                )
-        )
-
-
-
-        response.userStudyList.add(
-                SongSimple(
-                        songArtist = "Weezer"
-                        , songName = "My Name Is Jonas"
-                        , spotifyId = "08k0JhCj8oJLB7Xuclr57s"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e02f6e2ddb1cba9a5900de38cd1"
-                )
-        )
-
-        return ResponseEntity.ok(
-                responseService.getSuccessSingleResult(response, "스터디 리스트 조회 성공")
-        )
     }
 
     @PostMapping("/studylist/add")
     fun addStudyList(@RequestBody request: AddStudyListRequest) : ResponseEntity<CommonResult> {
-        logger.debug { "/studylist/add $request" }
+        logger.info { "/studylist/add $request" }
+
+        val result = studyListService.addUserStudyList(userUUID, request.songIds)
 
         return ResponseEntity.ok(
                 responseService.getSuccessResult(
-                        "이미 리스트에 존재하는 0개의 곡을 제외한 " +
-                                "${request.songIds.size}개의 곡을 추가했습니다"
+                        "이미 리스트에 존재하는 ${result[1]}개의 곡을 제외한 " +
+                                "${result[0]}개의 곡을 추가했습니다"
                 )
         )
     }
@@ -213,113 +120,16 @@ class UserController (
             @RequestHeader("Authorization") accessToken: String
             , @RequestParam(value = "time", required = true) time: String
     ): ResponseEntity<SingleResult<HistoryResponse>> {
-        logger.debug { "/history/$time" }
 
-        val response = HistoryResponse()
-        val calender1 = Calendar.getInstance(Locale.KOREA)
-        val calender2 = Calendar.getInstance(Locale.KOREA)
-//        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-
-        calender1.add(Calendar.DAY_OF_MONTH, +1)
-        calender2.add(Calendar.DAY_OF_MONTH, -1)
-
-        response.learnReports.add(
-                LearnReport(
-                        learnReportId = 10
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e02f6e2ddb1cba9a5900de38cd1"
-                        , songName = "My Name Is Jonas"
-                        , songArtist = "Weezer"
-                        , problemType = "FILL"
-                        , learnReportDate = calender1.timeInMillis
-                )
-        )
-
-        response.learnReports.add(
-                LearnReport(
-                        learnReportId = 10
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e02f6e2ddb1cba9a5900de38cd1"
-                        , songName = "My Name Is Jonas"
-                        , songArtist = "Weezer"
-                        , problemType = "FILL"
-                        , learnReportDate = calender2.timeInMillis
-                )
-        )
-
-        calender1.add(Calendar.DAY_OF_MONTH, +3)
-        calender2.add(Calendar.DAY_OF_MONTH, -3)
-
-        response.learnReports.add(
-                LearnReport(
-                        learnReportId = 11
-                        , songArtist = "Ingrid Michaelson"
-                        , songName = "You And I"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e022f9b47bdc2b1c7cae7b014af"
-                        , problemType = "PICK"
-                        , learnReportDate = calender1.timeInMillis
-                )
-        )
-
-        response.learnReports.add(
-                LearnReport(
-                        learnReportId = 11
-                        , songArtist = "Ingrid Michaelson"
-                        , songName = "You And I"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e022f9b47bdc2b1c7cae7b014af"
-                        , problemType = "PRONOUNCE"
-                        , learnReportDate = calender1.timeInMillis
-                )
-        )
-
-        response.learnReports.add(
-                LearnReport(
-                        learnReportId = 11
-                        , songArtist = "Ingrid Michaelson"
-                        , songName = "You And I"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e022f9b47bdc2b1c7cae7b014af"
-                        , problemType = "PICK"
-                        , learnReportDate = calender2.timeInMillis
-                )
-        )
-
-        response.learnReports.add(
-                LearnReport(
-                        learnReportId = 11
-                        , songArtist = "Ingrid Michaelson"
-                        , songName = "You And I"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e022f9b47bdc2b1c7cae7b014af"
-                        , problemType = "PRONOUNCE"
-                        , learnReportDate = calender2.timeInMillis
-                )
-        )
-
-        calender1.add(Calendar.DAY_OF_MONTH, +2)
-        calender2.add(Calendar.DAY_OF_MONTH, -2)
-
-        response.learnReports.add(
-                LearnReport(
-                        learnReportId = 10
-                        , songArtist = "Ingrid Michaelson"
-                        , songName = "Everybody"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e0279f6239caf413738d82d3b0f"
-                        , problemType = "EXPRESS"
-                        , learnReportDate = calender1.timeInMillis
-                )
-        )
-
-        response.learnReports.add(
-                LearnReport(
-                        learnReportId = 10
-                        , songArtist = "Ingrid Michaelson"
-                        , songName = "Everybody"
-                        , albumJacket = "https://i.scdn.co/image/ab67616d00001e0279f6239caf413738d82d3b0f"
-                        , problemType = "EXPRESS"
-                        , learnReportDate = calender2.timeInMillis
-                )
-        )
-
-        return ResponseEntity.ok(
-                responseService.getSuccessSingleResult(response, "히스토리 조회 성공")
-        )
+        logger.info { "/history/$time" }
+        time.toLongOrNull()?.let {
+            return ResponseEntity.ok(
+                    responseService.getSuccessSingleResult(
+                            learnReportService.getUserLearnReport(userUUID, it)
+                            , "히스토리 조회 성공"
+                    )
+            )
+        } ?: throw RequestNotNumberException("시간은 Long Type이어야 합니다")
     }
 
     @GetMapping("/history/fill/{learnReportId}")
@@ -327,487 +137,16 @@ class UserController (
             @RequestHeader("Authorization") accessToken: String
             , @PathVariable(value = "learnReportId", required = true) learnReportId: String
     ): ResponseEntity<SingleResult<HistoryFillResponse>>  {
+        logger.info { "/history/fill $learnReportId" }
+        learnReportId.toIntOrNull()?.let {
+            return ResponseEntity.ok(
+                    responseService.getSuccessSingleResult(
+                            learnReportService.getUserFillHistory(it)
+                            ,"Fill 히스토리 조회 완료"
+                    )
+            )
+        } ?: throw RequestNotNumberException("LearnReportID는 Number 타입이어야 합니다")
 
-        logger.debug { "/history/fill $learnReportId" }
-        val response = HistoryFillResponse(
-                totalSize = 52,
-                score = 48,
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "____, you done, done me in, you bet I felt it",
-                        originWord = "well",
-                        userWord = "well",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "I tried to be chill, but you're so hot that I ______",
-                        originWord = "melted",
-                        userWord = "melted",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "I fell right through the ______",
-                        originWord = "cracks",
-                        userWord = "cracks",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "Now I'm ______ to get back",
-                        originWord = "trying",
-                        userWord = "try",
-                        isCorrect = false
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "Before the cool done run out, I'll be givin' it my _______",
-                        originWord = "bestest",
-                        userWord = "bestest",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "And nothing's gonna stop me but divine ____________",
-                        originWord = "intervention",
-                        userWord = "intervention",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "I ______ it's again my turn",
-                        originWord = "reckon",
-                        userWord = "reckon",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "To win some or _____ some",
-                        originWord = "learn",
-                        userWord = "learn",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "But I won't ________ no more, no more",
-                        originWord = "hesitate",
-                        userWord = "hesitate",
-                        isCorrect = true
-
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "It cannot ____, I'm yours",
-                        originWord = "wait",
-                        userWord = "wait",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "♪",
-                        originWord = "",
-                        userWord = "",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "♪",
-                        originWord = "",
-                        userWord = "",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "____, open up your mind and see like me",
-                        originWord = "well",
-                        userWord = "well",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "Open up your _____ and, damn, you're free",
-                        originWord = "plans",
-                        userWord = "plans",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "Look into your _____, and you'll find love, love, love, love",
-                        originWord = "heart",
-                        userWord = "heart",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "______ to the music of the moment people dance and sing",
-                        originWord = "listen",
-                        userWord = "listen",
-                        isCorrect = true
-                )
-        )
-
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "We're just one big ______",
-                        originWord = "family",
-                        userWord = "family",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "And it's our ___________ right to be loved, loved, loved, loved, loved",
-                        originWord = "godforsaken",
-                        userWord = "godforsaken",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "So I won't ________ no more, no more",
-                        originWord = "hesitate",
-                        userWord = "hesitate",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "It cannot ____, I'm sure",
-                        originWord = "wait",
-                        userWord = "wait",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "There's no need to __________, our time is short",
-                        originWord = "complicate",
-                        userWord = "complicate",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "This is our ____, I'm yours",
-                        originWord = "fate",
-                        userWord = "fate",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "Do, do, do, do you",
-                        originWord = "",
-                        userWord = "",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "But do you, do you, do, do",
-                        originWord = "",
-                        userWord = "",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "But do you ____ to come on?",
-                        originWord = "want",
-                        userWord = "want",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "______ on over closer, dear",
-                        originWord = "scooch",
-                        userWord = "scooch",
-                        isCorrect = true
-                )
-        )
-
-
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "And I will ______ your ear",
-                        originWord = "nibble",
-                        userWord = "nibble",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "♪",
-                        originWord = "",
-                        userWord = "",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "I've been ________ way too long checking my tongue in the mirror",
-                        originWord = "spending",
-                        userWord = "spent",
-                        isCorrect = false
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "And bending over _________ just to try to see it clearer",
-                        originWord = "backwards",
-                        userWord = "backward",
-                        isCorrect = false
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "But my ______ fogged up the glass",
-                        originWord = "breath",
-                        userWord = "breath",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "And so I drew a new face and I _______",
-                        originWord = "laughed",
-                        userWord = "laughed",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "I guess what I'll be ______ is there ain't no better reason",
-                        originWord = "saying",
-                        userWord = "saying",
-                        isCorrect = true
-                )
-        )
-
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "To rid yourself of ________ and just go with the seasons",
-                        originWord = "vanities",
-                        userWord = "vanities",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank =  "It's what we aim to do",
-                        originWord = "",
-                        userWord = "",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "Our name is our ______",
-                        originWord = "virtue",
-                        userWord = "virtue",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "But I won't ________ no more, no more",
-                        originWord = "hesitate",
-                        userWord = "hesitate",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "It cannot ____, I'm yours",
-                        originWord = "wait",
-                        userWord = "wait",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "____ up your mind and see like me",
-                        originWord = "open",
-                        userWord = "open",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "Open up your _____ and, damn, you're free",
-                        originWord = "plans",
-                        userWord = "plans",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "Look into your _____, and you'll find that the sky is yours",
-                        originWord = "heart",
-                        userWord = "heart",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "So please don't, ______ don't, please don't",
-                        originWord = "please",
-                        userWord = "please",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "There's no need to __________",
-                        originWord = "complicate",
-                        userWord = "complicate",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "'Cause our time is _____",
-                        originWord = "short",
-                        userWord = "long",
-                        isCorrect = false
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "This, oh, this, oh, this is our ____",
-                        originWord = "fate",
-                        userWord = "fate",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "I'm yours",
-                        originWord = "",
-                        userWord = "",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "♪",
-                        originWord = "",
-                        userWord = "",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "Oh, I'm yours",
-                        originWord = "",
-                        userWord = "",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "Oh, I'm yours",
-                        originWord = "",
-                        userWord = "",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "Oh, whoa-oh",
-                        originWord = "",
-                        userWord = "",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "Baby, do _______ I'm yours",
-                        originWord = "believe",
-                        userWord = "believe",
-                        isCorrect = true
-                )
-        )
-
-        response.result.add(
-                FillResult(
-                        lyricBlank = "You best _______, you best believe I'm yours",
-                        originWord = "believe",
-                        userWord = "believe",
-                        isCorrect = true
-                )
-        )
-
-        return ResponseEntity.ok(responseService.getSuccessSingleResult(response,"Fill 히스토리 조회 완료"))
     }
 
     @GetMapping("/history/pick/{learnReportId}")
@@ -815,46 +154,17 @@ class UserController (
             @RequestHeader("Authorization") accessToken: String
             , @PathVariable(value = "learnReportId", required = true) learnReportId: String
     ): ResponseEntity<SingleResult<HistoryPickResponse>> {
-        logger.debug { "/history/pick/ $learnReportId" }
-        val response = HistoryPickResponse(score = 3)
+        logger.info { "/history/pick/ $learnReportId" }
 
-        response.correct.add(
-                Problem(
-                        lyricSentenceEn = "Well, you done, done me in, you bet I felt it",
-                        lyricSentenceKo = "당신은 나를 사로잡았고 내가 그렇다는 걸 알겠죠"
-                )
-        )
+        learnReportId.toIntOrNull()?.let {
+            return ResponseEntity.ok(
+                    responseService.getSuccessSingleResult(
+                            learnReportService.getUserPickHistory(it)
+                            ,"Pick 히스토리 조회 성공"
+                    )
+            )
+        } ?: throw RequestNotNumberException("LearnReportID는 Number 타입이어야 합니다")
 
-        response.wrong.add(
-                WrongProblem(
-                        lyricSentenceEn = "I tried to be chill, but you're so hot that I melted",
-                        lyricSentenceKo = "난 냉정해지려고 했는데, 당신이 너무 멋있어서 녹아버렸어요",
-                        userLyricSentence = "I to tried be but chill, you're that so hot I melted"
-                )
-        )
-
-        response.correct.add(
-                Problem(
-                        lyricSentenceEn = "I fell right through the cracks",
-                        lyricSentenceKo = "난 좁은 틈 사이로 빠져버렸고"
-                )
-        )
-
-        response.wrong.add(
-                WrongProblem(
-                        lyricSentenceEn = "Now I'm trying to get back",
-                        lyricSentenceKo = "지금은 다시 돌아가려 애쓰고 있어요",
-                        userLyricSentence = "I'm trying Now go to back"
-                )
-        )
-
-        response.correct.add(
-                Problem(
-                        lyricSentenceEn = "Before the cool done run out, I'll be givin' it my bestest",
-                        lyricSentenceKo = "이 기분이 사라지기 전에 내 최고의 것을 드릴께요"
-                )
-        )
-        return ResponseEntity.ok(responseService.getSuccessSingleResult(response,"Pick 히스토리 조회 성공"))
     }
 
     @GetMapping("/history/express/{learnReportId}")
@@ -862,65 +172,16 @@ class UserController (
             @RequestHeader("Authorization") accessToken: String
             , @PathVariable(value = "learnReportId", required = true) learnReportId: String
     ): ResponseEntity<SingleResult<HistoryExpressResponse>> {
-        logger.debug { "/history/express/$learnReportId" }
+        logger.info { "/history/express/$learnReportId" }
 
-        val response = HistoryExpressResponse()
-        response.userExpresses.add(
-                UserExpress(
-                        lyricSentenceEn = "Now I'm trying to get back",
-                        lyricSentenceKo = "지금은 다시 돌아가려 애쓰고 있어요",
-                        userLyricSentenceEn =  "I  plan to try to return in the future.",
-                        userLyricSentenceKo = "나는 미래에 돌아가려고 노력할 예정이에요",
-                        suggestLyricSentence = "I am trying to go back now." ,
-                        score = 80
-                )
-        )
-
-        response.userExpresses.add(
-                UserExpress(
-                        lyricSentenceEn = "Now I'm trying to get back",
-                        lyricSentenceKo = "지금은 다시 돌아가려 애쓰고 있어요",
-                        userLyricSentenceEn =  "I  plan to try to return in the future.",
-                        userLyricSentenceKo = "나는 미래에 돌아가려고 노력할 예정이에요",
-                        suggestLyricSentence = "I am trying to go back now." ,
-                        score = 90
-                )
-        )
-
-        response.userExpresses.add(
-                UserExpress(
-                        lyricSentenceEn = "Now I'm trying to get back",
-                        lyricSentenceKo = "지금은 다시 돌아가려 애쓰고 있어요",
-                        userLyricSentenceEn =  "I  plan to try to return in the future.",
-                        userLyricSentenceKo = "나는 미래에 돌아가려고 노력할 예정이에요",
-                        suggestLyricSentence = "I am trying to go back now." ,
-                        score = 95
-                )
-        )
-
-        response.userExpresses.add(
-                UserExpress(
-                        lyricSentenceEn = "Now I'm trying to get back",
-                        lyricSentenceKo = "지금은 다시 돌아가려 애쓰고 있어요",
-                        userLyricSentenceEn =  "I  plan to try to return in the future.",
-                        userLyricSentenceKo = "나는 미래에 돌아가려고 노력할 예정이에요",
-                        suggestLyricSentence = "I am trying to go back now." ,
-                        score = 91
-                )
-        )
-
-        response.userExpresses.add(
-                UserExpress(
-                        lyricSentenceEn = "Now I'm trying to get back",
-                        lyricSentenceKo = "지금은 다시 돌아가려 애쓰고 있어요",
-                        userLyricSentenceEn =  "I  plan to try to return in the future.",
-                        userLyricSentenceKo = "나는 미래에 돌아가려고 노력할 예정이에요",
-                        suggestLyricSentence = "I am trying to go back now." ,
-                        score = 93
-                )
-        )
-
-        return ResponseEntity.ok(responseService.getSuccessSingleResult(response, "Express 히스토리 조회 성공"))
+        learnReportId.toIntOrNull()?.let {
+            return ResponseEntity.ok(
+                    responseService.getSuccessSingleResult(
+                            learnReportService.getUserExpressHistory(it)
+                            ,"Express 히스토리 조회 성공"
+                    )
+            )
+        } ?: throw RequestNotNumberException("LearnReportID는 Number 타입이어야 합니다")
     }
 
     @GetMapping("/history/pronounce/{learnReportId}")
@@ -928,8 +189,71 @@ class UserController (
             @RequestHeader("Authorization") accessToken: String
             , @PathVariable(value = "learnReportId", required = true) learnReportId: String
     ): ResponseEntity<SingleResult<HistoryPronounceResponse>> {
-        logger.debug { "/history/pronounce/$learnReportId" }
+        logger.info { "/history/pronounce/$learnReportId" }
 
+        learnReportId.toIntOrNull()?.let {
+            return ResponseEntity.ok(
+                    responseService.getSuccessSingleResult(
+                            learnReportService.getUserPronounceHistory(it)
+                            ,"Pronounce 히스토리 조회 성공"
+                    )
+            )
+        } ?: throw RequestNotNumberException("LearnReportID는 Number 타입이어야 합니다")
+    }
+
+    @PostMapping("/fill/submit")
+    fun submitFill(@RequestBody request: SubmitFillRequest): ResponseEntity<SingleResult<SubmitFillResponse>> {
+
+        logger.debug { "/submit/fill $request" }
+
+        return ResponseEntity.ok(
+                responseService.getSuccessSingleResult(
+                        userService.markingFill(
+                                userInternalId = userUUID,
+                                request = request
+                        )
+                        ,"Fill 제출 완료"
+                )
+        )
+    }
+
+    @PostMapping("/pick/submit")
+    fun submitPick(@RequestBody request: SubmitPickRequest): ResponseEntity<SingleResult<SubmitPickResponse>> {
+
+        logger.debug { "/pick/submit $request" }
+
+        return ResponseEntity.ok(
+                responseService.getSuccessSingleResult(
+                        userService.markingPick(
+                                userInternalId = userUUID,
+                                request = request
+                        )
+                        ,"Pick 제출 완료"
+                )
+        )
+    }
+
+    @PostMapping("/express/submit")
+    fun submitExpress(@RequestBody request: SubmitExpressRequest): ResponseEntity<CommonResult> {
+        logger.debug { "/express/submit $request" }
+        return ResponseEntity.ok(
+                responseService.getSuccessMessageResult(
+                        userService.saveExpress(
+                                userInternalId = userUUID,
+                                request = request
+                        )
+                )
+        )
+    }
+
+    @PostMapping("/pronounce/submit")
+    fun submitPronounce(
+            @RequestPart("userFile") userFile: MultipartFile
+            , @RequestPart("ttsFile") ttsFile: MultipartFile
+            , @RequestPart("json") request: SubmitPronounceRequest
+    ): ResponseEntity<SingleResult<SubmitPronounceResponse>> {
+
+        logger.debug { "/fill/pronounce $request" }
         val mapper = jacksonObjectMapper()
 
         val sampleAiAnalyze = mapper.readValue("" +
@@ -1150,7 +474,7 @@ class UserController (
                 "}"
                 , LyricAiAnalyze::class.java)
 
-        val response = HistoryPronounceResponse(
+        val response = SubmitPronounceResponse(
                 userPronounce = "https://file-examples.com/wp-content/storage/2017/04/file_example_MP4_480_1_5MG.mp4",
                 ttsPronounce = "https://file-examples.com/wp-content/storage/2017/04/file_example_MP4_480_1_5MG.mp4",
                 lyricSentenceEn = "Before the cool done run out, I'll be givin' it my bestest",
@@ -1158,33 +482,7 @@ class UserController (
                 userLyricSTT = "Before the coll done ran about, I will been give' it my best",
                 lyricAiAnalyze = sampleAiAnalyze
         )
-
-        return ResponseEntity.ok(
-                responseService.getSuccessSingleResult(response, "Pronounce 히스토리 조회 성공")
-        )
+        return ResponseEntity.ok(responseService.getSuccessSingleResult(response,"Pronounce 제출 완료"))
     }
 
-    @GetMapping("/test/{spotifyId}")
-    fun userTest(@PathVariable spotifyId: String): ResponseEntity<Any> {
-        logger.info { spotifyId }
-        val song = songRepository.findBySpotifyId(spotifyId)
-        logger.info { "song : $song" }
-//        val song2 = songRepository.findById(spotifyId).orElseThrow { IllegalArgumentException("sad") }
-        val song2 = songRepository.findById(spotifyId)
-        logger.info { "song2 : $song2" }
-
-        val song3 = songRepository.count()
-        logger.info { "song3 : $song3" }
-
-        val song4 = songRepository.findSongBySongArtist(spotifyId)
-        logger.info { "song4 : $song4" }
-
-        return ResponseEntity.ok(
-                responseService.getSuccessSingleResult(
-//                songRepository.findAll()
-                        song
-                ,"괴롭다"
-            )
-        )
-    }
 }

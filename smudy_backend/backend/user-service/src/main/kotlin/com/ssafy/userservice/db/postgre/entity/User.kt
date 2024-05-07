@@ -13,7 +13,7 @@ class User(
         @Column(name = "user_id")
         var userId: Int,
 
-        @Column(name = "user_internal_id", unique = true, nullable = true)
+        @Column(name = "user_internal_id", unique = true, nullable = false)
         var userInternalId: UUID,
 
         @Column(name = "user_sns_id", length = 50, nullable = false)

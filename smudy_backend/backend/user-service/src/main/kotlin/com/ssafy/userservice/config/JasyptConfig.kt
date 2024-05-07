@@ -17,7 +17,6 @@ class JasyptConfig (
         private val password: String
 ){
 
-//    @Bean
     @Bean("jasyptStringEncryptor")
     fun stringEncryptor(): StringEncryptor {
 
