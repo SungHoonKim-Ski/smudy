@@ -1,4 +1,4 @@
-package com.ssafy.authservice.config
+package com.ssafy.authservice.common.config
 
 import feign.Response
 import feign.codec.ErrorDecoder
