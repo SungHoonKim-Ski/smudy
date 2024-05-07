@@ -4,13 +4,11 @@ WORKDIR /home/gradle/src
 ARG EUREKA_URL
 ARG JASYPT_PASSWORD
 
-ENV EUREKA_URL=${EUREKA_URL}
 ENV JASYPT_PASSWORD=${JASYPT_PASSWORD}
+ENV EUREKA_URL=${EUREKA_URL}
 COPY --chown=gradle:gradle . /home/gradle/src
 RUN gradle clean build --no-daemon
 
-ARG EUREKA_URL
-ENV EUREKA_URL=${EUREKA_URL}
 
 # 두 번째 단계: 실행 스테이지
 FROM openjdk:17-slim
