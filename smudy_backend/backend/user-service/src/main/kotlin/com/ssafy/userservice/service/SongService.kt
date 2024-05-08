@@ -16,6 +16,7 @@ class SongService(
 ) {
 
     private val log = KotlinLogging.logger {  }
+    
     @Transactional
     fun getFillQuiz(songId: String) : FillResponse {
         return songRepository.findDistinctFirstBySpotifyId(songId)?.let { song ->
