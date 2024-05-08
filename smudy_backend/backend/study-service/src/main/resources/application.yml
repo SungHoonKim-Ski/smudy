@@ -1,6 +1,7 @@
 openAI:
   key:
     ENC(xu6+KbV1SydVKv3/90LbAVe/rL72sXTScajRz+qQui1pqcbEq6+iKpfX5sAw6YgpatR0VJm13K1hJRhaKzQRwqvAD4tkBOO1)
+  
 spring:
   application:
     name: study-service
