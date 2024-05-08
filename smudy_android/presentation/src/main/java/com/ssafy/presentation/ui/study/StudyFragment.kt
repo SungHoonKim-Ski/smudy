@@ -70,6 +70,6 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>(
     }
 
     override fun pronounceStudy(id: Bundle) {
-        findNavController().navigate(R.id.action_studyFragment_to_pronounceMainFragment, id)
+        findNavController().navigate(R.id.action_studyFragment_to_pronounce, id)
     }
 }

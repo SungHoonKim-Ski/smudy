@@ -7,6 +7,11 @@
     android:orientation="vertical"
     tools:context=".ui.study.pronounce.PronounceProblemFragment">
 
+    <TextView
+        style="@style/StudyTitleTextView"
+        android:background="@color/light_pink"
+        android:text="@string/study_pronounce_title"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_lyrics"
         android:layout_width="match_parent"

@@ -30,8 +30,8 @@
             android:id="@+id/action_studyFragment_to_expressFragment"
             app:destination="@id/expressFragment" />
         <action
-            android:id="@+id/action_studyFragment_to_pronounceMainFragment"
-            app:destination="@id/pronounceMainFragment" />
+            android:id="@+id/action_studyFragment_to_pronounce"
+            app:destination="@id/nav_pronounce" />
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
@@ -59,9 +59,30 @@
         android:name="com.ssafy.presentation.ui.study.express.ExpressFragment"
         android:label="fragment_express"
         tools:layout="@layout/fragment_express" />
-    <fragment
-        android:id="@+id/pronounceMainFragment"
-        android:name="com.ssafy.presentation.ui.study.pronounce.PronounceMainFragment"
-        android:label="fragment_pronounce"
-        tools:layout="@layout/fragment_pronounce" />
+    <navigation android:id="@+id/nav_pronounce"
+        app:startDestination="@id/pronounceProblemFragment">
+        <fragment
+            android:id="@+id/pronounceProblemFragment"
+            android:name="com.ssafy.presentation.ui.study.pronounce.PronounceProblemFragment"
+            android:label="fragment_pronounce_problem"
+            tools:layout="@layout/fragment_pronounce_problem">
+            <action
+                android:id="@+id/action_pronounceProblemFragment_to_pronouncePracticeFragment"
+                app:destination="@id/pronouncePracticeFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/pronouncePracticeFragment"
+            android:name="com.ssafy.presentation.ui.study.pronounce.PronouncePracticeFragment"
+            android:label="fragment_pronounce_practice"
+            tools:layout="@layout/fragment_pronounce_practice">
+            <action
+                android:id="@+id/action_pronouncePracticeFragment_to_pronounceResultFragment"
+                app:destination="@id/pronounceResultFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/pronounceResultFragment"
+            android:name="com.ssafy.presentation.ui.study.pronounce.PronounceResultFragment"
+            android:label="fragment_pronounce_result"
+            tools:layout="@layout/fragment_pronounce_result" />
+    </navigation>
 </navigation>

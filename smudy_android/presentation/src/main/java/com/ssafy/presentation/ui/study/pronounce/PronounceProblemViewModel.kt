@@ -14,15 +14,15 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PronounceMainViewModel @Inject constructor(
+class PronounceProblemViewModel @Inject constructor(
     private val getPronounceProblemUseCase: GetPronounceProblemUseCase,
     private val getTranslateLyric: GetTranslateLyric
 ) : ViewModel() {
     private val _pronounceProblem =
         MutableStateFlow(PronounceProblem("", "", "", "", emptyList()))
     val pronounceProblem = _pronounceProblem.asStateFlow()
-    private val _navigateToPractice = MutableStateFlow(false)
-    val navigateToPractice = _navigateToPractice.asStateFlow()
+    private val _translatedLyric = MutableStateFlow<List<String>>(emptyList())
+    val translateLyric = _translatedLyric.asStateFlow()
 
     fun getPronounceProblem(id: String) {
         viewModelScope.launch {
@@ -52,15 +52,16 @@ class PronounceMainViewModel @Inject constructor(
 
     fun getTranslateLyric(lyricPosition: Int) {
         viewModelScope.launch {
-            getTranslateLyric(_pronounceProblem.value.lyrics[lyricPosition]).collect {
+            val lyric = _pronounceProblem.value.lyrics[lyricPosition]
+            getTranslateLyric(lyric).collect {
                 when (it) {
                     is ApiResult.Success -> {
-                        it.data.apply {
-                            _navigateToPractice.emit(true)
-                        }
+                        _translatedLyric.emit(listOf(lyric, it.data))
                     }
 
-                    is ApiResult.Failure -> {}
+                    is ApiResult.Failure -> {
+                        _translatedLyric.emit(listOf(lyric, ""))
+                    }
                     is ApiResult.Loading -> {}
                 }
             }

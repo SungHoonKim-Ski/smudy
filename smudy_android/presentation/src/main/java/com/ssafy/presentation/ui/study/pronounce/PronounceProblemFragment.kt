@@ -1,12 +1,14 @@
 package com.ssafy.presentation.ui.study.pronounce
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -25,11 +27,21 @@ import kotlinx.coroutines.launch
 class PronounceProblemFragment : BaseFragment<FragmentPronounceProblemBinding>(
     { FragmentPronounceProblemBinding.bind(it) }, R.layout.fragment_pronounce_problem
 ) {
-    private val viewModel: PronounceMainViewModel by viewModels({requireParentFragment()})
+    private val viewModel: PronounceProblemViewModel by hiltNavGraphViewModels(R.id.nav_pronounce)
     private val adapter by lazy { PronounceLyricAdapter() }
+    private lateinit var id: String
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        id = arguments?.getString("id", "")!!
+        if (id == "") {
+            findNavController().popBackStack()
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e("TAG", "onViewCreated: $viewModel")
+        viewModel.getPronounceProblem(id)
         initObserve()
         initView()
     }
@@ -40,8 +52,8 @@ class PronounceProblemFragment : BaseFragment<FragmentPronounceProblemBinding>(
                 setOnItemClickListener(
                     object : BaseHolder.ItemClickListener {
                         override fun onClick(position: Int) {
-                            findNavController().navigate(R.id.action_pronounceProblemFragment_to_pronouncePracticeFragment)
                             viewModel.getTranslateLyric(position)
+                            findNavController().navigate(R.id.action_pronounceProblemFragment_to_pronouncePracticeFragment)
                         }
                     }
                 )
@@ -59,11 +71,6 @@ class PronounceProblemFragment : BaseFragment<FragmentPronounceProblemBinding>(
                         tvAlbumSinger.text = it.songArtist
                         adapter.submitList(it.lyrics)
                     }
-                }
-            }
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.navigateToPractice.collect {
-                    findNavController().navigate(R.id.action_pronounceProblemFragment_to_pronouncePracticeFragment)
                 }
             }
         }

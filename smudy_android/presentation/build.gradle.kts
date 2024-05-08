@@ -56,6 +56,9 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.annotation)
     implementation(libs.androidx.lifecycle.livedata.ktx)
+
+    implementation(libs.bundles.hilt)
+    implementation(project(":util"))
     ksp(libs.hilt.compiler)
 
     implementation(libs.bundles.presentationBundle)
