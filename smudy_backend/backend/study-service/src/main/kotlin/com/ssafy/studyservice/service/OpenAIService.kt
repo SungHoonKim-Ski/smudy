@@ -1,7 +1,9 @@
 package com.ssafy.studyservice.service
 
 import com.ssafy.studyservice.config.ObjectMapperConfig
-import com.ssafy.studyservice.dto.gpt.ChatCompletionResponse
+import com.ssafy.studyservice.dto.request.ExpressCheckRequest
+import com.ssafy.studyservice.dto.response.ExpressCheckResponse
+import com.ssafy.studyservice.dto.response.gpt.ChatCompletionResponse
 import com.ssafy.studyservice.service.feign.OpenAIClient
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.beans.factory.annotation.Value
@@ -24,7 +26,58 @@ class OpenAIService(
                 "messages" to arrayOf(
                         mapOf(
                                 "role" to "system",
-                                "content" to "이 영어 가사들을 한국어로 번역해줘 존댓말 말고 반말로 해줘: $lyric"
+                                "content" to "Translate these English lyrics into Korean for me. Use casual language, not formal. $lyric"
+                        )
+                )
+        )
+
+        val response = openAIClient.generateText("Bearer $apiKey", request)
+
+        return mapper.readValue(response, ChatCompletionResponse::class.java).choices[0].message.content
+    }
+
+    fun markingUserAnswer(request: ExpressCheckRequest): ExpressCheckResponse {
+        val lyricEn = revTranslateLyric(request.lyricSentenceKo)
+        val userKo = translateLyric(request.userLyricSentence)
+        val score = scoreLyric(lyricEn, request.userLyricSentence)
+
+        return ExpressCheckResponse(
+                lyricSentenceKo = request.lyricSentenceKo,
+                lyricSentenceEn = request.lyricSentenceEn,
+                userLyricSentenceKo = userKo,
+                userLyricSentenceEn = request.userLyricSentence,
+                suggestLyricSentence = lyricEn,
+                score = score.toInt(),
+        )
+    }
+
+    fun revTranslateLyric(lyricKo: String): String {
+        val mapper = ObjectMapperConfig().getObjectMapper()
+
+        val request = mapOf(
+                "model" to "gpt-4",
+                "messages" to arrayOf(
+                        mapOf(
+                                "role" to "system",
+                                "content" to "Translate these Korean lyrics into English for me. $lyricKo"
+                        )
+                )
+        )
+
+        val response = openAIClient.generateText("Bearer $apiKey", request)
+
+        return mapper.readValue(response, ChatCompletionResponse::class.java).choices[0].message.content
+    }
+
+    fun scoreLyric(lyricEn: String, userEn: String): String {
+        val mapper = ObjectMapperConfig().getObjectMapper()
+
+        val request = mapOf(
+                "model" to "gpt-4",
+                "messages" to arrayOf(
+                        mapOf(
+                                "role" to "system",
+                                "content" to "Rate the similarity between $lyricEn and the sentence $userEn on a scale of 100. plz answer only score number"
                         )
                 )
         )

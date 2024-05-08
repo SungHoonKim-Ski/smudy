@@ -16,9 +16,10 @@ class SongService(
 ) {
 
     private val log = KotlinLogging.logger {  }
+    
     @Transactional
     fun getFillQuiz(songId: String) : FillResponse {
-        return songRepository.findBySpotifyId(songId)?.let { song ->
+        return songRepository.findDistinctFirstBySpotifyId(songId)?.let { song ->
             FillResponse(
                     songId = song.spotifyId,
                     songArtist = song.songArtist,
@@ -40,7 +41,7 @@ class SongService(
     @Transactional
     fun getPickQuiz(songId: String) : SongSimple {
 
-        return songRepository.findBySpotifyId(songId)?.let { song ->
+        return songRepository.findDistinctFirstBySpotifyId(songId)?.let { song ->
             SongSimple(
                     songArtist = song.songArtist,
                     songName = song.albumName,
@@ -52,7 +53,7 @@ class SongService(
 
     @Transactional
     fun getExpressQuiz(songId: String) : SongSimple {
-        return songRepository.findBySpotifyId(songId)?.let { song ->
+        return songRepository.findDistinctFirstBySpotifyId(songId)?.let { song ->
             SongSimple(
                     songArtist = song.songArtist,
                     songName = song.albumName,
@@ -64,7 +65,7 @@ class SongService(
 
     @Transactional
     fun getPronounceQuiz(songId: String) : PronounceResponse {
-        return songRepository.findBySpotifyId(songId)?.let { song ->
+        return songRepository.findDistinctFirstBySpotifyId(songId)?.let { song ->
             PronounceResponse(
                     songId = song.spotifyId,
                     songArtist = song.songArtist,
@@ -87,7 +88,7 @@ class SongService(
     }
 
     fun findSongBySongId(songId: String) : Song {
-        return songRepository.findBySpotifyId(songId)
+        return songRepository.findDistinctFirstBySpotifyId(songId)
                 ?: throw SongNotFoundException("spotify Id가 ${songId}인 노래가 존재하지 않음")
     }
 
