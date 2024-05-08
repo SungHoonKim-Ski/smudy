@@ -24,7 +24,16 @@ class SecurityConfig(
             formLogin { disable() }
 
             authorizeRequests {
-                authorize("/api/study/**", authenticated)
+                authorize("/api/user/info", authenticated)
+                authorize("/api/user/streak", authenticated)
+                authorize("/api/user/wrong", authenticated)
+                authorize("/api/user/studylist/**", authenticated)
+                authorize("/api/user/history/**", authenticated)
+
+                authorize("/api/user/feign/**", permitAll)
+                authorize("/api/user/test", permitAll)
+                authorize("/api/user/mongo", permitAll)
+                authorize(anyRequest, authenticated)
             }
 
             sessionManagement {

@@ -1,9 +1,6 @@
 package com.ssafy.userservice.controller
 
-import com.ssafy.userservice.db.mongodb.entity.Song
 import com.ssafy.userservice.dto.request.SignUpRequest
-import com.ssafy.userservice.dto.request.SongId
-import com.ssafy.userservice.dto.request.SongIdsRequest
 import com.ssafy.userservice.dto.response.*
 import com.ssafy.userservice.dto.response.feign.FillResponse
 import com.ssafy.userservice.dto.response.feign.PronounceResponse

@@ -26,8 +26,9 @@ class JwtService(
         key = Keys.hmacShaKeyFor(keyBytes)
     }
 
-    fun getUserInternalId(accessToken: String): String {
+    fun getUserInternalId(authHeader: String): String {
         return try {
+            val accessToken = authHeader.substring(7)
             val claims = parseClaims(accessToken)
             val userInternalId = claims["internal_id"].toString()
             userInternalId
@@ -76,13 +77,13 @@ class JwtService(
         val claims = parseClaims(accessToken)  // JWT에서 클레임을 추출하는 메서드 필요
 
         val internalId = claims["internal_id"] as String?  // 클레임에서 internal_id 추출
-        val roles = claims["role"] as String?  // 클레임에서 권한 정보 추출
+        val role = claims["role"] as String?  // 클레임에서 권한 정보 추출
 
-        if (internalId == null || roles == null) {
+        if (internalId == null || role == null) {
             throw JwtException("토큰에 필요한 클레임 정보가 없습니다.")
         }
 
-        val authorities = roles.map { SimpleGrantedAuthority(it.toString()) }  // 권한 정보를 GrantedAuthority 객체 리스트로 변환
+        val authorities = listOf(SimpleGrantedAuthority(role)) // 권한 정보를 GrantedAuthority 객체 리스트로 변환
 
         val principal = User(internalId, "", authorities)  // Spring Security의 User 객체 사용
 
