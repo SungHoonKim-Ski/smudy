@@ -214,6 +214,18 @@ class LearnReportService (
         )
     }
 
+    @Transactional
+    fun insertOrUpdateUserStreak(streak: Streak) : Boolean {
+        val existStreak = streakRepository.findByUserInternalIdAndStreakDate(streak.userInternalId, streak.streakDate)
+
+        existStreak?.let {
+            existStreak.songJacket = streak.songJacket
+            return false
+        } ?: streakRepository.save(streak)
+
+        return true
+    }
+
     fun getUserTop4History(userInternalId: UUID) : List<LearnReport> {
         return learnReportRepository.findTop4ByUserInternalId(userInternalId)
     }
