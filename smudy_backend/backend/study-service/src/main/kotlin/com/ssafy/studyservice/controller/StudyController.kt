@@ -33,10 +33,7 @@ class StudyController (
     fun dailyLyric(): ResponseEntity<SingleResult<DailyLyricResponse>> {
         return ResponseEntity.ok(
                 responseService.getSuccessSingleResult(
-                        DailyLyricResponse(
-                                dailyLyricsEn = "Are you kidding me?",
-                                dailyLyricsKo = "마 장난치나!"
-                        )
+                        problemService.getRandomLyric()
                         ,"오늘의 한 문장 조회 성공")
         )
     }

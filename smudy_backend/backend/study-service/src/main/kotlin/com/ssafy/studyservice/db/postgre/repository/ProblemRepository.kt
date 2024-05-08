@@ -10,4 +10,15 @@ import org.springframework.stereotype.Repository
 @Repository
 interface ProblemRepository : JpaRepository<Problem, Int> {
     fun findByProblemBoxId(problemBoxId: Int): List<Problem>
+
+    @Query("" +
+            "SELECT " +
+            "* " +
+            "FROM " +
+            "problem p " +
+            "ORDER BY " +
+            "random() " +
+            "limit 1"
+            , nativeQuery = true)
+    fun getRandomLyric(): Problem
 }
