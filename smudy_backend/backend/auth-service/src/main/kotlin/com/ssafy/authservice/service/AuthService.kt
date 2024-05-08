@@ -7,6 +7,7 @@ import com.ssafy.authservice.dto.request.LoginRequest
 import com.ssafy.authservice.dto.response.TokenResponse
 import com.ssafy.authservice.entity.User
 import com.ssafy.authservice.repository.UserRepository
+import io.jsonwebtoken.JwtException
 import org.springframework.http.HttpHeaders.SERVER
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -114,10 +115,11 @@ class AuthService(
     }
 
     // 앞에 있는 "Bearer " 제거 후 토큰 추출
-    fun resolveToken(accessTokenInHeader: String?): String? {
-        return if (accessTokenInHeader != null && accessTokenInHeader.startsWith("Bearer ")) {
-            accessTokenInHeader.substring(7)
-        } else null
+    fun resolveToken(accessTokenInHeader: String): String {
+        if (accessTokenInHeader.startsWith("Bearer ")) {
+            return accessTokenInHeader.substring(7)
+        }
+        throw JwtException("유효하지 않은 토큰")
     }
 
     // principal (InternalId) 가져오기
