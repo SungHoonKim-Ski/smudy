@@ -23,6 +23,15 @@ class ProblemService (
         return problemRepository.findByProblemBoxId(problemBoxId)
     }
 
+    fun getRandomLyric(): DailyLyricResponse {
+        return problemRepository.getRandomLyric().let {
+            DailyLyricResponse(
+                    dailyLyricsKo = it.sentenceKo,
+                    dailyLyricsEn = it.sentenceEn
+            )
+        }
+    }
+
     fun getFillQuiz(songId: String): FillResponse {
         return userFeignClient.getFillQuiz(songId)
     }

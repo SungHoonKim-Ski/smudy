@@ -29,6 +29,7 @@ class SecurityConfig(
 
             authorizeRequests {
                 authorize("/api/study/**", authenticated)
+                authorize("/api/study/**/**", authenticated)
             }
 
             sessionManagement {
@@ -40,21 +41,4 @@ class SecurityConfig(
 
         return http.build()
     }
-
-//    @Bean
-//    fun encoder(): BCryptPasswordEncoder {
-//        // 비밀번호를 DB에 저장하기 전 사용할 암호화
-//        return BCryptPasswordEncoder()
-//    }
-//
-//    @Bean
-//    fun oAuthAuthenticationProvider(): AuthenticationProvider {
-//        val userDetailsService = UserDetailsServiceImpl(userRepository)
-//        return OAuthAuthenticationProvider(userDetailsService)
-//    }
-//
-//    @Throws(Exception::class)
-//    fun configure(auth: AuthenticationManagerBuilder) {
-//        auth.authenticationProvider(oAuthAuthenticationProvider())
-//    }
 }

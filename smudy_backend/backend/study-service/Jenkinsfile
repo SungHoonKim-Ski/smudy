@@ -21,6 +21,7 @@ pipeline {
                     dir('smudy_backend/backend/study-service') {
                             withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
                                 studyImage = docker.build("${STUDY_IMAGE_NAME}:${env.BUILD_NUMBER}",
+                                "--build-arg JASYPT_PASSWORD=${env.JASYPT_PASSWORD} " +
                                 "--build-arg EUREKA_URL=${env.EUREKA_URL} .")
 
                                 // Docker 빌드 결과 출력
