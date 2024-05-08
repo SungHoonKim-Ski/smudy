@@ -1,4 +1,4 @@
-package com.ssafy.studyservice.dto.gpt
+package com.ssafy.studyservice.dto.response.gpt
 
 data class Usage(
         val promptTokens: Int,
