@@ -28,7 +28,6 @@ class JwtAuthenticationFilter(
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 // 헤더에서 토큰 추출
                 val accessToken = authHeader.substring(7)
-
                 if (jwtTokenProvider.validateAccessToken(accessToken)) {
                     // Save authentication in SecurityContextHolder
                     val authentication = jwtTokenProvider.getAuthentication(accessToken)
@@ -37,8 +36,14 @@ class JwtAuthenticationFilter(
             }
             filterChain.doFilter(request, response)
         } catch (e: ExpiredJwtException) {
-            SecurityContextHolder.clearContext();
-            setErrorResponse(response, ErrorCode.JWT_TOKEN_EXPIRED)
+            if (request.requestURL.contains("reissue")) {
+                val authentication = jwtTokenProvider.getAuthenticationWithClaims(e.claims)
+                SecurityContextHolder.getContext().authentication = authentication
+                filterChain.doFilter(request, response)
+            } else {
+                SecurityContextHolder.clearContext();
+                setErrorResponse(response, ErrorCode.JWT_TOKEN_EXPIRED)
+            }
         } catch (e: IncorrectClaimException) { // 잘못된 토큰일 경우
             SecurityContextHolder.clearContext();
             setErrorResponse(response, ErrorCode.JWT_ERROR)

@@ -27,8 +27,8 @@ class JwtTokenProvider(
 
     private val logger = KotlinLogging.logger { }
 
-//    private val accessTokenExpireTime = 1000 * 30            // 테스트용 1초
-    private val accessTokenExpireTime = 1000 * 60 * 30              // 30분
+    private val accessTokenExpireTime = 1000 * 30            // 테스트용 1초
+//    private val accessTokenExpireTime = 1000 * 60 * 30              // 30분
     private val refreshTokenExpireTime = 1000 * 60 * 60 * 24 * 7    // 7일
     private lateinit var signingKey: Key
 
@@ -70,13 +70,7 @@ class JwtTokenProvider(
     }
 
     // 토큰 정보 추출
-    fun getAuthentication(accessToken: String?): Authentication {
-
-        val claims = getClaims(accessToken!!)
-
-//        if(claims["auth"] == null) {
-//            throw JwtException("권한 정보가 없는 토큰입니다.")
-//        }
+    fun getAuthentication(accessToken: String): Authentication {
 
         val internalId = getClaims(accessToken)["internal_id"].toString()
         val principal: UserDetails = userDetailsService.loadUserByUsername(internalId)
@@ -84,6 +78,21 @@ class JwtTokenProvider(
             principal,
             "",
             principal.authorities
+        )
+    }
+
+    fun getAuthenticationWithClaims(claims: Claims): Authentication {
+
+//        if(claims["auth"] == null) {
+//            throw JwtException("권한 정보가 없는 토큰입니다.")
+//        }
+
+        val internalId = claims["internal_id"].toString()
+        val principal: UserDetails = userDetailsService.loadUserByUsername(internalId)
+        return UsernamePasswordAuthenticationToken(
+                principal,
+                "",
+                principal.authorities
         )
     }
 
