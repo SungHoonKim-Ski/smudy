@@ -9,11 +9,7 @@
         android:id="@+id/mainFragment"
         android:name="com.ssafy.presentation.ui.main.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" >
-        <action
-            android:id="@+id/action_mainFragment_to_fillFragment"
-            app:destination="@id/fillFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_main" />
     <fragment
         android:id="@+id/studyFragment"
         android:name="com.ssafy.presentation.ui.study.StudyFragment"
@@ -24,6 +20,18 @@
             app:destination="@id/musicSearchFragment"
             app:popUpTo="@id/studyFragment"
             app:popUpToInclusive="false"/>
+        <action
+            android:id="@+id/action_studyFragment_to_fillFragment"
+            app:destination="@id/fillFragment" />
+        <action
+            android:id="@+id/action_studyFragment_to_pickFragment"
+            app:destination="@id/pickFragment" />
+        <action
+            android:id="@+id/action_studyFragment_to_expressFragment"
+            app:destination="@id/expressFragment" />
+        <action
+            android:id="@+id/action_studyFragment_to_pronounceFragment"
+            app:destination="@id/navigation2" />
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
@@ -41,4 +49,40 @@
         android:name="com.ssafy.presentation.ui.study.fill.FillFragment"
         android:label="fragment_fill"
         tools:layout="@layout/fragment_fill" />
+    <fragment
+        android:id="@+id/pickFragment"
+        android:name="com.ssafy.presentation.ui.study.pick.PickFragment"
+        android:label="fragment_pick"
+        tools:layout="@layout/fragment_pick" />
+    <fragment
+        android:id="@+id/expressFragment"
+        android:name="com.ssafy.presentation.ui.study.express.ExpressFragment"
+        android:label="fragment_express"
+        tools:layout="@layout/fragment_express" />
+    <navigation android:id="@+id/navigation2"
+        app:startDestination="@id/pronounceFragment">
+        <fragment
+            android:id="@+id/pronounceFragment"
+            android:name="com.ssafy.presentation.ui.study.pronounce.PronounceMainFragment"
+            android:label="fragment_pronounce"
+            tools:layout="@layout/fragment_pronounce" >
+            <action
+                android:id="@+id/action_pronounceFragment_to_pronouncePracticeFragment"
+                app:destination="@id/pronouncePracticeFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/pronouncePracticeFragment"
+            android:name="com.ssafy.presentation.ui.study.pronounce.PronouncePracticeFragment"
+            android:label="fragment_pronounce_practice"
+            tools:layout="@layout/fragment_pronounce_practice" >
+            <action
+                android:id="@+id/action_pronouncePracticeFragment_to_pronounceResultFragment"
+                app:destination="@id/pronounceResultFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/pronounceResultFragment"
+            android:name="com.ssafy.presentation.ui.study.pronounce.PronounceResultFragment"
+            android:label="fragment_pronounce_result"
+            tools:layout="@layout/fragment_pronounce_result" />
+    </navigation>
 </navigation>

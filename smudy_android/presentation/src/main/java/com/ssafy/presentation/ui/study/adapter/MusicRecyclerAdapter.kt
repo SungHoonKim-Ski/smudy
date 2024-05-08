@@ -9,46 +9,31 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ssafy.presentation.databinding.ItemMusicListButtonHorizontalBinding
+import com.ssafy.presentation.databinding.ItemSearchMusicResultBinding
 import com.ssafy.presentation.model.Study
 
-class StudyRecyclerAdapter(private val studyTypeClickListener : StudyTypeClickListener) :
-    PagingDataAdapter<Study, StudyRecyclerAdapter.PagingViewHolder>(diffCallback) {
-    inner class PagingViewHolder(private val binding: ItemMusicListButtonHorizontalBinding) :
+class MusicRecyclerAdapter(private val onClick: (String, Boolean) -> (Unit)) :
+    PagingDataAdapter<Study, MusicRecyclerAdapter.PagingViewHolder>(diffCallback) {
+    inner class PagingViewHolder(private val binding: ItemSearchMusicResultBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(musicInfo: Study, position: Int) = with(binding) {
             Log.e("TAG", "bind: $musicInfo")
             tvAlbumTitle.text = musicInfo.title
             tvAlbumSinger.text = musicInfo.singer
             Glide.with(root).load(musicInfo.thumbnail).into(ivAlbumJacket)
-            llStudyType.isVisible = musicInfo.flag
-            btnExpand.setOnClickListener {
-                llStudyType.isVisible = !llStudyType.isVisible
-                musicInfo.flag = !musicInfo.flag
-            }
-            btnFillStudy.setOnClickListener {
-                Log.e("TAG", "bind: ${musicInfo.title}")
-                studyTypeClickListener.fillStudy()
-            }
-            btnPickStudy.setOnClickListener {
-                Log.e("TAG", "bind: ${musicInfo.title}")
-                studyTypeClickListener.pickStudy()
-            }
-            btnExpressStudy.setOnClickListener {
-                Log.e("TAG", "bind: ${musicInfo.title}")
-                studyTypeClickListener.expressStudy()
-            }
-            btnPronounceStudy.setOnClickListener {
-                Log.e("TAG", "bind: ${musicInfo.title}")
-                studyTypeClickListener.pronounceStudy()
+            btnCheck.apply {
+                isChecked = musicInfo.flag
+                setOnClickListener {
+                    musicInfo.flag = isChecked
+                    if (isChecked) {
+                        onClick(musicInfo.id, true)
+                    } else {
+                        onClick(musicInfo.id, false)
+                    }
+                }
             }
         }
-    }
-
-    interface StudyTypeClickListener{
-        fun fillStudy()
-        fun pickStudy()
-        fun expressStudy()
-        fun pronounceStudy()
     }
 
     companion object {
@@ -64,7 +49,7 @@ class StudyRecyclerAdapter(private val studyTypeClickListener : StudyTypeClickLi
         }
     }
 
-    override fun onBindViewHolder(holder: StudyRecyclerAdapter.PagingViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MusicRecyclerAdapter.PagingViewHolder, position: Int) {
         getItem(position)?.let {
             holder.bind(it, position)
         }
@@ -73,9 +58,9 @@ class StudyRecyclerAdapter(private val studyTypeClickListener : StudyTypeClickLi
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): StudyRecyclerAdapter.PagingViewHolder {
+    ): MusicRecyclerAdapter.PagingViewHolder {
         return PagingViewHolder(
-            ItemMusicListButtonHorizontalBinding.inflate(
+            ItemSearchMusicResultBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false

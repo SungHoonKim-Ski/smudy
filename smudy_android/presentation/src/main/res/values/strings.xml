@@ -29,4 +29,9 @@
     <string name="all_study_type_express">EXPRESS</string>
     <string name="all_study_type_pronounce">PRONOUNCE</string>
     <string name="blank_title">FILL! 노래를 들으며 빈칸을 채워보세요</string>
+    <string name="study_pronounce_title">PRONOUNCE! 문장을 선택해 발음 연습을 해보세요.</string>
+    <string name="pronounce_record_stop_img_description">녹음 중지 버튼</string>
+    <string name="pronounce_record_start_img_description">녹음 시작 버튼</string>
+    <string name="pronounce_btn_reset">다시 녹음</string>
+    <string name="pronounce_btn_analyze">분석하기</string>
 </resources>

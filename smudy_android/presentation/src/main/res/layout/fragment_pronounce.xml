@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.study.pronounce.PronounceMainFragment">
+
+    <TextView
+        style="@style/StudyTitleTextView"
+        android:background="@color/light_pink"
+        android:text="@string/study_pronounce_title"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/fragment_padding"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/card_background"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/all_album_jacket_img_description"
+            android:layout_marginStart="@dimen/fragment_padding"
+            tools:src="@drawable/app_logo"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/fragment_padding"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/action_sign_in"
+                android:textAppearance="@style/Noto_Sans.TEXT.B.16"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/action_sign_in_short"
+                android:textAppearance="@style/Noto_Sans.TEXT.R.11" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
