@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    environment {
+        DISCOVERY_IMAGE_NAME = "${env.DISCOVERY_IMAGE_NAME}"
+        CONTAINER_NAME = 'Discovery'
+        EUREKA_URL = "${env.EUREKA_URL}"
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh 'echo "Starting Build Discovery Service Docker Image"'
+                    dir('smudy_backend/backend/discovery-service') {
+                            withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
+                                discoveryImage = docker.build("${DISCOVERY_IMAGE_NAME}:${env.BUILD_NUMBER}", 
+                                "--build-arg EUREKA_URL=${env.EUREKA_URL} .") 
+
+                                // Docker 빌드 결과 출력
+                                if (discoveryImage != 0) {
+                                    echo "Docker build succeeded: ${DISCOVERY_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                                    docker.withRegistry('https://registry.hub.docker.com', 'docker') {
+                                        discoveryImage.push()
+                                    }
+                                } else {
+                                    error "Docker build failed"
+                                }
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    sh 'docker rm -f Discovery || true'
+                    sh "docker run -d --name ${CONTAINER_NAME} --network smudy -p 8762:8762 ${DISCOVERY_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                }
+            }
+        }
+    }
+}
