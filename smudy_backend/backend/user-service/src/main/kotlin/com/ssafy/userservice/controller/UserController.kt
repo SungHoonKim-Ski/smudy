@@ -38,10 +38,10 @@ class UserController (
     }
 
     @GetMapping("/info")
-    fun getUserInfo(@RequestHeader("Authorization") accessToken: String): ResponseEntity<SingleResult<InfoResponse>> {
+    fun getUserInfo(@RequestHeader("Authorization") authHeader: String): ResponseEntity<SingleResult<InfoResponse>> {
 
-        logger.info { "/info/$accessToken" }
-        val userInternalId = UUID.fromString(jwtService.getUserInternalId(accessToken))
+        logger.info { "/info/$authHeader" }
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
 
         return ResponseEntity.ok(
                 responseService.getSuccessSingleResult(
@@ -51,10 +51,10 @@ class UserController (
     }
 
     @GetMapping("/streak")
-    fun getUserStreak(@RequestHeader("Authorization") accessToken: String): ResponseEntity<SingleResult<StreakResponse>> {
+    fun getUserStreak(@RequestHeader("Authorization") authHeader: String): ResponseEntity<SingleResult<StreakResponse>> {
 
-        logger.info { "/streak/$accessToken" }
-        val userInternalId = UUID.fromString(jwtService.getUserInternalId(accessToken))
+        logger.info { "/streak/$authHeader" }
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
 
         return ResponseEntity.ok(
                 responseService.getSuccessSingleResult(
@@ -66,10 +66,10 @@ class UserController (
     }
 
     @GetMapping("/wrong")
-    fun getUserWrong(@RequestHeader("Authorization") accessToken: String): ResponseEntity<SingleResult<WrongLyricResponse>> {
+    fun getUserWrong(@RequestHeader("Authorization") authHeader: String): ResponseEntity<SingleResult<WrongLyricResponse>> {
 
-        logger.info { "/info/$accessToken" }
-        val userInternalId = UUID.fromString(jwtService.getUserInternalId(accessToken))
+        logger.info { "/info/$authHeader" }
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
 
         return ResponseEntity.ok(
                 responseService.getSuccessSingleResult(
@@ -81,12 +81,12 @@ class UserController (
 
     @GetMapping("/studylist")
     fun getUserStudyList(
-            @RequestHeader("Authorization") accessToken: String
+            @RequestHeader("Authorization") authHeader: String
             , @RequestParam(value = "page", required = true) page: String
     ): ResponseEntity<SingleResult<StudyListResponse>> {
 
         logger.info { "/studylist/$page" }
-        val userInternalId = UUID.fromString(jwtService.getUserInternalId(accessToken))
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
 
         page.toIntOrNull()?.let {
             val pageable: Pageable = PageRequest.of(it, 20)
@@ -104,11 +104,11 @@ class UserController (
     }
 
     @PostMapping("/studylist/add")
-    fun addStudyList(@RequestHeader("Authorization") accessToken: String
+    fun addStudyList(@RequestHeader("Authorization") authHeader: String
                      , @RequestBody request: AddStudyListRequest) : ResponseEntity<CommonResult> {
 
         logger.info { "/studylist/add $request" }
-        val userInternalId = UUID.fromString(jwtService.getUserInternalId(accessToken))
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
 
         val result = studyListService.addUserStudyList(userInternalId, request.songIds)
 
@@ -122,12 +122,12 @@ class UserController (
 
     @GetMapping("/history")
     fun getUserHistory(
-            @RequestHeader("Authorization") accessToken: String
+            @RequestHeader("Authorization") authHeader: String
             , @RequestParam(value = "time", required = true) time: String
     ): ResponseEntity<SingleResult<HistoryResponse>> {
 
         logger.info { "/history/$time" }
-        val userInternalId = UUID.fromString(jwtService.getUserInternalId(accessToken))
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
 
         time.toLongOrNull()?.let {
             return ResponseEntity.ok(
@@ -158,7 +158,7 @@ class UserController (
 
     @GetMapping("/history/pick/{learnReportId}")
     fun getUserHistoryPick(
-            @RequestHeader("Authorization") accessToken: String
+            @RequestHeader("Authorization") authHeader: String
             , @PathVariable(value = "learnReportId", required = true) learnReportId: String
     ): ResponseEntity<SingleResult<HistoryPickResponse>> {
         logger.info { "/history/pick/ $learnReportId" }
@@ -207,12 +207,12 @@ class UserController (
     }
 
     @PostMapping("/fill/submit")
-    fun submitFill(@RequestHeader("Authorization") accessToken: String
+    fun submitFill(@RequestHeader("Authorization") authHeader: String
                     , @RequestBody request: SubmitFillRequest
     ): ResponseEntity<SingleResult<SubmitFillResponse>> {
 
         logger.debug { "/submit/fill $request" }
-        val userInternalId = UUID.fromString(jwtService.getUserInternalId(accessToken))
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
 
         return ResponseEntity.ok(
                 responseService.getSuccessSingleResult(
@@ -226,11 +226,11 @@ class UserController (
     }
 
     @PostMapping("/pick/submit")
-    fun submitPick(@RequestHeader("Authorization") accessToken: String
+    fun submitPick(@RequestHeader("Authorization") authHeader: String
                     , @RequestBody request: SubmitPickRequest): ResponseEntity<SingleResult<SubmitPickResponse>> {
 
         logger.debug { "/pick/submit $request" }
-        val userInternalId = UUID.fromString(jwtService.getUserInternalId(accessToken))
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
 
         return ResponseEntity.ok(
                 responseService.getSuccessSingleResult(
@@ -244,11 +244,11 @@ class UserController (
     }
 
     @PostMapping("/express/submit")
-    fun submitExpress(@RequestHeader("Authorization") accessToken: String
+    fun submitExpress(@RequestHeader("Authorization") authHeader: String
                       , @RequestBody request: SubmitExpressRequest): ResponseEntity<CommonResult> {
 
         logger.debug { "/express/submit $request" }
-        val userInternalId = UUID.fromString(jwtService.getUserInternalId(accessToken))
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
 
         return ResponseEntity.ok(
                 responseService.getSuccessMessageResult(
@@ -262,7 +262,7 @@ class UserController (
 
     @PostMapping("/pronounce/submit")
     fun submitPronounce(
-            @RequestHeader("Authorization") accessToken: String
+            @RequestHeader("Authorization") authHeader: String
             , @RequestPart("userFile") userFile: MultipartFile
             , @RequestPart("ttsFile") ttsFile: MultipartFile
             , @RequestPart("json") request: SubmitPronounceRequest
@@ -270,7 +270,7 @@ class UserController (
 
         logger.debug { "/fill/pronounce $request" }
         val mapper = jacksonObjectMapper()
-        val userInternalId = UUID.fromString(jwtService.getUserInternalId(accessToken))
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
 
         val sampleAiAnalyze = mapper.readValue("" +
                 "{\n" +
