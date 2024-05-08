@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
 import org.springframework.data.mongodb.core.mapping.MongoId
 
-@Document(collection = "track_v3")
+@Document(collection = "trackinfo_v2")
 class Song(
 
         @MongoId
@@ -17,11 +17,11 @@ class Song(
         @Field(name = "song_artist")
         var songArtist: String,
 
-        @Field(name = "song_duration")
+        @Field(name = "song_duration_ms")
         var songDuration: String,
 
         @Field(name = "lyric_end")
-        var lyricEnd: String,
+        var lyricEnd: String?,
 
         @Field(name = "song_explicit")
         var songExplicit: Boolean = false,

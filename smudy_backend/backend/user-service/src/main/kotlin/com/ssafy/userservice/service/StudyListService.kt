@@ -47,11 +47,14 @@ class StudyListService (
     }
 
     @Transactional
-    fun addUserStudyList(userInternalId: UUID, songIds: List<SongId>): ArrayList<Int> {
-        val existSongs = getUserStudyListIn(userInternalId, songIds).map { it.getSongId() }
+    fun addUserStudyList(userInternalId: UUID, songIds: List<SongId>): Int {
+
+        val userStudyListSongs = getUserStudyListIn(userInternalId, songIds).map { it.getSongId() }
+        val existSongs = songService.findAllBySongIdsIn(songIds.map { it.songId }).map { it.spotifyId }
 
         val saveSongs = songIds.filter {
-            it.songId !in existSongs
+            it.songId !in userStudyListSongs
+                    && it.songId in existSongs
         }.map {
             StudyList(
                     studyListId = -1,
@@ -62,7 +65,7 @@ class StudyListService (
 
         val saveCount = studyListRepository.saveAll(saveSongs).size
         if (saveCount == 0) throw StudyListAllExistException("모든 곡이 스터디리스트에 존재하거나, 음악 ID가 유효하지 않습니다")
-        return arrayListOf(saveCount, songIds.size - saveCount)
+        return saveCount
     }
 
     fun getUserStudyListIn(userInternalId: UUID, songIds: List<SongId>) : List<SongIdMapping> {
