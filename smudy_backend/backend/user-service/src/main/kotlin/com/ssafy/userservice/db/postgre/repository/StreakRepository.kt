@@ -12,4 +12,8 @@ interface StreakRepository : JpaRepository<Streak, Int> {
     fun findALlByUserInternalIdAndStreakDateAfter(
             userInternalId: UUID, streakDate: Date
     ): List<Streak>
+
+    fun findByUserInternalIdAndStreakDate(
+            userInternalId: UUID, currentDate: Date
+    ) : Streak?
 }

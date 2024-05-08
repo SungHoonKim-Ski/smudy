@@ -25,7 +25,7 @@ class SongService(
                     songDuration = song.songDuration,
                     songName = song.albumName,
                     albumJacket = song.albumJacket,
-                    lyricEnd = song.lyricEnd,
+                    lyricEnd = song.songDuration,
                     lyricsBlank = song.songLyrics.map { lyric ->
                         LyricBlank(
                                 lyricStartTimeStamp = lyric.lyricTimestamp,

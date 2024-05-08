@@ -11,7 +11,7 @@ class Streak(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "strict_id")
-        var streakId: Int,
+        var streakId: Int = -1,
 
 //        @ManyToOne
         @JoinColumn(name = "user_internal_id")

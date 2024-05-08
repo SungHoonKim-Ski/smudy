@@ -26,7 +26,6 @@ class UserController (
         private val wrongService: WrongService,
         private val studyListService: StudyListService,
         private val jwtService: JwtService,
-        private val songService: SongService,
 ){
     private val logger = KotlinLogging.logger{ }
 
@@ -109,13 +108,12 @@ class UserController (
 
         logger.info { "/studylist/add $request" }
         val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
-
-        val result = studyListService.addUserStudyList(userInternalId, request.songIds)
+        val saveCount = studyListService.addUserStudyList(userInternalId, request.songIds)
 
         return ResponseEntity.ok(
-                responseService.getSuccessResult(
-                        "이미 리스트에 존재하는 ${result[1]}개의 곡을 제외한 " +
-                                "${result[0]}개의 곡을 추가했습니다"
+                responseService.getSuccessSingleResult(
+                        mapOf("saveCount" to saveCount),
+                        "${request.songIds.size}곡 중${saveCount}곡을 스터디리스트에 추가했습니다"
                 )
         )
     }

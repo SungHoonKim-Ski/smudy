@@ -80,7 +80,8 @@ class UserService(
     @Transactional
     fun markingFill(userInternalId: UUID, request: SubmitFillRequest) : SubmitFillResponse{
 
-        val answers = songService.findSongBySongId(request.songId).songLyrics
+        val song = songService.findSongBySongId(request.songId)
+        val answers = song.songLyrics
         val userAnswer = request.userWords.map { it.word }
 
         var score = 0
@@ -131,6 +132,16 @@ class UserService(
                 )
         )
 
+        if (isCorrect(totalSize, score)) {
+            learnReportService.insertOrUpdateUserStreak(
+                    Streak(
+                            userInternalId = userInternalId,
+                            songJacket = song.albumJacket,
+                            streakDate = java.sql.Date(System.currentTimeMillis())
+                    )
+            )
+        }
+
         return SubmitFillResponse(
                 totalSize = totalSize,
                 score = score,
@@ -142,7 +153,7 @@ class UserService(
     fun markingPick(userInternalId: UUID, request: SubmitPickRequest) : SubmitPickResponse {
 
         val problems = studyServiceClient.getProblemsByProblemBoxId(request.problemBoxId)
-
+        val song = songService.findSongBySongId(request.songId)
         val response = SubmitPickResponse()
 
         problems.forEachIndexed { index, problem ->
@@ -185,6 +196,24 @@ class UserService(
                     learnReportPickUser = request.userPicks.map { it.userPick },
                 )
         )
+
+        addStreak(
+                total = userLearnReport.learnReportTotal,
+                score = userLearnReport.learnReportTotal,
+                userInternalId = userInternalId,
+                albumJacket = song.albumJacket
+        )
+
+        if (isCorrect(response.totalSize, response.score)) {
+            learnReportService.insertOrUpdateUserStreak(
+                    Streak(
+                            userInternalId = userInternalId,
+                            songJacket = song.albumJacket,
+                            streakDate = java.sql.Date(System.currentTimeMillis())
+                    )
+            )
+        }
+
         return response
     }
 
@@ -192,6 +221,7 @@ class UserService(
     fun saveExpress(userInternalId: UUID, request: SubmitExpressRequest) : String {
 
         val userExpresses = request.userExpresses
+        val song = songService.findSongBySongId(request.songId)
 
         val userLearnReport = learnReportService.saveLearnReport(
                 LearnReport(
@@ -200,7 +230,7 @@ class UserService(
                         songId = request.songId,
                         problemType = "EXPRESS",
                         learnReportScore = userExpresses.map { it.score }.average().toInt(),
-                        learnReportTotal = 5,
+                        learnReportTotal = 100,
                 )
         )
 
@@ -219,6 +249,44 @@ class UserService(
                 )
         )
 
+        addStreak(
+                average = userLearnReport.learnReportScore,
+                userInternalId = userInternalId,
+                albumJacket = song.albumJacket
+        )
+
         return "Express 제출 완료"
+    }
+
+    fun addStreak(total: Int, score: Int, userInternalId: UUID, albumJacket: String) {
+        if (isCorrect(total, score)) {
+            learnReportService.insertOrUpdateUserStreak(
+                    Streak(
+                            userInternalId = userInternalId,
+                            songJacket = albumJacket,
+                            streakDate = java.sql.Date(System.currentTimeMillis())
+                    )
+            )
+        }
+    }
+
+    fun addStreak(average: Int, userInternalId: UUID, albumJacket: String) {
+        if (isCorrect(average)) {
+            learnReportService.insertOrUpdateUserStreak(
+                    Streak(
+                            userInternalId = userInternalId,
+                            songJacket = albumJacket,
+                            streakDate = java.sql.Date(System.currentTimeMillis())
+                    )
+            )
+        }
+    }
+
+    fun isCorrect(total: Int, score: Int): Boolean {
+        return score/total * 100 >= 70
+    }
+
+    fun isCorrect(average: Int) :  Boolean{
+        return average >= 70
     }
 }
