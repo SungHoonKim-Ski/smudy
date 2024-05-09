@@ -27,8 +27,8 @@ class JwtTokenProvider(
 
     private val logger = KotlinLogging.logger { }
 
-    private val accessTokenExpireTime = 1000 * 30            // 테스트용 1초
-//    private val accessTokenExpireTime = 1000 * 60 * 30              // 30분
+//    private val accessTokenExpireTime = 1000 * 30            // 테스트용 1초
+    private val accessTokenExpireTime = 1000 * 60 * 30              // 30분
     private val refreshTokenExpireTime = 1000 * 60 * 60 * 24 * 7    // 7일
     private lateinit var signingKey: Key
 
