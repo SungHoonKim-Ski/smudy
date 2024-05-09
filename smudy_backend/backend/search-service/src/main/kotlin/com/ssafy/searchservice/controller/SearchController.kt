@@ -63,7 +63,7 @@ class SearchController (
                     songArtist = song.songArtist,
                     songName = song.songName,
                     spotifyId = song.id,
-                    albumJacket = "https://i.scdn.co/image/ab67616d00001e0279f6239caf413738d82d3b0f"
+                    albumJacket = song.albumJacket
                 )
             )
         }

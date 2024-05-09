@@ -19,5 +19,8 @@ data class SongDocument(
     val songLyrics: String,
 
     @Field(type = FieldType.Text, analyzer = "english_analyzer", name = "song_name")
-    val songName: String
+    val songName: String,
+
+    @Field(type = FieldType.Keyword, name = "album_jacket")
+    val albumJacket: String
 )
