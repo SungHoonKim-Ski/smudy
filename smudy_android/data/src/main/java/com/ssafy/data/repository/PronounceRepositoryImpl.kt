@@ -1,6 +1,6 @@
 package com.ssafy.data.repository
 
-import androidx.datastore.preferences.protobuf.Api
+import com.squareup.moshi.Moshi
 import com.ssafy.data.datasource.study.remote.pronounce.PronounceRemoteDataSource
 import com.ssafy.data.mapper.toPronounceProblemInfo
 import com.ssafy.domain.model.ApiError
@@ -11,10 +11,15 @@ import com.ssafy.util.NetworkException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onStart
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import javax.inject.Inject
 
 class PronounceRepositoryImpl @Inject constructor(
-    private val pronounceRemoteDataSource: PronounceRemoteDataSource
+    private val pronounceRemoteDataSource: PronounceRemoteDataSource,
+    private val moshi: Moshi
 ) : PronounceRepository {
     override suspend fun getPronounceProblemInfo(id: String): Flow<ApiResult<PronounceProblemInfo>> =
         flow {
@@ -39,4 +44,18 @@ class PronounceRepositoryImpl @Inject constructor(
                 emit(ApiResult.Failure(ApiError(exception.code, exception.message)))
             }
         }.onStart { emit(ApiResult.Loading()) }
+
+    override suspend fun gradePronounceProblem(
+        userFile: File,
+        ttsFile: File,
+        lyric: String,
+        lyricKo: String
+    ): Flow<ApiResult<Boolean>> = flow<ApiResult<Boolean>> {
+        val recorderRequestBody = userFile.asRequestBody("audio/3gp".toMediaTypeOrNull())
+        val ttsRequestBody = ttsFile.asRequestBody("audio/wav".toMediaTypeOrNull())
+
+        val recorderPart = MultipartBody.Part.createFormData("userFile", userFile.name, recorderRequestBody)
+        val ttsPart = MultipartBody.Part.createFormData("ttsFile", ttsFile.name, ttsRequestBody)
+        emit(ApiResult.Success(true))
+    }.onStart { emit(ApiResult.Loading()) }
 }
