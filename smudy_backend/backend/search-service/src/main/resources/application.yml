@@ -1,18 +1,17 @@
-server:
-    port: 0
-
 spring:
-    application:
-        name: search-service
+  application:
+    name: search-service
+  elasticsearch:
+    host: ENC(HYVuZhvNLWUgCqyhpnUHxiqc1MUof9LLppeQ0qq1GWc=)
+    username: ENC(KeOTITX4sKXdVbbBx2BOeg==)
+    password: ENC(vqsLu1q/v3qxoJw3/qM4nMyaTUPIWGKZ)
 
 eureka:
-    client:
-        register-with-eureka: true
-        fetch-registry: true
-        service-url:
-            defaultZone: ${EUREKA_URL}/eureka
-    instance:
-        instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
-        prefer-ip-address: true
-        lease-renewal-interval-in-seconds: 1
-        lease-expiration-duration-in-seconds: 2
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 1
+    lease-expiration-duration-in-seconds: 2

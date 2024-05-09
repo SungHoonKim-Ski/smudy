@@ -128,15 +128,16 @@ class AuthService(
     }
 
     // 앞에 있는 "Bearer " 제거 후 토큰 추출
-    fun resolveToken(accessTokenInHeader: String): String {
-        if (accessTokenInHeader.startsWith("Bearer ")) {
+    fun resolveToken(accessTokenInHeader: String?): String {
+        if (accessTokenInHeader != null && accessTokenInHeader.startsWith("Bearer ")) {
             return accessTokenInHeader.substring(7)
+        } else {
+            throw CustomException(ExceptionType.INVAILD_TOKEN_EXCEPTION)
         }
-        throw JwtException("유효하지 않은 토큰")
     }
 
     // principal (InternalId) 가져오기
-    fun getPrincipal(accessToken: String?): String {
-        return jwtTokenProvider.getAuthentication(accessToken!!).name
+    fun getPrincipal(accessToken: String): String {
+        return jwtTokenProvider.getAuthentication(accessToken).name
     }
 }
