@@ -21,7 +21,7 @@ class DrawingView(context: Context, attr: AttributeSet? = null) : View(context, 
 
     private var drawingWidth: Int = 0
     private var drawingHeight: Int = 0
-    private var drawingAmplitudes: List<Int> = emptyList()
+    private var drawingAmplitudes = mutableListOf<Int>()
     private var isReplaying: Boolean = false
     private var replayingPosition: Int = 0
 
@@ -30,7 +30,8 @@ class DrawingView(context: Context, attr: AttributeSet? = null) : View(context, 
         override fun run() {
             if (!isReplaying) {
                 val currentAmplitude = onRequestCurrentAmplitude?.invoke() ?: 0
-                drawingAmplitudes = listOf(currentAmplitude) + drawingAmplitudes
+                Log.e("TAG", "run: currentAplitude: $currentAmplitude")
+                drawingAmplitudes.add(0, currentAmplitude)
             } else {
                 replayingPosition++
             }
@@ -44,7 +45,7 @@ class DrawingView(context: Context, attr: AttributeSet? = null) : View(context, 
     private fun updateViewWidth() {
         val minViewWidth = context.resources.displayMetrics.widthPixels // 스크린 너비
         val calculatedWidth =
-            (LINE_SPACE * (drawingAmplitudes.size - 1) + paddingLeft + paddingRight).toInt()  // 실제 그리는 너비 계산
+            (LINE_SPACE * drawingAmplitudes.size + paddingLeft + paddingRight).toInt()  // 실제 그리는 너비 계산
 
         val newWidth = max(minViewWidth, calculatedWidth) // 최소 너비와 계산된 너비 중 큰 값 선택
         if (layoutParams != null && layoutParams.width != newWidth) {
@@ -53,6 +54,7 @@ class DrawingView(context: Context, attr: AttributeSet? = null) : View(context, 
             requestLayout() // 레이아웃 업데이트 요청
         }
     }
+
     private fun scrollToRight() {
         (parent as? HorizontalScrollView)?.let { scrollView ->
             scrollView.post {
@@ -60,6 +62,7 @@ class DrawingView(context: Context, attr: AttributeSet? = null) : View(context, 
             }
         }
     }
+
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         drawingWidth = w
@@ -113,8 +116,14 @@ class DrawingView(context: Context, attr: AttributeSet? = null) : View(context, 
     }
 
     fun clearVisualization() {
-        drawingAmplitudes = emptyList()
+        drawingAmplitudes.clear()
         invalidate()
+    }
+
+    fun addAmplitude(amplitude: Int) {
+        drawingAmplitudes.add(0, amplitude)
+        invalidate()
+        updateViewWidth()
     }
 
     companion object {

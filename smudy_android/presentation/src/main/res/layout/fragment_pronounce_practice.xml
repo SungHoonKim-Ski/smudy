@@ -34,7 +34,7 @@
         android:layout_height="0dp"
         android:layout_weight="0.5">
         <LinearLayout
-            android:id="@+id/ll_tts"
+            android:id="@+id/lv_tts_smudy"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -42,13 +42,13 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                tools:src="@drawable/ic_bottom_calendar_month"
+                android:src="@drawable/ic_bottom_calendar_month"
                 android:contentDescription="TODO" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="김성훈" />
+                android:text="Smudy" />
         </LinearLayout>
         <HorizontalScrollView
             android:layout_width="match_parent"

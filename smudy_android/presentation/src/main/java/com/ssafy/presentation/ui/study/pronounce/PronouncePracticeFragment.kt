@@ -18,28 +18,32 @@ import com.ssafy.presentation.base.BaseFragment
 import com.ssafy.presentation.databinding.FragmentPronouncePracticeBinding
 import com.ssafy.presentation.model.PronounceProblem
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileInputStream
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 import java.util.Locale
-
 
 @AndroidEntryPoint
 class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>(
     { FragmentPronouncePracticeBinding.bind(it) }, R.layout.fragment_pronounce_practice
 ), TextToSpeech.OnInitListener {
+    private lateinit var tts: TextToSpeech
     private val parentViewModel: PronounceProblemViewModel by hiltNavGraphViewModels(R.id.nav_pronounce)
     private var recorder: MediaRecorder? = null
-    private var recordPlayer: MediaPlayer? = null
-    private var ttsPlayer: MediaPlayer? = null
-    private lateinit var recordFile: File
+    private var player: MediaPlayer? = null
+    private lateinit var file: File
     private lateinit var ttsFile: File
-    private lateinit var tts: TextToSpeech
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.e("TAG", "onViewCreated: $parentViewModel")
         tts = TextToSpeech(_activity, this)
         initView()
         initObserve()
@@ -71,9 +75,9 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
                 changeVisibility()
             }
             btnResetRecord.setOnClickListener {
-                startRecordPlaying()
+                startPlaying()
             }
-            llTts.setOnClickListener {
+            lvTtsSmudy.setOnClickListener {
                 startTtsPlaying()
             }
         }
@@ -81,17 +85,17 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
 
     @RequiresApi(Build.VERSION_CODES.S)
     private fun startRecording() {
-        recordFile = File(_activity.cacheDir, "recorde.3gp")
+        binding.dvRecordDrawing.clearVisualization()
+        file = File(_activity.cacheDir, "recorde.3gp")
         recorder = MediaRecorder(_activity)
             .apply {
                 setAudioSource(MediaRecorder.AudioSource.MIC)
                 setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
                 setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-                setOutputFile(recordFile)
+                setOutputFile(file)
                 prepare()
             }
         recorder!!.start()
-        binding.dvRecordDrawing.clearVisualization()
         binding.dvRecordDrawing.startVisualizing(false)
     }
 
@@ -104,67 +108,42 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
         binding.dvRecordDrawing.stopVisualizing()
     }
 
-    private fun startRecordPlaying() {
-        recordPlayer = MediaPlayer()
+    private fun startPlaying() {
+        player = MediaPlayer()
             .apply {
-                setDataSource(recordFile.absolutePath)
+                setDataSource(file.absolutePath)
                 prepare()
             }
-        recordPlayer?.setOnCompletionListener {
-            stopRecordPlaying()
+        player?.setOnCompletionListener {
+            stopPlaying()
         }
-        recordPlayer?.start()
+        player?.start()
         binding.dvRecordDrawing.startVisualizing(true)
     }
 
-    private fun stopRecordPlaying() {
-        recordPlayer?.release()
-        recordPlayer = null
+    private fun stopPlaying() {
+        player?.release()
+        player = null
         binding.dvRecordDrawing.stopVisualizing()
     }
-
     private fun startTtsPlaying() {
-        ttsPlayer = MediaPlayer()
+        player = MediaPlayer()
             .apply {
                 setDataSource(ttsFile.absolutePath)
                 prepare()
             }
-        ttsPlayer?.setOnCompletionListener {
+        player?.setOnCompletionListener {
             stopTtsPlaying()
         }
-        ttsPlayer?.start()
+        player?.start()
         binding.dvTtsDrawing.startVisualizing(true)
     }
 
     private fun stopTtsPlaying() {
-        ttsPlayer?.release()
-        ttsPlayer = null
+        player?.release()
+        player = null
         binding.dvTtsDrawing.stopVisualizing()
     }
-
-    private fun saveTextAsAudioFile() {
-        val params = Bundle()
-        params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "")
-
-        tts.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-            override fun onStart(utteranceId: String?) {
-                // 시작할 때 호출
-            }
-
-            override fun onDone(utteranceId: String?) {
-                // 파일 생성 완료 후 재생 준비
-                readWavFile(ttsFile.absolutePath)
-            }
-
-            override fun onError(utteranceId: String?) {
-
-            }
-
-        })
-
-        tts.synthesizeToFile(parentViewModel.translateLyric.value[0], params, ttsFile, "UniqueID")
-    }
-
     private fun setMusicView(pronounce: PronounceProblem) {
         with(binding) {
             tvAlbumTitle.text = pronounce.songName
@@ -194,41 +173,75 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
             tts.language = Locale.US
-            ttsFile = File(_activity.cacheDir, "tts_output.wav")
+            ttsFile = File(_activity.cacheDir, "tts.wav")
+            // 음성 파일로 텍스트를 저장
             saveTextAsAudioFile()
         }
     }
 
-    fun readWavFile(filePath: String) {
-        val file = File(filePath)
-        val inputStream = FileInputStream(file)
+    private fun saveTextAsAudioFile() {
+        val params = Bundle()
+        params.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "")
 
-        // WAV 헤더 스킵 (44 바이트 일반적)
-        val header = ByteArray(44)
-        inputStream.read(header)
+        tts.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+            override fun onStart(utteranceId: String?) {}
 
-        // 샘플 레이트 및 데이터 읽기
-        val sampleRate = 44100  // 예: 44100Hz
-        val bytesPerSample = 2  // 16비트 PCM
-        val durationPerChunk = 20 // ms
-        val numSamplesPerChunk = (sampleRate / 1000) * durationPerChunk
-
-        val buffer = ByteArray(numSamplesPerChunk * bytesPerSample)
-        var bytesRead: Int
-        var maxAmplitude: Short = 0
-
-        while (inputStream.read(buffer).also { bytesRead = it } != -1) {
-            for (i in 0 until bytesRead step 2) {
-                val amplitude =
-                    ((buffer[i + 1].toInt() shl 8) or (buffer[i].toInt() and 0xff)).toShort()
-                if (amplitude > maxAmplitude) maxAmplitude = amplitude
+            override fun onDone(utteranceId: String?) {
+                // 파일 생성 완료 후 재생 준비
+                readWavFile()
             }
-            Log.e("TAG", "readWavFile: $maxAmplitude")
-            binding.dvTtsDrawing.onRequestCurrentAmplitude = { maxAmplitude.toInt() }
-            binding.dvTtsDrawing.startVisualizing(false)
-            maxAmplitude = 0  // reset for the next chunk
+
+            override fun onError(utteranceId: String?) {
+                Log.e("TAG", "onError: $utteranceId")
+            }
+        })
+
+        tts.synthesizeToFile(parentViewModel.translateLyric.value[0], params, ttsFile, "UniqueID")
+    }
+
+    fun readWavFile() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val inputStream = FileInputStream(ttsFile)
+
+            // WAV 헤더 읽기
+            val header = ByteArray(44)
+            inputStream.read(header)
+
+            // 샘플 레이트 및 데이터 읽기
+            val sampleRate = ByteBuffer.wrap(header, 24, 4).order(ByteOrder.LITTLE_ENDIAN).int
+            val bitsPerSample =
+                ByteBuffer.wrap(header, 34, 2).order(ByteOrder.LITTLE_ENDIAN).short.toInt()
+            val bytesPerSample = bitsPerSample / 8
+            val durationPerChunk = 20 // ms
+            val numSamplesPerChunk = (sampleRate / 1000) * durationPerChunk
+
+            val reduceBytes = numSamplesPerChunk * bytesPerSample * 20
+
+            // `data` 청크 크기 읽기
+            val dataSize = ByteBuffer.wrap(header, 40, 4).order(ByteOrder.LITTLE_ENDIAN).int - reduceBytes
+
+            val buffer = ByteArray(numSamplesPerChunk * bytesPerSample)
+            var bytesRead = 0
+            var maxAmplitude: Short = 0
+            var totalBytesRead = 0
+
+            while (totalBytesRead < dataSize && inputStream.read(buffer)
+                    .also { bytesRead = it } != -1
+            ) {
+                for (i in 0 until bytesRead step 2) {
+                    val amplitude =
+                        ((buffer[i + 1].toInt() shl 8) or (buffer[i].toInt() and 0xff)).toShort()
+                    if (amplitude > maxAmplitude) maxAmplitude = amplitude
+                }
+                Log.e("TAG", "readWavFile: ${maxAmplitude.toInt()}")
+                withContext(Dispatchers.Main){
+                    binding.dvTtsDrawing.addAmplitude(maxAmplitude.toInt())
+                }
+                maxAmplitude = 0  // reset for the next chunk
+                totalBytesRead += bytesRead
+            }
+
+            inputStream.close()
         }
-        binding.dvTtsDrawing.stopVisualizing()
-        inputStream.close()
     }
 }
