@@ -31,18 +31,17 @@ class SearchService(
         val pageSize = 10 // 한 페이지 당 결과 수, 필요에 따라 조정 가능
         val from = page * pageSize // 페이징을 위한 시작 인덱스 계산
 
-        // 개별 Criteria 생성
-        val mustQ = Criteria.where("song_name").`is`(query).boost(2.0f)
+        // 개별 Criteria
+        val nameQ = Criteria.where("song_name").`is`(query).boost(2.0f)
         val artistQ = Criteria.where("song_artist").`is`(query)
         val lyricsQ = Criteria.where("song_lyrics").`is`(query)
-        val shouldQ = artistQ.or(lyricsQ)
 
-        // boolean 쿼리 생성
-        val booleanQ = mustQ.and(shouldQ)
+        // 모두 should 조건으로 변경
+        val queryCriteria = nameQ.or(artistQ).or(lyricsQ)
 
         // 쿼리 객체를 생성, 페이징 설정을 추가
         val criteriaQuery: Query =
-            CriteriaQuery(booleanQ).setPageable(PageRequest.of(from, pageSize))
+            CriteriaQuery(queryCriteria).setPageable(PageRequest.of(from, pageSize))
 
         return elasticsearchOperations.search(criteriaQuery, SongDocument::class.java)
             .map { it.content }
