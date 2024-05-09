@@ -66,6 +66,7 @@ dependencies {
 //    ksp(libs.dagger.compiler)
 
     kapt(libs.hilt.compiler)
+    implementation(libs.bundles.hilt)
 
     implementation(libs.bundles.presentationBundle)
 

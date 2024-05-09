@@ -11,6 +11,7 @@ import androidx.paging.log
 import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseActivity
 import com.ssafy.presentation.databinding.ActivityMainBinding
+import com.ssafy.util.PermissionUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 private const val TAG = "MainActivity"
@@ -21,6 +22,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
 ) {
 
     private val mainActivityViewModel: MainActivityViewModel by viewModels()
+    private lateinit var permissionUtils: PermissionUtils
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -28,6 +30,21 @@ class MainActivity : BaseActivity<ActivityMainBinding>(
         val navController = navHostFragment.findNavController()
 
         binding.bnBar.setupWithNavController(navController)
+        permissionCheck()
+    }
+
+    private fun permissionCheck() {
+        permissionUtils = PermissionUtils(this, this)
+        if (!permissionUtils.checkPermission()) permissionUtils.requestPermission()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (!permissionUtils.permissionResult(requestCode,permissions,grantResults)) permissionUtils.requestPermission()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

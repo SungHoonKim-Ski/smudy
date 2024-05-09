@@ -1,5 +1,6 @@
 package com.ssafy.presentation.ui.study.adapter
 
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.ssafy.presentation.databinding.ItemMusicListButtonHorizontalBinding
 import com.ssafy.presentation.model.Study
 
-class StudyRecyclerAdapter(private val studyTypeClickListener : StudyTypeClickListener) :
+class StudyRecyclerAdapter(private val studyTypeClickListener: StudyTypeClickListener) :
     PagingDataAdapter<Study, StudyRecyclerAdapter.PagingViewHolder>(diffCallback) {
     inner class PagingViewHolder(private val binding: ItemMusicListButtonHorizontalBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -25,30 +26,28 @@ class StudyRecyclerAdapter(private val studyTypeClickListener : StudyTypeClickLi
                 llStudyType.isVisible = !llStudyType.isVisible
                 musicInfo.flag = !musicInfo.flag
             }
+            val idBundle = Bundle()
+            idBundle.putString("id", musicInfo.id)
             btnFillStudy.setOnClickListener {
-                Log.e("TAG", "bind: ${musicInfo.title}")
-                studyTypeClickListener.fillStudy()
+                studyTypeClickListener.fillStudy(idBundle)
             }
             btnPickStudy.setOnClickListener {
-                Log.e("TAG", "bind: ${musicInfo.title}")
-                studyTypeClickListener.pickStudy()
+                studyTypeClickListener.pickStudy(idBundle)
             }
             btnExpressStudy.setOnClickListener {
-                Log.e("TAG", "bind: ${musicInfo.title}")
-                studyTypeClickListener.expressStudy()
+                studyTypeClickListener.expressStudy(idBundle)
             }
             btnPronounceStudy.setOnClickListener {
-                Log.e("TAG", "bind: ${musicInfo.title}")
-                studyTypeClickListener.pronounceStudy()
+                studyTypeClickListener.pronounceStudy(idBundle)
             }
         }
     }
 
-    interface StudyTypeClickListener{
-        fun fillStudy()
-        fun pickStudy()
-        fun expressStudy()
-        fun pronounceStudy()
+    interface StudyTypeClickListener {
+        fun fillStudy(id: Bundle)
+        fun pickStudy(id: Bundle)
+        fun expressStudy(id: Bundle)
+        fun pronounceStudy(id: Bundle)
     }
 
     companion object {
