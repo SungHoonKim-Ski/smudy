@@ -7,7 +7,6 @@ import com.ssafy.authservice.dto.request.LoginRequest
 import com.ssafy.authservice.dto.response.TokenResponse
 import com.ssafy.authservice.entity.User
 import com.ssafy.authservice.repository.UserRepository
-import io.jsonwebtoken.JwtException
 import org.springframework.http.HttpHeaders.SERVER
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -62,7 +61,7 @@ class AuthService(
 
         val accessToken = resolveToken(requestAccessTokenInHeader)
         val authentication = jwtTokenProvider.getAuthentication(accessToken)
-        val internalId = getPrincipal(accessToken)
+        val internalId: String = authentication.principal as String
         val refreshTokenInRedis = redisService.getValues("refresh-token:$internalId")
             ?: return null // Redis에 저장된 Refresh-token이 없을 경우 재로그인 요청
 
@@ -115,15 +114,16 @@ class AuthService(
     }
 
     // 앞에 있는 "Bearer " 제거 후 토큰 추출
-    fun resolveToken(accessTokenInHeader: String): String {
-        if (accessTokenInHeader.startsWith("Bearer ")) {
+    fun resolveToken(accessTokenInHeader: String?): String {
+        if (accessTokenInHeader != null && accessTokenInHeader.startsWith("Bearer ")) {
             return accessTokenInHeader.substring(7)
+        } else {
+            throw CustomException(ExceptionType.INVAILD_TOKEN_EXCEPTION)
         }
-        throw JwtException("유효하지 않은 토큰")
     }
 
     // principal (InternalId) 가져오기
-    fun getPrincipal(accessToken: String?): String {
-        return jwtTokenProvider.getAuthentication(accessToken!!).name
+    fun getPrincipal(accessToken: String): String {
+        return jwtTokenProvider.getAuthentication(accessToken).name
     }
 }
