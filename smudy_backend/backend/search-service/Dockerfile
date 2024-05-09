@@ -20,4 +20,4 @@ ARG JASYPT_PASSWORD
 ENV JASYPT_PASSWORD=${JASYPT_PASSWORD}
 
 COPY --from=build /home/gradle/src/build/libs/*.jar app.jar
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-Dspring.profiles.active=prod","-jar", "app.jar"]
