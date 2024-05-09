@@ -107,6 +107,7 @@ class DrawingView(context: Context, attr: AttributeSet? = null) : View(context, 
 
     fun startVisualizing(isReplaying: Boolean) {
         this.isReplaying = isReplaying
+        scrollToRight()
         handler?.post(visualizeRepeatAction)
     }
 
