@@ -29,7 +29,7 @@ class SearchService(
     fun search(query: String, page: Int): MutableList<SongDocument> {
 
         val pageSize = 10 // 한 페이지 당 결과 수, 필요에 따라 조정 가능
-        val from = (page - 1) * pageSize // 페이징을 위한 시작 인덱스 계산
+        val from = page * pageSize // 페이징을 위한 시작 인덱스 계산
 
         // 개별 Criteria 생성
         val mustQ = Criteria.where("song_name").`is`(query).boost(2.0f)

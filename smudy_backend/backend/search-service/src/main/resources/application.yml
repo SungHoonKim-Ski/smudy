@@ -1,6 +1,3 @@
-server:
-  port: 7072
-
 spring:
   application:
     name: search-service
