@@ -24,12 +24,12 @@ class GlobalExceptionHandler {
     @ExceptionHandler(ElasticsearchException::class)
     fun handleCustomException(e: ElasticsearchException): ResponseEntity<*> {
         logger.error {"handleCustomException throw Exception : $e.message"}
-        return buildResponseEntity(404, "검색 과정에서 에러가 발생하였습니다.", HttpStatus.NOT_FOUND)
+        return buildResponseEntity(400, "유효하지 않은 데이터", HttpStatus.BAD_REQUEST)
     }
 
     @ExceptionHandler(Exception::class)
     fun handleServerException(e: Exception): ResponseEntity<Any> {
         logger.error {"unhandledException throw Exception : $e.message"}
-        return buildResponseEntity(500, "예상치 못한 에러가 발생하였습니다.<br>" + e.message, HttpStatus.INTERNAL_SERVER_ERROR)
+        return buildResponseEntity(500, "서버 동작 오류: " + e.message, HttpStatus.INTERNAL_SERVER_ERROR)
     }
 }
