@@ -33,7 +33,33 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5">
-        
+        <LinearLayout
+            android:id="@+id/ll_tts"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                tools:src="@drawable/ic_bottom_calendar_month"
+                android:contentDescription="TODO" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="김성훈" />
+        </LinearLayout>
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="horizontal">
+            <com.ssafy.presentation.ui.study.pronounce.DrawingView
+                android:id="@+id/dv_tts_drawing"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </HorizontalScrollView>
     </LinearLayout>
 
     <LinearLayout
