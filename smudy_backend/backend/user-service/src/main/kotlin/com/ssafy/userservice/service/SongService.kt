@@ -32,6 +32,7 @@ class SongService(
                                 lyricStartTimeStamp = lyric.lyricTimestamp,
                                 lyricBlank = lyric.lyricBlank,
                                 lyricBlankAnswer = lyric.lyricBlankAnswer
+                                
                         )
                     }
             )
