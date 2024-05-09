@@ -42,12 +42,13 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/ic_bottom_calendar_month"
+                android:src="@drawable/ic_app_character"
                 android:contentDescription="TODO" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:textAppearance="@style/Noto_Sans.TEXT.L.11"
                 android:text="Smudy" />
         </LinearLayout>
         <HorizontalScrollView
@@ -82,6 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:textAppearance="@style/Noto_Sans.TEXT.L.11"
                 android:text="김성훈" />
         </LinearLayout>
         <HorizontalScrollView
