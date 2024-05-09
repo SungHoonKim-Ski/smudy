@@ -73,26 +73,22 @@ class JwtTokenProvider(
     fun getAuthentication(accessToken: String): Authentication {
 
         val internalId = getClaims(accessToken)["internal_id"].toString()
-        val principal: UserDetails = userDetailsService.loadUserByUsername(internalId)
+        val userDetails: UserDetailsImpl = userDetailsService.loadUserByUsername(internalId)
         return UsernamePasswordAuthenticationToken(
-            principal,
-            "",
-            principal.authorities
+            userDetails.username,
+            userDetails.password,
+            userDetails.authorities
         )
     }
 
     fun getAuthenticationWithClaims(claims: Claims): Authentication {
 
-//        if(claims["auth"] == null) {
-//            throw JwtException("권한 정보가 없는 토큰입니다.")
-//        }
-
         val internalId = claims["internal_id"].toString()
-        val principal: UserDetails = userDetailsService.loadUserByUsername(internalId)
+        val userDetails: UserDetailsImpl = userDetailsService.loadUserByUsername(internalId)
         return UsernamePasswordAuthenticationToken(
-                principal,
-                "",
-                principal.authorities
+            userDetails.username,
+            userDetails.password,
+            userDetails.authorities
         )
     }
 
