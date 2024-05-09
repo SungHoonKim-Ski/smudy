@@ -30,13 +30,12 @@ class JwtAuthenticationFilter(
                 val accessToken = authHeader.substring(7)
                 if (jwtTokenProvider.validateAccessToken(accessToken)) {
                     // Save authentication in SecurityContextHolder
-                    val authentication = jwtTokenProvider.getAuthentication(accessToken)
-                    SecurityContextHolder.getContext().authentication = authentication
+                    SecurityContextHolder.getContext().authentication = jwtTokenProvider.getAuthentication(accessToken)
                 }
             }
             filterChain.doFilter(request, response)
         } catch (e: ExpiredJwtException) {
-            if (request.requestURL.contains("reissue")) {
+            if (request.requestURL.contains("/reissue")) {
                 val authentication = jwtTokenProvider.getAuthenticationWithClaims(e.claims)
                 SecurityContextHolder.getContext().authentication = authentication
                 filterChain.doFilter(request, response)
@@ -46,12 +45,15 @@ class JwtAuthenticationFilter(
             }
         } catch (e: IncorrectClaimException) { // 잘못된 토큰일 경우
             SecurityContextHolder.clearContext();
+            e.printStackTrace()
             setErrorResponse(response, ErrorCode.JWT_ERROR)
         } catch (e: UsernameNotFoundException) { // 회원을 찾을 수 없을 경우
             SecurityContextHolder.clearContext();
+            e.printStackTrace()
             setErrorResponse(response, ErrorCode.JWT_ERROR)
         } catch (e: Exception) {
             SecurityContextHolder.clearContext();
+            e.printStackTrace()
             setErrorResponse(response, ErrorCode.JWT_ERROR)
         }
     }
@@ -69,5 +71,10 @@ class JwtAuthenticationFilter(
         } catch (e: IOException) {
             e.printStackTrace()
         }
+    }
+
+    override fun shouldNotFilter(request: HttpServletRequest): Boolean {
+        val path= request.requestURI
+        return path.contains("/login") || path.contains("/signup")
     }
 }

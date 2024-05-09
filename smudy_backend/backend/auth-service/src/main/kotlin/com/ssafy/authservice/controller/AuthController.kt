@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.antlr.v4.runtime.Token
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 
 
@@ -100,7 +101,7 @@ class AuthController (
             )
         } else {
             val errorResponse = CommonResult(
-                code = 403,
+                code = 401,
                 message = "재로그인 필요"
             )
 

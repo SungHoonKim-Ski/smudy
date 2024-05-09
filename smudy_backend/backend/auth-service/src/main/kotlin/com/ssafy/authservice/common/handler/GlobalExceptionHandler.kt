@@ -44,6 +44,7 @@ class GlobalExceptionHandler {
     @ExceptionHandler(Exception::class)
     fun handleServerException(e: Exception): ResponseEntity<Any> {
         logger.error {"unhandledException throw Exception : $e.message"}
+        e.printStackTrace()
         return buildResponseEntity(500, "예상치 못한 에러가 발생하였습니다.<br>" + e.message, HttpStatus.INTERNAL_SERVER_ERROR)
     }
 }
