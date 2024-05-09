@@ -1,5 +1,6 @@
 package com.ssafy.authservice.service
 
+import io.jsonwebtoken.JwtException
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -24,11 +25,11 @@ class RedisService(
         redisTemplate.opsForValue()[key!!, value!!, timeout] = TimeUnit.MILLISECONDS
     }
 
-    fun getValues(key: String?): String? {
-        return redisTemplate.opsForValue()[key!!]
+    fun getValues(key: String): String {
+        return redisTemplate.opsForValue()[key]
+                ?: throw JwtException("${key}:JWT REDIS 조회 도중 에러")
     }
 
-    @Transactional
     fun deleteValues(key: String?) {
         redisTemplate.delete(key!!)
     }

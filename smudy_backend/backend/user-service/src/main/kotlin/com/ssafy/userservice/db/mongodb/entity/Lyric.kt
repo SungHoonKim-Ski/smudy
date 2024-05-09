@@ -1,18 +1,19 @@
 package com.ssafy.userservice.db.mongodb.entity
 
+import jakarta.persistence.Embeddable
 import org.springframework.data.mongodb.core.mapping.Field
 
-class Lyric(
-
+@Embeddable
+data class Lyric(
         @Field(name = "lyric_timestamp")
         var lyricTimestamp: String,
 
         @Field(name = "lyric_sentence_en")
-        var lyricSentenceEn: String,
+        var lyricSentenceEn: String = "",
 
         @Field(name = "lyric_blank")
-        var lyricBlank: String,
+        var lyricBlank: String = "",
 
         @Field(name = "lyric_blank_answer")
-        var lyricBlankAnswer: String
+        var lyricBlankAnswer: String = ""
 )

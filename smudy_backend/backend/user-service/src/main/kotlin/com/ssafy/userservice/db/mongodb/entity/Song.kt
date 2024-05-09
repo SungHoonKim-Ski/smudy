@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
 import org.springframework.data.mongodb.core.mapping.MongoId
 
-@Document(collection = "track_v3")
+@Document(collection = "track_v4")
 class Song(
 
         @MongoId
