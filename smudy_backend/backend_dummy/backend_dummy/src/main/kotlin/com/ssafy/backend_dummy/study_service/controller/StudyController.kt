@@ -1523,9 +1523,9 @@ class StudyController (
     /**
      * chat gpt api 사용
      */
-    @PostMapping("/translate")
-    fun translate(@RequestBody request: TranslateRequest): ResponseEntity<SingleResult<TranslateResponse>> {
-        logger.debug { "/translate! $request" }
+    @GetMapping("/translate")
+    fun translate(@RequestParam("lyric") lyric: String): ResponseEntity<SingleResult<TranslateResponse>> {
+        logger.debug { "/translate! $lyric" }
         return ResponseEntity.ok(responseService.getSuccessSingleResult(
                 TranslateResponse(
                         lyricKo = "대충 해석된 내용"
