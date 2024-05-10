@@ -12,7 +12,7 @@ interface AIFeignClient {
 
 
     @PostMapping("/similarity")
-    fun getSimilarity(request: SimilarityRequest) : SimilarityResponse
+    fun getSimilarity(request: SimilarityRequest) : String
 
 //    @PostMapping("/pronounce")
 //    fun getPronounce()
