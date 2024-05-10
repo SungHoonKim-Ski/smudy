@@ -34,4 +34,6 @@
     <string name="pronounce_record_start_img_description">녹음 시작 버튼</string>
     <string name="pronounce_btn_reset">다시 녹음</string>
     <string name="pronounce_btn_analyze">분석하기</string>
+    <string name="progress_init">0 / </string>
+    <string name="submit">제출하기</string>
 </resources>

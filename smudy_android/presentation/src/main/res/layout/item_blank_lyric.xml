@@ -1,25 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center"
-    android:paddingVertical="@dimen/margin_small">
+    android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/et_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autofillHints=""
-        android:inputType="text"
-        tools:ignore="LabelFor,SmallSp"
-        android:textColor="@android:color/transparent"
-        android:cursorVisible="false"
-        android:visibility="visible"
-        android:textSize="1sp"
-        android:clickable="false"
-        android:background="@android:color/transparent"
-        />
 
     <TextView
         android:id="@+id/tv_lyric_header"
@@ -29,7 +15,21 @@
         android:textAppearance="@style/Noto_Sans.TEXT.B.16"
         android:textColor="@color/light_gray"
         android:gravity="center"
-        android:includeFontPadding="false"/>
+        android:layout_marginVertical="@dimen/margin_small"
+        android:includeFontPadding="false"
+        android:visibility="visible"/>
 
+    <EditText
+        android:id="@+id/et_lyric"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="test"
+        android:textAppearance="@style/Noto_Sans.TEXT.B.16"
+        android:textColor="@color/light_gray"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:layout_marginVertical="@dimen/margin_small"
+        android:visibility="gone"
+        />
 
-</FrameLayout>
+</LinearLayout>

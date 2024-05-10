@@ -86,11 +86,17 @@ class SpotifyManager(private val context: Context) {
         }
     }
 
+    fun seekTo(startTime: Long){
+        spotifyAppRemote.playerApi.seekTo(startTime)
+    }
+
     fun pauseTrack() {
-        spotifyAppRemote.let {
-            it.playerApi.pause().setResultCallback {
-            }?.setErrorCallback {
-                Log.e(TAG, "pauseTrack: $it", )
+        if(this::spotifyAppRemote.isInitialized){
+            spotifyAppRemote.let {
+                it.playerApi.pause().setResultCallback {
+                }?.setErrorCallback {
+                    Log.e(TAG, "pauseTrack: $it", )
+                }
             }
         }
     }
