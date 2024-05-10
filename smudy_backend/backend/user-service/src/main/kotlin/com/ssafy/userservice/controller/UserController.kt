@@ -13,6 +13,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.util.*
@@ -26,6 +27,7 @@ class UserController (
         private val wrongService: WrongService,
         private val studyListService: StudyListService,
         private val jwtService: JwtService,
+        private val spotifyService: SpotifyService
 ){
     private val logger = KotlinLogging.logger{ }
 
@@ -37,10 +39,9 @@ class UserController (
     }
 
     @GetMapping("/info")
-    fun getUserInfo(@RequestHeader("Authorization") authHeader: String): ResponseEntity<SingleResult<InfoResponse>> {
+    fun getUserInfo(): ResponseEntity<SingleResult<InfoResponse>> {
 
-        logger.info { "/info/$authHeader" }
-        val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId())
 
         return ResponseEntity.ok(
                 responseService.getSuccessSingleResult(
@@ -50,10 +51,9 @@ class UserController (
     }
 
     @GetMapping("/streak")
-    fun getUserStreak(@RequestHeader("Authorization") authHeader: String): ResponseEntity<SingleResult<StreakResponse>> {
+    fun getUserStreak(): ResponseEntity<SingleResult<StreakResponse>> {
 
-        logger.info { "/streak/$authHeader" }
-        val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId())
 
         return ResponseEntity.ok(
                 responseService.getSuccessSingleResult(
@@ -65,10 +65,9 @@ class UserController (
     }
 
     @GetMapping("/wrong")
-    fun getUserWrong(@RequestHeader("Authorization") authHeader: String): ResponseEntity<SingleResult<WrongLyricResponse>> {
+    fun getUserWrong(): ResponseEntity<SingleResult<WrongLyricResponse>> {
 
-        logger.info { "/info/$authHeader" }
-        val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId())
 
         return ResponseEntity.ok(
                 responseService.getSuccessSingleResult(
@@ -80,12 +79,11 @@ class UserController (
 
     @GetMapping("/studylist")
     fun getUserStudyList(
-            @RequestHeader("Authorization") authHeader: String
-            , @RequestParam(value = "page", required = true) page: String
+        @RequestParam(value = "page", required = true) page: String
     ): ResponseEntity<SingleResult<StudyListResponse>> {
 
         logger.info { "/studylist/$page" }
-        val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId())
 
         page.toIntOrNull()?.let {
             val pageable: Pageable = PageRequest.of(it, 20)
@@ -103,11 +101,12 @@ class UserController (
     }
 
     @PostMapping("/studylist/add")
-    fun addStudyList(@RequestHeader("Authorization") authHeader: String
-                     , @RequestBody request: AddStudyListRequest) : ResponseEntity<CommonResult> {
+    fun addStudyList(
+        @RequestBody request: AddStudyListRequest
+    ) : ResponseEntity<CommonResult> {
 
         logger.info { "/studylist/add $request" }
-        val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId())
         val saveCount = studyListService.addUserStudyList(userInternalId, request.songIds)
 
         return ResponseEntity.ok(
@@ -120,12 +119,11 @@ class UserController (
 
     @GetMapping("/history")
     fun getUserHistory(
-            @RequestHeader("Authorization") authHeader: String
-            , @RequestParam(value = "time", required = true) time: String
+        @RequestParam(value = "time", required = true) time: String
     ): ResponseEntity<SingleResult<HistoryResponse>> {
 
         logger.info { "/history/$time" }
-        val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId())
 
         time.toLongOrNull()?.let {
             return ResponseEntity.ok(
@@ -141,6 +139,7 @@ class UserController (
     fun getUserHistoryFill(
             @PathVariable(value = "learnReportId", required = true) learnReportId: String
     ): ResponseEntity<SingleResult<HistoryFillResponse>>  {
+
         logger.info { "/history/fill $learnReportId" }
 
         learnReportId.toIntOrNull()?.let {
@@ -156,9 +155,9 @@ class UserController (
 
     @GetMapping("/history/pick/{learnReportId}")
     fun getUserHistoryPick(
-            @RequestHeader("Authorization") authHeader: String
-            , @PathVariable(value = "learnReportId", required = true) learnReportId: String
+        @PathVariable(value = "learnReportId", required = true) learnReportId: String
     ): ResponseEntity<SingleResult<HistoryPickResponse>> {
+
         logger.info { "/history/pick/ $learnReportId" }
 
         learnReportId.toIntOrNull()?.let {
@@ -174,8 +173,9 @@ class UserController (
 
     @GetMapping("/history/express/{learnReportId}")
     fun getUserHistoryExpress(
-            @PathVariable(value = "learnReportId", required = true) learnReportId: String
+        @PathVariable(value = "learnReportId", required = true) learnReportId: String
     ): ResponseEntity<SingleResult<HistoryExpressResponse>> {
+
         logger.info { "/history/express/$learnReportId" }
 
         learnReportId.toIntOrNull()?.let {
@@ -190,8 +190,9 @@ class UserController (
 
     @GetMapping("/history/pronounce/{learnReportId}")
     fun getUserHistoryPronounce(
-            @PathVariable(value = "learnReportId", required = true) learnReportId: String
+        @PathVariable(value = "learnReportId", required = true) learnReportId: String
     ): ResponseEntity<SingleResult<HistoryPronounceResponse>> {
+
         logger.info { "/history/pronounce/$learnReportId" }
 
         learnReportId.toIntOrNull()?.let {
@@ -205,12 +206,12 @@ class UserController (
     }
 
     @PostMapping("/fill/submit")
-    fun submitFill(@RequestHeader("Authorization") authHeader: String
-                    , @RequestBody request: SubmitFillRequest
+    fun submitFill(
+        @RequestBody request: SubmitFillRequest
     ): ResponseEntity<SingleResult<SubmitFillResponse>> {
 
         logger.debug { "/submit/fill $request" }
-        val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId())
 
         return ResponseEntity.ok(
                 responseService.getSuccessSingleResult(
@@ -224,11 +225,12 @@ class UserController (
     }
 
     @PostMapping("/pick/submit")
-    fun submitPick(@RequestHeader("Authorization") authHeader: String
-                    , @RequestBody request: SubmitPickRequest): ResponseEntity<SingleResult<SubmitPickResponse>> {
+    fun submitPick(
+        @RequestBody request: SubmitPickRequest
+    ): ResponseEntity<SingleResult<SubmitPickResponse>> {
 
         logger.debug { "/pick/submit $request" }
-        val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId())
 
         return ResponseEntity.ok(
                 responseService.getSuccessSingleResult(
@@ -242,11 +244,12 @@ class UserController (
     }
 
     @PostMapping("/express/submit")
-    fun submitExpress(@RequestHeader("Authorization") authHeader: String
-                      , @RequestBody request: SubmitExpressRequest): ResponseEntity<CommonResult> {
+    fun submitExpress(
+        @RequestBody request: SubmitExpressRequest
+    ): ResponseEntity<CommonResult> {
 
         logger.debug { "/express/submit $request" }
-        val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId())
 
         return ResponseEntity.ok(
                 responseService.getSuccessMessageResult(
@@ -260,15 +263,14 @@ class UserController (
 
     @PostMapping("/pronounce/submit")
     fun submitPronounce(
-            @RequestHeader("Authorization") authHeader: String
-            , @RequestPart("userFile") userFile: MultipartFile
+            @RequestPart("userFile") userFile: MultipartFile
             , @RequestPart("ttsFile") ttsFile: MultipartFile
             , @RequestPart("json") request: SubmitPronounceRequest
     ): ResponseEntity<SingleResult<SubmitPronounceResponse>> {
 
         logger.debug { "/fill/pronounce $request" }
         val mapper = jacksonObjectMapper()
-        val userInternalId = UUID.fromString(jwtService.getUserInternalId(authHeader))
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId())
 
         val sampleAiAnalyze = mapper.readValue("" +
                 "{\n" +
@@ -499,4 +501,96 @@ class UserController (
         return ResponseEntity.ok(responseService.getSuccessSingleResult(response,"Pronounce 제출 완료"))
     }
 
+    @GetMapping("/recommend")
+    fun recommendMusic()
+//    : ResponseEntity<SingleResult<RecommendResponse>>{
+    : ResponseEntity<Any>?{
+
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId())
+
+        // 1. 유저 히스토리 가져오기
+        val history = learnReportService.getUserLearnReport(userInternalId)
+
+        // 2. 히스토리가 없는 경우, 랜덤 추천 실행
+        if(history.learnReportResponses.isEmpty()) {
+            val response = RecommendResponse()
+
+            response.userRecommendSongs.add(
+                SongSimple(
+                    songArtist = "Ingrid Michaelson"
+                    , songName = "You And I"
+                    , spotifyId = "7aohwSiTDju51QmC54AUba"
+                    , albumJacket = "https://i.scdn.co/image/ab67616d00001e022f9b47bdc2b1c7cae7b014af"
+                )
+            )
+
+            response.userRecommendSongs.add(
+                SongSimple(
+                    songArtist = "Ingrid Michaelson"
+                    , songName = "Everybody"
+                    , spotifyId = "3SBzDgdTwHOMSik82ZI6L2"
+                    , albumJacket = "https://i.scdn.co/image/ab67616d00001e0279f6239caf413738d82d3b0f"
+                )
+            )
+
+            response.userRecommendSongs.add(
+                SongSimple(
+                    songArtist = "Weezer"
+                    , songName = "Say It Ain't So"
+                    , spotifyId = "3qmncUJvABe0QDRwMZhbPt"
+                    , albumJacket = "https://i.scdn.co/image/ab67616d00001e023be73241fed381886709f761"
+                )
+            )
+
+
+
+            response.userRecommendSongs.add(
+                SongSimple(
+                    songArtist = "Weezer"
+                    , songName = "My Name Is Jonas"
+                    , spotifyId = "08k0JhCj8oJLB7Xuclr57s"
+                    , albumJacket = "https://i.scdn.co/image/ab67616d00001e02f6e2ddb1cba9a5900de38cd1"
+                )
+            )
+
+            response.userRecommendSongs.add(
+                SongSimple(
+                    songArtist = "Megadeth"
+                    , songName = "Symphony Of Destruction"
+                    , spotifyId = "1955ZZJe1TzmSR0TomnNjI"
+                    , albumJacket = "https://i.scdn.co/image/ab67616d00001e027d7bd3e72d507a14f8f3863d"
+                )
+            )
+
+            response.userRecommendSongs.add(
+                SongSimple(
+                    songArtist = "Red Hot Chili Peppers"
+                    , songName = "Scar Tissue"
+                    , spotifyId = "1G391cbiT3v3Cywg8T7DM1"
+                    , albumJacket = "https://i.scdn.co/image/ab67616d00001e0294d08ab63e57b0cae74e8595"
+                )
+            )
+
+            return ResponseEntity.ok(
+                responseService.getSuccessSingleResult(
+                    response
+                    ,"음악 추천 성공(사용자 학습 데이터 없음)"
+                )
+            )
+        }
+
+        // 3. 히스토리에서 노래의 장르, 가수 추출
+        spotifyService.getRecommendations(userInternalId)
+        
+        // 5. 장르와 가수 기준으로 추천 실행
+
+        val response = RecommendResponse()
+
+        return ResponseEntity.ok(
+            responseService.getSuccessSingleResult(
+                response
+                ,"음악 추천 성공"
+            )
+        )
+    }
 }

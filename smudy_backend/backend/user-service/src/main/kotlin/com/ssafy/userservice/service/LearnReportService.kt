@@ -7,6 +7,9 @@ import com.ssafy.userservice.exception.exception.HistoryNotFoundException
 import com.ssafy.userservice.exception.exception.LearnReportNotFoundException
 import com.ssafy.userservice.service.feign.StudyServiceClient
 import io.github.oshai.kotlinlogging.KotlinLogging
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.sql.Date
@@ -56,6 +59,34 @@ class LearnReportService (
         }
 
         return StreakResponse(completeStreakResponses)
+    }
+
+    @Transactional
+    fun getUserLearnReport(userInternalId: UUID) : HistoryResponse {
+
+        val userLearnReports = learnReportRepository.findAllByUserInternalId(
+            userInternalId = userInternalId
+        )
+
+        if (userLearnReports.isEmpty())
+            throw HistoryNotFoundException("해당 날짜에 히스토리가 존재하지 않음")
+
+        val songIdSongMap = songService.findAllBySongIdsIn(
+            userLearnReports.map { it.songId }
+        ).associateBy { it.spotifyId }
+
+        val response = userLearnReports.map { learnReport ->
+            val song = songIdSongMap[learnReport.songId]!!
+            LearnReportResponse(
+                learnReportId = learnReport.learnReportId
+                , albumJacket = song.albumJacket
+                , songName = song.songName
+                , songArtist = song.songArtist
+                , problemType = learnReport.problemType
+                , learnReportDate = learnReport.learnReportDate.time
+            )
+        }
+        return HistoryResponse(response)
     }
 
     @Transactional

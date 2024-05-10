@@ -2,6 +2,7 @@ package com.ssafy.userservice.service
 
 import com.ssafy.userservice.db.mongodb.entity.Song
 import com.ssafy.userservice.db.mongodb.repository.SongRepository
+import com.ssafy.userservice.dto.response.SongArtistAndGenre
 import com.ssafy.userservice.dto.response.SongSimple
 import com.ssafy.userservice.dto.response.feign.*
 import com.ssafy.userservice.exception.exception.SongNotFoundException
@@ -84,6 +85,16 @@ class SongService(
                 songArtist = song.songArtist,
                 albumJacket = song.albumJacket,
                 spotifyId = song.spotifyId
+            )
+        }
+    }
+
+    fun findSongArtistAndGenre(songIds: List<String>) : List<SongArtistAndGenre> {
+        return songRepository.findAllBySpotifyIdIn(songIds).map {
+            song -> SongArtistAndGenre(
+                spotifyId = song.spotifyId,
+                songArtistId = song.songArtistId,
+                songGenre = song.songGenre
             )
         }
     }
