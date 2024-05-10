@@ -14,8 +14,8 @@ class AiService (
 ){
 
         fun getSimilarity(request: SimilarityRequest) : String {
-                val baseURI = URI.create(AI_SERVER_URL)
-                return aiFeignClient.getSimilarity(baseURI, request)
+                val baseUrl = URI.create(AI_SERVER_URL)
+                return aiFeignClient.getSimilarity(baseUrl, request)
         }
 
 
