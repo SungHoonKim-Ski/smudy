@@ -2,6 +2,7 @@ package com.ssafy.data.datasource.study.remote.pronounce
 
 import com.ssafy.data.api.PronounceService
 import com.ssafy.data.model.DefaultResponse
+import com.ssafy.data.model.music.pronounce.GradedPronounceResponse
 import com.ssafy.data.model.music.pronounce.PronounceResponse
 import com.ssafy.data.model.music.pronounce.TranslatedLyricResponse
 import okhttp3.MultipartBody
@@ -23,7 +24,7 @@ class PronounceRemoteDataSourceImpl @Inject constructor(
         userFile: MultipartBody.Part,
         ttsFile: MultipartBody.Part,
         json: RequestBody
-    ): Result<DefaultResponse<Boolean>> {
+    ): Result<DefaultResponse<GradedPronounceResponse>> {
         return pronounceService.gradePronounceProblem(userFile, ttsFile, json)
     }
 

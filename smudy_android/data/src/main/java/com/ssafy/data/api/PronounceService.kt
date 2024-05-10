@@ -1,6 +1,7 @@
 package com.ssafy.data.api
 
 import com.ssafy.data.model.DefaultResponse
+import com.ssafy.data.model.music.pronounce.GradedPronounceResponse
 import com.ssafy.data.model.music.pronounce.PronounceResponse
 import com.ssafy.data.model.music.pronounce.TranslatedLyricResponse
 import okhttp3.MultipartBody
@@ -22,8 +23,8 @@ interface PronounceService {
     @Multipart
     @POST("study/pronounce/submit")
     suspend fun gradePronounceProblem(
-        @Part("userFile") userFile: MultipartBody.Part,
-        @Part("ttsFile") ttsFile: MultipartBody.Part,
+        @Part userFile: MultipartBody.Part,
+        @Part ttsFile: MultipartBody.Part,
         @Part("json") json: RequestBody
-    ): Result<DefaultResponse<Boolean>>
+    ): Result<DefaultResponse<GradedPronounceResponse>>
 }

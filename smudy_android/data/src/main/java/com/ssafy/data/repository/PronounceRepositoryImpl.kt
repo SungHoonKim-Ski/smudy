@@ -3,6 +3,7 @@ package com.ssafy.data.repository
 import com.squareup.moshi.Moshi
 import com.ssafy.data.datasource.study.remote.pronounce.PronounceRemoteDataSource
 import com.ssafy.data.mapper.toPronounceProblemInfo
+import com.ssafy.data.model.music.pronounce.PronounceLyricRequest
 import com.ssafy.domain.model.ApiError
 import com.ssafy.domain.model.ApiResult
 import com.ssafy.domain.model.study.pronounce.PronounceProblemInfo
@@ -14,6 +15,7 @@ import kotlinx.coroutines.flow.onStart
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import javax.inject.Inject
 
@@ -50,12 +52,23 @@ class PronounceRepositoryImpl @Inject constructor(
         ttsFile: File,
         lyric: String,
         lyricKo: String
-    ): Flow<ApiResult<Boolean>> = flow<ApiResult<Boolean>> {
+    ): Flow<ApiResult<Boolean>> = flow {
         val recorderRequestBody = userFile.asRequestBody("audio/3gp".toMediaTypeOrNull())
         val ttsRequestBody = ttsFile.asRequestBody("audio/wav".toMediaTypeOrNull())
 
-        val recorderPart = MultipartBody.Part.createFormData("userFile", userFile.name, recorderRequestBody)
+        val recorderPart =
+            MultipartBody.Part.createFormData("userFile", userFile.name, recorderRequestBody)
         val ttsPart = MultipartBody.Part.createFormData("ttsFile", ttsFile.name, ttsRequestBody)
-        emit(ApiResult.Success(true))
+        val pronounceLyricRequest = PronounceLyricRequest(lyric, lyricKo)
+        val jsonStr = moshi.adapter(PronounceLyricRequest::class.java).toJson(pronounceLyricRequest)
+        val requestBody = jsonStr.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+        val response = pronounceRemoteDataSource.gradePronounceProblem(recorderPart, ttsPart, requestBody)
+        val data = response.getOrNull()
+        if (data != null) {
+            emit(ApiResult.Success(true))
+        } else {
+            val exception = response.exceptionOrNull() as NetworkException
+            emit(ApiResult.Failure(ApiError(exception.code, exception.message)))
+        }
     }.onStart { emit(ApiResult.Loading()) }
 }

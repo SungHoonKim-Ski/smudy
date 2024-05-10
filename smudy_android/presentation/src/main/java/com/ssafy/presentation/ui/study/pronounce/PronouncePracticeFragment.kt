@@ -80,6 +80,9 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
             lvTtsSmudy.setOnClickListener {
                 startTtsPlaying()
             }
+            btnGradePronounce.setOnClickListener {
+                parentViewModel.gradePronounceProblem(file,ttsFile)
+            }
         }
     }
 
