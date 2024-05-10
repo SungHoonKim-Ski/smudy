@@ -24,7 +24,7 @@ class FeignController (
         return problemService.getProblemsByProblemBoxId(problemBoxId)
     }
 
-    @GetMapping("/test")
+    @PostMapping("/test")
     fun getSimilarity(request: SimilarityRequest) : SimilarityResponse {
         return aiFeignClient.getSimilarity(request)
     }
