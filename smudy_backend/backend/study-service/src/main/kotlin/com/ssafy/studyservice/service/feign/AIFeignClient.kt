@@ -5,14 +5,16 @@ import com.ssafy.studyservice.dto.response.ai.SimilarityResponse
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import java.net.URI
 
 
-@FeignClient(name = "myai", url = "\${ai.server}", path = "/api/ai" )
+@FeignClient(name = "myai", path = "/api/ai")
 interface AIFeignClient {
 
 
     @PostMapping("/similarity")
-    fun getSimilarity(request: SimilarityRequest) : String
+    fun getSimilarity(baseurl: URI ,@RequestBody request: SimilarityRequest) : String
 
 //    @PostMapping("/pronounce")
 //    fun getPronounce()
