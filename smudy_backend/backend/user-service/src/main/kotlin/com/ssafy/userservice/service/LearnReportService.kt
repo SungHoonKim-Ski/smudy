@@ -61,7 +61,7 @@ class LearnReportService (
     @Transactional
     fun getUserLearnReport(userInternalId: UUID, timestamp: Long) : HistoryResponse {
 
-        val currentLocalDate = Date(timestamp * 1000).toLocalDate()
+        val currentLocalDate = Date(timestamp).toLocalDate()
         val formatterStart = DateTimeFormatter.ofPattern("yyyy-MM-01")
         val startLocalDate = LocalDate.parse(currentLocalDate.format(formatterStart))
 
