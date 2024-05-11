@@ -259,10 +259,10 @@ class UserService(
         return "Express 제출 완료"
     }
 
-    @Transactional
-    fun savePronounce(userInternalId: UUID, request: SubmitPronounceRequest) : SubmitPronounceResponse {
-
-    }
+//    @Transactional
+//    fun savePronounce(userInternalId: UUID, request: SubmitPronounceRequest) : SubmitPronounceResponse {
+//
+//    }
 
     fun addStreak(total: Int, score: Int, userInternalId: UUID, albumJacket: String) : Boolean {
         if (isCorrect(total, score)) {
