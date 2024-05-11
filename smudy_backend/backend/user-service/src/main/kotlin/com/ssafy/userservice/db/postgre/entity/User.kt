@@ -38,4 +38,9 @@ class User(
 
         @Column(name = "user_is_activate", nullable = false)
         var isActive: Boolean = true
-)
+
+) {
+        fun userExpUp() {
+                userExp += 100
+        }
+}

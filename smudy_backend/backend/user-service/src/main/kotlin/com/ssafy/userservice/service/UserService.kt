@@ -2,10 +2,7 @@ package com.ssafy.userservice.service
 
 import com.ssafy.userservice.db.postgre.entity.*
 import com.ssafy.userservice.db.postgre.repository.UserRepository
-import com.ssafy.userservice.dto.request.SignUpRequest
-import com.ssafy.userservice.dto.request.SubmitExpressRequest
-import com.ssafy.userservice.dto.request.SubmitFillRequest
-import com.ssafy.userservice.dto.request.SubmitPickRequest
+import com.ssafy.userservice.dto.request.*
 import com.ssafy.userservice.dto.response.*
 import com.ssafy.userservice.dto.response.feign.ExpressResponse
 import com.ssafy.userservice.exception.exception.LearnReportNotSavedException
@@ -22,7 +19,6 @@ class UserService(
         private val songService: SongService,
         private val learnReportService: LearnReportService,
         private val studyServiceClient: StudyServiceClient,
-
 ) {
 
     private val logger = KotlinLogging.logger{ }
@@ -132,14 +128,17 @@ class UserService(
                 )
         )
 
-        if (isCorrect(totalSize, score)) {
-            learnReportService.insertOrUpdateUserStreak(
-                    Streak(
-                            userInternalId = userInternalId,
-                            songJacket = song.albumJacket,
-                            streakDate = java.sql.Date(System.currentTimeMillis())
-                    )
-            )
+        val isCorrect = addStreak(
+                userInternalId = userInternalId,
+                total = totalSize,
+                score = score,
+                albumJacket = song.albumJacket
+        )
+
+        if (isCorrect) {
+            userRepository.findByUserInternalId(userInternalId)?.let {
+                it.userExpUp()
+            } ?: throw UserNotFoundException("Fill 채점 도중 유저를 찾지 못함")
         }
 
         return SubmitFillResponse(
@@ -197,21 +196,17 @@ class UserService(
                 )
         )
 
-        addStreak(
+        val isCorrect = addStreak(
                 total = userLearnReport.learnReportTotal,
                 score = userLearnReport.learnReportTotal,
                 userInternalId = userInternalId,
                 albumJacket = song.albumJacket
         )
 
-        if (isCorrect(response.totalSize, response.score)) {
-            learnReportService.insertOrUpdateUserStreak(
-                    Streak(
-                            userInternalId = userInternalId,
-                            songJacket = song.albumJacket,
-                            streakDate = java.sql.Date(System.currentTimeMillis())
-                    )
-            )
+        if (isCorrect) {
+            userRepository.findByUserInternalId(userInternalId)?.let {
+                it.userExpUp()
+            } ?: throw UserNotFoundException("Fill 채점 도중 유저를 찾지 못함")
         }
 
         return response
@@ -249,16 +244,27 @@ class UserService(
                 )
         )
 
-        addStreak(
+        val isCorrect = addStreak(
                 average = userLearnReport.learnReportScore,
                 userInternalId = userInternalId,
                 albumJacket = song.albumJacket
         )
 
+        if (isCorrect) {
+            userRepository.findByUserInternalId(userInternalId)?.let {
+                it.userExpUp()
+            } ?: throw UserNotFoundException("Fill 채점 도중 유저를 찾지 못함")
+        }
+
         return "Express 제출 완료"
     }
 
-    fun addStreak(total: Int, score: Int, userInternalId: UUID, albumJacket: String) {
+    @Transactional
+    fun savePronounce(userInternalId: UUID, request: SubmitPronounceRequest) : SubmitPronounceResponse {
+
+    }
+
+    fun addStreak(total: Int, score: Int, userInternalId: UUID, albumJacket: String) : Boolean {
         if (isCorrect(total, score)) {
             learnReportService.insertOrUpdateUserStreak(
                     Streak(
@@ -267,10 +273,12 @@ class UserService(
                             streakDate = java.sql.Date(System.currentTimeMillis())
                     )
             )
+            return true
         }
+        return false
     }
 
-    fun addStreak(average: Int, userInternalId: UUID, albumJacket: String) {
+    fun addStreak(average: Int, userInternalId: UUID, albumJacket: String) : Boolean {
         if (isCorrect(average)) {
             learnReportService.insertOrUpdateUserStreak(
                     Streak(
@@ -279,7 +287,9 @@ class UserService(
                             streakDate = java.sql.Date(System.currentTimeMillis())
                     )
             )
+            return true
         }
+        return false
     }
 
     fun isCorrect(total: Int, score: Int): Boolean {
