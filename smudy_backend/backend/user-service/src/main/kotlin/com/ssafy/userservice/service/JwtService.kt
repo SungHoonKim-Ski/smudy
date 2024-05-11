@@ -4,11 +4,13 @@ import com.ssafy.userservice.exception.exception.JwtExpiredException
 import io.jsonwebtoken.*
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
+import io.jsonwebtoken.security.SecurityException
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
@@ -26,27 +28,18 @@ class JwtService(
         key = Keys.hmacShaKeyFor(keyBytes)
     }
 
-    fun getUserInternalId(authHeader: String): String {
-        return try {
-            val accessToken = authHeader.substring(7)
-            val claims = parseClaims(accessToken)
-            val userInternalId = claims["internal_id"].toString()
-            userInternalId
-        } catch (e: ExpiredJwtException) {
-            // 토큰이 만료된 경우
-            throw JwtExpiredException("Expired refresh token.")
-        } catch (e: UnsupportedJwtException) {
-            // 지원되지 않는 JWT 형식인 경우
-            throw UnsupportedJwtException("Unsupported JWT token.", e)
-        } catch (e: MalformedJwtException) {
-            // JWT 형식이 잘못된 경우
-            throw MalformedJwtException("Invalid JWT token.", e)
-        } catch (e: IllegalArgumentException) {
-            // refreshToken 인자가 잘못된 경우 (null 또는 빈 문자열 등)
-            throw IllegalArgumentException("JWT token compact of handler are invalid.", e)
-        } catch (e: Exception) {
-            throw JwtException("JWT Parse Error", e)
+    fun getUserInternalId(): String {
+
+        val authentication = SecurityContextHolder.getContext().authentication
+        // ContextHolder의 authentication에서 userInternalId를 반환
+        if(authentication != null && authentication.isAuthenticated) {
+            val principal = authentication.principal
+            if (principal is User) {
+                return principal.username
+            }
         }
+        
+        throw SecurityException("No authenticated user found.")
     }
 
     private fun resolveToken(request: HttpServletRequest): String {
@@ -86,8 +79,8 @@ class JwtService(
         val authorities = listOf(SimpleGrantedAuthority(role)) // 권한 정보를 GrantedAuthority 객체 리스트로 변환
 
         val principal = User(internalId, "", authorities)  // Spring Security의 User 객체 사용
-
-        return UsernamePasswordAuthenticationToken(principal, null, authorities)  // Authentication 객체 생성
+        // Authentication 객체 생성
+        return UsernamePasswordAuthenticationToken(principal, null, principal.authorities)
     }
 
 }

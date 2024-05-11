@@ -68,6 +68,35 @@ class LearnReportService (
     }
 
     @Transactional
+    fun getUserLearnReport(userInternalId: UUID) : HistoryResponse {
+
+        val userLearnReports = learnReportRepository.findAllByUserInternalId(
+            userInternalId = userInternalId
+        )
+
+        if (userLearnReports.isEmpty())
+//            throw HistoryNotFoundException("해당 날짜에 히스토리가 존재하지 않음")
+            return HistoryResponse(emptyList())
+
+        val songIdSongMap = songService.findAllBySongIdsIn(
+            userLearnReports.map { it.songId }
+        ).associateBy { it.spotifyId }
+
+        val response = userLearnReports.map { learnReport ->
+            val song = songIdSongMap[learnReport.songId]!!
+            LearnReportResponse(
+                learnReportId = learnReport.learnReportId
+                , albumJacket = song.albumJacket
+                , songName = song.songName
+                , songArtist = song.songArtist
+                , problemType = learnReport.problemType
+                , learnReportDate = learnReport.learnReportDate.time
+            )
+        }
+        return HistoryResponse(response)
+    }
+
+    @Transactional
     fun getUserLearnReport(userInternalId: UUID, timestamp: Long) : HistoryResponse {
 
         val currentLocalDate = Date(timestamp).toLocalDate()

@@ -1,6 +1,9 @@
 package com.ssafy.userservice.db.postgre.entity
 
 import jakarta.persistence.*
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 import java.util.Date
 import java.util.UUID
 
@@ -39,7 +42,41 @@ class User(
         @Column(name = "user_is_activate", nullable = false)
         var isActive: Boolean = true
 
-) {
+) : UserDetails {
+
+        override fun getUsername(): String {
+                // 사용자 이름을 반환
+                return userInternalId.toString()
+        }
+
+        override fun getPassword(): String {
+                return ""
+        }
+
+        override fun getAuthorities(): Collection<GrantedAuthority> {
+                return listOf(SimpleGrantedAuthority("ROLE_USER"))
+        }
+
+        override fun isAccountNonExpired(): Boolean {
+                // 계정의 만료 여부를 반환
+                return true
+        }
+
+        override fun isAccountNonLocked(): Boolean {
+                // 계정의 잠김 여부를 반환
+                return true
+        }
+
+        override fun isCredentialsNonExpired(): Boolean {
+                // 자격 증명의 만료 여부를 반환
+                return true
+        }
+
+        override fun isEnabled(): Boolean {
+                // 계정의 활성화 여부를 반환
+                return isActive
+        }
+
         fun userExpUp() {
                 userExp += 100
         }
