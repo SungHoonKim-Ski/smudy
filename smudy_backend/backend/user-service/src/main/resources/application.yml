@@ -48,9 +48,3 @@ logging:
     org:
       springframework:
         security: debug
-
-spotify:
-  client:
-    id: ENC(DFr4QalitdSxGggAOr8S5k5pgstWYpkm+tazjcmY1DVu65G6WrJGoGnXI2Pw1K/H)
-    secret: ENC(ObO1htRuvBUcMVR+V5U8kzMJkCcs2Y3JUVm4k7GAob7Lt+zljWkY83QWO9xIo/hz)
-    redirect-uri: ENC(ncaVqEZUTn2u2je4fDo3+0nVlxoVbWdsVQM3vFvCCFSRyE5fy0rpnw==)

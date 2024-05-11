@@ -13,7 +13,6 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.util.*
@@ -27,7 +26,7 @@ class UserController (
         private val wrongService: WrongService,
         private val studyListService: StudyListService,
         private val jwtService: JwtService,
-        private val spotifyService: SpotifyService
+        private val recommendService: RecommendService
 ){
     private val logger = KotlinLogging.logger{ }
 
@@ -503,92 +502,13 @@ class UserController (
 
     @GetMapping("/recommend")
     fun recommendMusic()
-//    : ResponseEntity<SingleResult<RecommendResponse>>{
-    : ResponseEntity<Any>?{
+    : ResponseEntity<SingleResult<RecommendResponse>>{
 
         val userInternalId = UUID.fromString(jwtService.getUserInternalId())
 
-        // 1. 유저 히스토리 가져오기
-        val history = learnReportService.getUserLearnReport(userInternalId)
-
-        // 2. 히스토리가 없는 경우, 랜덤 추천 실행
-        if(history.learnReportResponses.isEmpty()) {
-            val response = RecommendResponse()
-
-            response.userRecommendSongs.add(
-                SongSimple(
-                    songArtist = "Ingrid Michaelson"
-                    , songName = "You And I"
-                    , spotifyId = "7aohwSiTDju51QmC54AUba"
-                    , albumJacket = "https://i.scdn.co/image/ab67616d00001e022f9b47bdc2b1c7cae7b014af"
-                )
-            )
-
-            response.userRecommendSongs.add(
-                SongSimple(
-                    songArtist = "Ingrid Michaelson"
-                    , songName = "Everybody"
-                    , spotifyId = "3SBzDgdTwHOMSik82ZI6L2"
-                    , albumJacket = "https://i.scdn.co/image/ab67616d00001e0279f6239caf413738d82d3b0f"
-                )
-            )
-
-            response.userRecommendSongs.add(
-                SongSimple(
-                    songArtist = "Weezer"
-                    , songName = "Say It Ain't So"
-                    , spotifyId = "3qmncUJvABe0QDRwMZhbPt"
-                    , albumJacket = "https://i.scdn.co/image/ab67616d00001e023be73241fed381886709f761"
-                )
-            )
-
-
-
-            response.userRecommendSongs.add(
-                SongSimple(
-                    songArtist = "Weezer"
-                    , songName = "My Name Is Jonas"
-                    , spotifyId = "08k0JhCj8oJLB7Xuclr57s"
-                    , albumJacket = "https://i.scdn.co/image/ab67616d00001e02f6e2ddb1cba9a5900de38cd1"
-                )
-            )
-
-            response.userRecommendSongs.add(
-                SongSimple(
-                    songArtist = "Megadeth"
-                    , songName = "Symphony Of Destruction"
-                    , spotifyId = "1955ZZJe1TzmSR0TomnNjI"
-                    , albumJacket = "https://i.scdn.co/image/ab67616d00001e027d7bd3e72d507a14f8f3863d"
-                )
-            )
-
-            response.userRecommendSongs.add(
-                SongSimple(
-                    songArtist = "Red Hot Chili Peppers"
-                    , songName = "Scar Tissue"
-                    , spotifyId = "1G391cbiT3v3Cywg8T7DM1"
-                    , albumJacket = "https://i.scdn.co/image/ab67616d00001e0294d08ab63e57b0cae74e8595"
-                )
-            )
-
-            return ResponseEntity.ok(
-                responseService.getSuccessSingleResult(
-                    response
-                    ,"음악 추천 성공(사용자 학습 데이터 없음)"
-                )
-            )
-        }
-
-        // 3. 히스토리에서 노래의 장르, 가수 추출
-        spotifyService.getRecommendations(userInternalId)
-        
-        // 5. 장르와 가수 기준으로 추천 실행
-
-        val response = RecommendResponse()
-
         return ResponseEntity.ok(
             responseService.getSuccessSingleResult(
-                response
+                recommendService.getRecommendations(userInternalId)
                 ,"음악 추천 성공"
             )
         )
