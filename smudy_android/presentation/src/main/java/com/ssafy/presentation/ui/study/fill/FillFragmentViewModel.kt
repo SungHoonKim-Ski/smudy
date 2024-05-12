@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.ssafy.domain.model.ApiResult
 import com.ssafy.domain.model.LyricBlank
 import com.ssafy.domain.model.SongWithBlank
+import com.ssafy.domain.model.SubmitFillBlankData
+import com.ssafy.domain.usecase.music.SubmitFillBlankUseCase
 import com.ssafy.domain.usecase.study.GetSongWithBlankUseCase
 import com.ssafy.presentation.base.toMilliSecond
 import com.ssafy.presentation.model.BlankQuestion
@@ -23,12 +25,16 @@ private const val TAG = "FillFragmentViewModel"
 
 @HiltViewModel
 class FillFragmentViewModel @Inject constructor(
-    private val getSongWithBlankUseCase: GetSongWithBlankUseCase
+    private val getSongWithBlankUseCase: GetSongWithBlankUseCase,
+    private val submitFillBlankUseCase: SubmitFillBlankUseCase
 ): ViewModel() {
     private lateinit var timer : Job
 
     private val _songResult = MutableStateFlow<ApiResult<SongWithBlank>>(ApiResult.Loading())
     val songResult = _songResult.asStateFlow()
+
+    private val _submitResult = MutableStateFlow<ApiResult<SubmitFillBlankData>>(ApiResult.Loading())
+    val submitResult = _submitResult.asStateFlow()
 
     val timeLineIndexMap = mutableMapOf<Long, Int>()
     private val _blankQuestionList = mutableListOf<BlankQuestion>()
@@ -55,9 +61,33 @@ class FillFragmentViewModel @Inject constructor(
         Log.d(TAG, "setQuestionInput: ${_blankQuestionList[idx]}")
     }
 
+    private var songId = ""
+    fun setSongId(songId: String){
+        this.songId = songId
+    }
+
+    fun submitAnswer(){
+        viewModelScope.launch {
+            submitFillBlankUseCase(songId, _blankQuestionList.map{ it.inputAnswer }).collect{
+                if(it is ApiResult.Success){
+
+                }
+                _submitResult.emit(it)
+            }
+        }
+
+    }
+
     fun getQuestionInput(idx: Int) = _blankQuestionList[idx].inputAnswer
 
     private var endTime = -1L
+
+    private var _curLine = 0
+    val curLine: Int get() = _curLine
+
+    fun setCurLine(curLine: Int){
+        _curLine = curLine
+    }
 
     private val _curTime = MutableLiveData(0L)
     val curTime: LiveData<Long>
@@ -95,7 +125,7 @@ class FillFragmentViewModel @Inject constructor(
 
                     _blankQuestionList.clear()
                     _blankQuestionList.addAll(it.data.lyricsBlank.map{
-                        BlankQuestion(it.lyricBlank.replace("_", " "), it.lyricBlankAnswer, it.lyricStartTimeStamp, " ".repeat(it.lyricBlankAnswer.length),
+                        BlankQuestion(it.lyricBlank.replace("_", " "), it.lyricBlankAnswer, it.lyricStartTimeStamp.toMilliSecond(), " ".repeat(it.lyricBlankAnswer.length),
                             it.lyricBlank.indexOf("_"), it.lyricBlank.lastIndexOf("_")
                         )
                     })
