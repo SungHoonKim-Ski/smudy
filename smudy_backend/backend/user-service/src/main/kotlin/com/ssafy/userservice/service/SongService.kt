@@ -7,8 +7,8 @@ import com.ssafy.userservice.dto.response.SongSimple
 import com.ssafy.userservice.dto.response.feign.*
 import com.ssafy.userservice.exception.exception.SongNotFoundException
 import io.github.oshai.kotlinlogging.KotlinLogging
-import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 
 @Service
@@ -18,7 +18,7 @@ class SongService(
 
     private val log = KotlinLogging.logger {  }
     
-    @Transactional
+    @Transactional(readOnly = true)
     fun getFillQuiz(songId: String) : FillResponse {
         return songRepository.findBySpotifyId(songId)?.let { song ->
             FillResponse(
@@ -40,7 +40,7 @@ class SongService(
         } ?: throw SongNotFoundException("Id가 ${songId}인 노래가 존재하지 않음(FILL)")
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     fun getPickQuiz(songId: String) : SongSimple {
 
         return songRepository.findBySpotifyId(songId)?.let { song ->
@@ -53,7 +53,7 @@ class SongService(
         } ?: throw SongNotFoundException("Id가 ${songId}인 노래가 존재하지 않음(FILL)")
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     fun getExpressQuiz(songId: String) : SongSimple {
         return songRepository.findBySpotifyId(songId)?.let { song ->
             SongSimple(
@@ -65,7 +65,7 @@ class SongService(
         } ?: throw SongNotFoundException("Id가 ${songId}인 노래가 존재하지 않음(EXPRESS)")
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     fun getPronounceQuiz(songId: String) : PronounceResponse {
         return songRepository.findBySpotifyId(songId)?.let { song ->
             PronounceResponse(
@@ -78,6 +78,7 @@ class SongService(
         } ?: throw SongNotFoundException("Id가 ${songId}인 노래가 존재하지 않음(Pronounce)")
     }
 
+    @Transactional(readOnly = true)
     fun findAllBySongIdsIn(songIds: List<String>) : List<SongSimple> {
         return songRepository.findAllBySpotifyIdIn(songIds).map {
             song -> SongSimple(
@@ -89,6 +90,7 @@ class SongService(
         }
     }
 
+    @Transactional(readOnly = true)
     fun findSongArtistAndGenre(songIds: List<String>) : List<SongArtistAndGenre> {
         return songRepository.findAllBySpotifyIdIn(songIds).map {
             song -> SongArtistAndGenre(
@@ -99,6 +101,7 @@ class SongService(
         }
     }
 
+    @Transactional(readOnly = true)
     fun findSongBySongId(songId: String) : Song {
         return songRepository.findBySpotifyId(songId)
                 ?: throw SongNotFoundException("spotify Id가 ${songId}인 노래가 존재하지 않음")
