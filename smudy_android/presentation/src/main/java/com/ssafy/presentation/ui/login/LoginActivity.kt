@@ -61,7 +61,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(
                         if (error != null) {
                             Log.e("TAG", "사용자 정보 요청 실패", error)
                         } else if (user != null) {
-                            viewModel.login(user.id.toString(), user.kakaoAccount?.name, user.kakaoAccount?.profile?.profileImageUrl)
+                            viewModel.login(
+                                user.id.toString(),
+                                user.kakaoAccount?.profile?.nickname,
+                                user.kakaoAccount?.profile?.profileImageUrl
+                            )
                         }
                     }
                 }
@@ -71,11 +75,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(
         }
     }
 
-    private fun initCollect(){
+    private fun initCollect() {
         lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.loginSuccess.collectLatest {
-                    if (it){
+                    if (it) {
                         navigateToMain()
                     }
                 }

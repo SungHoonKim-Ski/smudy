@@ -6,11 +6,6 @@
     android:orientation="vertical"
     tools:context=".ui.study.pronounce.PronouncePracticeFragment">
 
-    <TextView
-        style="@style/StudyTitleTextView"
-        android:background="@color/light_pink"
-        android:text="@string/study_pronounce_title"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -19,12 +14,14 @@
         android:orientation="vertical"
         android:background="@color/gray">
         <TextView
+            android:id="@+id/tv_lyric"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/action_sign_in_short"
             android:textAppearance="@style/Noto_Sans.TEXT.B.20"/>
         <TextView
+            android:id="@+id/tv_translated_lyric"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -36,14 +33,69 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5">
-        
+        <LinearLayout
+            android:id="@+id/lv_tts_smudy"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_app_character"
+                android:contentDescription="TODO" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAppearance="@style/Noto_Sans.TEXT.L.11"
+                android:text="Smudy" />
+        </LinearLayout>
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="horizontal">
+            <com.ssafy.presentation.ui.study.pronounce.DrawingView
+                android:id="@+id/dv_tts_drawing"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </HorizontalScrollView>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5">
-
+        android:layout_weight="0.5"
+        android:orientation="horizontal"
+        android:baselineAligned="true">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                tools:src="@drawable/ic_bottom_calendar_month"
+                android:contentDescription="TODO" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAppearance="@style/Noto_Sans.TEXT.L.11"
+                android:text="김성훈" />
+        </LinearLayout>
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="horizontal">
+            <com.ssafy.presentation.ui.study.pronounce.DrawingView
+                android:id="@+id/dv_record_drawing"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </HorizontalScrollView>
     </LinearLayout>
 
     <LinearLayout
@@ -61,6 +113,7 @@
             android:layout_marginHorizontal="@dimen/fragment_padding"
             android:layout_marginBottom="5dp">
             <ImageView
+                android:id="@+id/iv_album_jacket"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_gravity="center"
@@ -69,8 +122,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginHorizontal="5dp">
                 <TextView
+                    android:id="@+id/tv_album_title"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -78,6 +133,7 @@
                     android:text="@string/action_sign_in"
                     android:textAppearance="@style/Noto_Sans.TEXT.B.16"/>
                 <TextView
+                    android:id="@+id/tv_album_singer"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
@@ -94,6 +150,7 @@
             android:layout_marginHorizontal="@dimen/fragment_padding"
             android:gravity="center">
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_reset_record"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingVertical="0dp"
@@ -109,6 +166,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp">
                 <ImageView
+                    android:id="@+id/iv_record_stop"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:src="@drawable/ic_record_button_checked"
@@ -116,6 +174,7 @@
                     android:visibility="invisible"
                     android:contentDescription="@string/pronounce_record_stop_img_description" />
                 <ImageView
+                    android:id="@+id/iv_record_start"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:src="@drawable/ic_record_button_unchecked"

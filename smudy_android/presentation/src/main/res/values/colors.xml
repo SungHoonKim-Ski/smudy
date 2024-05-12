@@ -20,5 +20,8 @@
     <color name="card_background">#1F9C9BD8</color>
     <color name="light_gray">#4D36454F</color>
     <color name="music_player_background">#1F9C9BD8</color>
+    <color name="light_black">#3D000000</color>
+    <color name="tts_graph">#FF3936BE</color>
+    <color name="user_graph">#FFF47500</color>
     <color name="dark_red">#FFDB2B42</color>
 </resources>

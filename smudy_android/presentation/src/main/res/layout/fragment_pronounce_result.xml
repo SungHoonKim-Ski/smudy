@@ -5,9 +5,5 @@
     android:layout_height="match_parent"
     tools:context=".ui.study.pronounce.PronounceResultFragment">
 
-    <TextView
-        style="@style/StudyTitleTextView"
-        android:background="@color/light_pink"
-        android:text="@string/study_pronounce_title"/>
 
 </LinearLayout>
