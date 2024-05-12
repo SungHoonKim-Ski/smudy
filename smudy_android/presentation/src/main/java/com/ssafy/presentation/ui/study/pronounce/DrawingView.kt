@@ -30,7 +30,6 @@ class DrawingView(context: Context, attr: AttributeSet? = null) : View(context, 
         override fun run() {
             if (!isReplaying) {
                 val currentAmplitude = onRequestCurrentAmplitude?.invoke() ?: 0
-                Log.e("TAG", "run: currentAplitude: $currentAmplitude")
                 drawingAmplitudes.add(0, currentAmplitude)
             } else {
                 replayingPosition++
@@ -49,7 +48,6 @@ class DrawingView(context: Context, attr: AttributeSet? = null) : View(context, 
 
         val newWidth = max(minViewWidth, calculatedWidth) // 최소 너비와 계산된 너비 중 큰 값 선택
         if (layoutParams != null && layoutParams.width != newWidth) {
-            Log.e("TAG", "updateViewWidth: ${layoutParams.width}     $newWidth")
             layoutParams.width = newWidth
             requestLayout() // 레이아웃 업데이트 요청
         }

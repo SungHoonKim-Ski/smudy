@@ -2,10 +2,12 @@ package com.ssafy.data.repository
 
 import com.squareup.moshi.Moshi
 import com.ssafy.data.datasource.study.remote.pronounce.PronounceRemoteDataSource
+import com.ssafy.data.mapper.toGradePronounce
 import com.ssafy.data.mapper.toPronounceProblemInfo
 import com.ssafy.data.model.music.pronounce.PronounceLyricRequest
 import com.ssafy.domain.model.ApiError
 import com.ssafy.domain.model.ApiResult
+import com.ssafy.domain.model.study.pronounce.GradedPronounce
 import com.ssafy.domain.model.study.pronounce.PronounceProblemInfo
 import com.ssafy.domain.repository.PronounceRepository
 import com.ssafy.util.NetworkException
@@ -52,7 +54,7 @@ class PronounceRepositoryImpl @Inject constructor(
         ttsFile: File,
         lyric: String,
         lyricKo: String
-    ): Flow<ApiResult<Boolean>> = flow {
+    ): Flow<ApiResult<GradedPronounce>> = flow {
         val recorderRequestBody = userFile.asRequestBody("audio/3gp".toMediaTypeOrNull())
         val ttsRequestBody = ttsFile.asRequestBody("audio/wav".toMediaTypeOrNull())
 
@@ -65,7 +67,7 @@ class PronounceRepositoryImpl @Inject constructor(
         val response = pronounceRemoteDataSource.gradePronounceProblem(recorderPart, ttsPart, requestBody)
         val data = response.getOrNull()
         if (data != null) {
-            emit(ApiResult.Success(true))
+            emit(ApiResult.Success(data.data!!.toGradePronounce()))
         } else {
             val exception = response.exceptionOrNull() as NetworkException
             emit(ApiResult.Failure(ApiError(exception.code, exception.message)))

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,14 +19,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/action_sign_in_short"
             android:textAppearance="@style/Noto_Sans.TEXT.B.20"/>
         <TextView
             android:id="@+id/tv_translated_lyric"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/action_sign_in_short"
             android:textAppearance="@style/Noto_Sans.TEXT.L.14"/>
     </LinearLayout>
     <TextView
@@ -45,22 +44,81 @@
         android:layout_weight="0.5"
         android:orientation="horizontal">
         <androidx.cardview.widget.CardView
+            android:id="@+id/cv_pitch_result"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="match_parent">
-
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/fragment_padding"
+            android:backgroundTint="@color/pronounce_result_menu_pitch">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_pronounce_result_pitch"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Pitch"
+                    android:gravity="center"
+                    android:textAppearance="@style/Jalnan.TEXT.R.20"/>
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
+            android:id="@+id/cv_intensity_result"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="match_parent">
-
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/pronounce_result_menu_intensity">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_pronounce_result_intensity"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Intensity"
+                    android:gravity="center"
+                    android:textAppearance="@style/Jalnan.TEXT.R.20"/>
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
+            android:id="@+id/cv_formant_result"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="match_parent">
-
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/fragment_padding"
+            android:backgroundTint="@color/pronounce_result_menu_formant">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_pronounce_result_formant"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Formant"
+                    android:gravity="center"
+                    android:textAppearance="@style/Jalnan.TEXT.R.20"/>
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
     </TableRow>
     <TableRow
@@ -72,15 +130,18 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
+                android:paddingVertical="20dp"
                 android:gravity="center"
                 android:textAppearance="@style/Noto_Sans.TEXT.L.11"
-                android:drawableTop="@drawable/ic_app_character"
-                android:text="Smudy" />
+                android:text="Smudy"
+                android:drawableTop="@drawable/ic_app_character"/>
         <TextView
+            android:id="@+id/tv_user_pronounce"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="asdfasdfasdfasdf" />
+            android:paddingHorizontal="@dimen/fragment_padding"
+            android:gravity="center"/>
     </TableRow>
     <LinearLayout
         android:layout_width="match_parent"
@@ -108,7 +169,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="bottom"
-                android:text="@string/action_sign_in"
                 android:textAppearance="@style/Noto_Sans.TEXT.B.16"/>
             <TextView
                 android:id="@+id/tv_album_singer"
@@ -116,7 +176,6 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="top"
-                android:text="@string/action_sign_in_short"
                 android:textAppearance="@style/Noto_Sans.TEXT.R.11" />
             <LinearLayout
                 android:layout_width="match_parent"

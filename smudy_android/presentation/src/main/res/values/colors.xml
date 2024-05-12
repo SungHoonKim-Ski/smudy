@@ -23,4 +23,7 @@
     <color name="light_black">#3D000000</color>
     <color name="tts_graph">#FF3936BE</color>
     <color name="user_graph">#FFF47500</color>
+    <color name="pronounce_result_menu_pitch">#80FFE194</color>
+    <color name="pronounce_result_menu_intensity">#80FFC6C6</color>
+    <color name="pronounce_result_menu_formant">#80B8E4A0</color>
 </resources>

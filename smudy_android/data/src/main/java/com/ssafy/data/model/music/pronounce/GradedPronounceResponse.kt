@@ -5,5 +5,5 @@ data class GradedPronounceResponse (
     val ttsPronounce:String,
     val lyricSentenceEn:String,
     val userLyricSTT:String,
-    val lyricAiAnalyze: LyricAiAnalyze
+    val lyricAiAnalyze: LyricAiAnalyzeResponse
 )

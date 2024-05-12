@@ -3,7 +3,7 @@ package com.ssafy.data.model.music.pronounce
 import com.squareup.moshi.Json
 
 @Json
-data class LyricAiAnalyze(
+data class LyricAiAnalyzeResponse(
     @Json(name = "ref_formants_avg")
     val refFormantsAvg: FormantsAvgResponse,
     @Json(name = "ref_intensity_data")

@@ -14,7 +14,7 @@ constraintlayout = "2.1.4"
 navigation = "2.7.7"
 parcelize = "1.9.23"
 ksp = "1.9.10-1.0.13"
-
+mpandroid="3.1.0"
 # Coroutine
 coroutine = "1.7.3"
 
@@ -116,7 +116,7 @@ androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview"
 kakao = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao" }
 # DataStore
 dataStore = {group="androidx.datastore", name="datastore-preferences", version.ref="dataStore"}
-
+mpandroidchart = {group="com.github.PhilJay", name="MPAndroidChart", version.ref="mpandroid"}
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -125,7 +125,6 @@ kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 daggerHilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "parcelize" }
-
 #googleservice = {id ="com.google.gms.google-services" , version.ref = "googleService" }
 kapt = { id = "org.jetbrains.kotlin.kapt", version = "1.8.0" }
 
@@ -145,4 +144,4 @@ hilt = ["hilt-android", "hilt-compiler", "hilt-navigation", "dagger-compiler"]
 
 navigation = ["navigation-fragment", "navigation-ui"]
 
-presentationBundle = ["glide", "viewpager", "paging", "circleImageView", "calendarView"]
+presentationBundle = ["glide", "viewpager", "paging", "circleImageView", "calendarView", "mpandroidchart"]

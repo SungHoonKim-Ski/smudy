@@ -34,25 +34,10 @@ class PronounceProblemFragment : BaseFragment<FragmentPronounceProblemBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("TAG", "onViewCreated: $viewModel")
         viewModel.getPronounceProblem(id)
         initObserve()
         initView()
-    }
-
-    private fun initView() {
-        with(binding) {
-            rvLyrics.adapter = adapter.apply {
-                setOnItemClickListener(
-                    object : BaseHolder.ItemClickListener {
-                        override fun onClick(position: Int) {
-                            viewModel.getTranslateLyric(position)
-                            findNavController().navigate(R.id.action_pronounceProblemFragment_to_pronouncePracticeFragment)
-                        }
-                    }
-                )
-            }
-        }
+        initEvent()
     }
 
     private fun initObserve() {
@@ -67,6 +52,30 @@ class PronounceProblemFragment : BaseFragment<FragmentPronounceProblemBinding>(
                     }
                 }
             }
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                viewModel.translateLyric.collect{
+
+                }
+            }
+        }
+    }
+
+    private fun initView() {
+        with(binding) {
+            rvLyrics.adapter = adapter
+        }
+    }
+
+    private fun initEvent(){
+        adapter.apply {
+            setOnItemClickListener(
+                object : BaseHolder.ItemClickListener {
+                    override fun onClick(position: Int) {
+                        viewModel.getTranslateLyric(position)
+                        findNavController().navigate(R.id.action_pronounceProblemFragment_to_pronouncePracticeFragment)
+                    }
+                }
+            )
         }
     }
 }

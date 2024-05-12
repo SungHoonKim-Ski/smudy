@@ -42,7 +42,7 @@
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/ic_app_character"
+                android:src="@drawable/ic_app_character_width"
                 android:contentDescription="TODO" />
             <TextView
                 android:layout_width="match_parent"

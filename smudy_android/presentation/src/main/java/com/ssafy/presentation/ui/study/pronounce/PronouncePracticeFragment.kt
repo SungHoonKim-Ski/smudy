@@ -12,10 +12,12 @@ import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseFragment
 import com.ssafy.presentation.databinding.FragmentPronouncePracticeBinding
+import com.ssafy.presentation.model.Music
 import com.ssafy.presentation.model.PronounceProblem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -43,7 +45,6 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("TAG", "onViewCreated: $parentViewModel")
         tts = TextToSpeech(_activity, this)
         initView()
         initObserve()
@@ -81,7 +82,7 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
                 startTtsPlaying()
             }
             btnGradePronounce.setOnClickListener {
-                parentViewModel.gradePronounceProblem(file,ttsFile)
+                parentViewModel.gradePronounceProblem(file, ttsFile)
             }
         }
     }
@@ -129,6 +130,7 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
         player = null
         binding.dvRecordDrawing.stopVisualizing()
     }
+
     private fun startTtsPlaying() {
         player = MediaPlayer()
             .apply {
@@ -147,6 +149,7 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
         player = null
         binding.dvTtsDrawing.stopVisualizing()
     }
+
     private fun setMusicView(pronounce: PronounceProblem) {
         with(binding) {
             tvAlbumTitle.text = pronounce.songName
@@ -167,8 +170,33 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
             parentViewModel.pronounceProblem.collectLatest {
                 setMusicView(it)
             }
-            parentViewModel.translateLyric.collectLatest {
-                setLyricView(it)
+        }
+        lifecycleScope.launch {
+            parentViewModel.translateLyric.collect {
+                if (it.isNotEmpty()) {
+                    setLyricView(it)
+                }
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            parentViewModel.navigationTrigger.collectLatest {
+                if (it) {
+                    val bundle = Bundle().apply {
+                        putParcelable("pronounceResult", parentViewModel.pronounceResult)
+                        putParcelable(
+                            "song",
+                            Music(
+                                parentViewModel.pronounceProblem.value.songName,
+                                parentViewModel.pronounceProblem.value.songArtist,
+                                parentViewModel.pronounceProblem.value.albumJacket
+                            )
+                        )
+                    }
+                    findNavController().navigate(
+                        R.id.action_pronouncePracticeFragment_to_pronounceResultFragment,
+                        bundle
+                    )
+                }
             }
         }
     }
@@ -221,7 +249,8 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
             val reduceBytes = numSamplesPerChunk * bytesPerSample * 20
 
             // `data` 청크 크기 읽기
-            val dataSize = ByteBuffer.wrap(header, 40, 4).order(ByteOrder.LITTLE_ENDIAN).int - reduceBytes
+            val dataSize =
+                ByteBuffer.wrap(header, 40, 4).order(ByteOrder.LITTLE_ENDIAN).int - reduceBytes
 
             val buffer = ByteArray(numSamplesPerChunk * bytesPerSample)
             var bytesRead = 0
@@ -236,8 +265,7 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
                         ((buffer[i + 1].toInt() shl 8) or (buffer[i].toInt() and 0xff)).toShort()
                     if (amplitude > maxAmplitude) maxAmplitude = amplitude
                 }
-                Log.e("TAG", "readWavFile: ${maxAmplitude.toInt()}")
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
                     binding.dvTtsDrawing.addAmplitude(maxAmplitude.toInt())
                 }
                 maxAmplitude = 0  // reset for the next chunk
