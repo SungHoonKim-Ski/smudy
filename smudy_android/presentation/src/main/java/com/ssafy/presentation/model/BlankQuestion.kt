@@ -1,9 +1,11 @@
 package com.ssafy.presentation.model
 
+import com.ssafy.domain.model.InputAnswer
+
 data class BlankQuestion(
     val lyricBlank: String,
     val lyricBlankAnswer: String,
-    val lyricStartTimeStamp: String,
+    val lyricStartTimeStamp: Long,
     val inputAnswer: String,
     val blankStart: Int,
     val blankEnd: Int
@@ -22,3 +24,8 @@ fun BlankQuestion.toQuestion(): String {
     }
     return before + input + after
 }
+
+fun BlankQuestion.toInputAnswer() = InputAnswer(inputAnswer)
+
+
+

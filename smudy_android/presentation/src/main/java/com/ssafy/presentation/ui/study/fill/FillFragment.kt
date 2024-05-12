@@ -58,14 +58,16 @@ class FillFragment(
 
     private fun initView(){
 
+        fillFragmentViewModel.setSongId(songId)
         fillFragmentViewModel.getSongWithBlank(songId)
+
 
         with(binding){
             rvLyrics.apply {
                 adapter = blankLyricAdapter.apply{
                     setOnItemClickListener(object: BaseHolder.ItemClickListener{
                         override fun onClick(position: Int) {
-                            val curStartTimeStamp = currentList[position].lyricStartTimeStamp.toMilliSecond()
+                            val curStartTimeStamp = currentList[position].lyricStartTimeStamp
                             fillFragmentViewModel.setCurTime(
                                 curStartTimeStamp
                             )
@@ -106,6 +108,23 @@ class FillFragment(
                 btnReplay.setOnClickListener{
                     spotifyManager.seekTo(0)
                     setCurTime(0)
+                }
+
+                btnNxt.setOnClickListener{
+                    setCurLine(curLine+1)
+                    val curTimeStamp = blankQuestionList[curLine].lyricStartTimeStamp
+                    spotifyManager.seekTo(curTimeStamp)
+                    setCurTime(curTimeStamp)
+
+                }
+                btnPrv.setOnClickListener{
+                    setCurLine(curLine-1)
+                    val curTimeStamp = blankQuestionList[curLine].lyricStartTimeStamp
+                    spotifyManager.seekTo(curTimeStamp)
+                    setCurTime(curTimeStamp)
+                }
+                btnSubmit.setOnClickListener {
+                    submitAnswer()
                 }
             }
         }
@@ -162,6 +181,7 @@ class FillFragment(
                         (binding.rvLyrics.layoutManager as LinearLayoutManager)
                             .scrollToPositionWithOffset(curIdx, binding.rvLyrics.height/3)
                         binding.tvProgress.text = "${curIdx+1} / "
+                        setCurLine(curIdx)
                     }
                 }
             }
