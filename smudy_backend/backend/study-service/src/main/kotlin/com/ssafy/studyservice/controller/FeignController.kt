@@ -26,7 +26,7 @@ class FeignController (
     }
 
     @PostMapping("/test")
-    fun getSimilarity(request: SimilarityRequest) : SimilarityResponse {
+    fun getSimilarity(@RequestBody request: SimilarityRequest) : SimilarityResponse {
         logger.info { request }
         return aiService.getSimilarity(request)
     }
