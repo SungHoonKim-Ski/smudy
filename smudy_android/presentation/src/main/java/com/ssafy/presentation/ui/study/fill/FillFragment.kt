@@ -14,6 +14,7 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.ssafy.domain.model.ApiResult
@@ -22,6 +23,9 @@ import com.ssafy.presentation.base.BaseFragment
 import com.ssafy.presentation.base.BaseHolder
 import com.ssafy.presentation.base.toMilliSecond
 import com.ssafy.presentation.databinding.FragmentFillBinding
+import com.ssafy.presentation.model.ParcelableSubmitBlankResult
+import com.ssafy.presentation.model.ParcelableSubmitFillBlankData
+import com.ssafy.presentation.model.ParcelableSubmitResult
 import com.ssafy.presentation.model.toQuestion
 import com.ssafy.presentation.ui.MainActivityViewModel
 import com.ssafy.util.spotify.SpotifyManager
@@ -32,11 +36,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 private const val TAG = "FillFragment"
+
 @AndroidEntryPoint
 class FillFragment(
     private val songId: String = "1EzrEOXmMH3G43AXT1y7pA",
 
-) : BaseFragment<FragmentFillBinding>(
+    ) : BaseFragment<FragmentFillBinding>(
     { FragmentFillBinding.bind(it) }, R.layout.fragment_fill
 ) {
 
@@ -56,26 +61,26 @@ class FillFragment(
         initView()
     }
 
-    private fun initView(){
+    private fun initView() {
 
         fillFragmentViewModel.setSongId(songId)
         fillFragmentViewModel.getSongWithBlank(songId)
 
 
-        with(binding){
+        with(binding) {
             rvLyrics.apply {
-                adapter = blankLyricAdapter.apply{
-                    setOnItemClickListener(object: BaseHolder.ItemClickListener{
+                adapter = blankLyricAdapter.apply {
+                    setOnItemClickListener(object : BaseHolder.ItemClickListener {
                         override fun onClick(position: Int) {
                             val curStartTimeStamp = currentList[position].lyricStartTimeStamp
                             fillFragmentViewModel.setCurTime(
                                 curStartTimeStamp
                             )
                             spotifyManager.seekTo(curStartTimeStamp)
-                            InputDialog(requireContext(),  currentList[position]).apply {
-                                setInputListener(object: InputDialog.InputListener{
+                            InputDialog(requireContext(), currentList[position]).apply {
+                                setInputListener(object : InputDialog.InputListener {
                                     override fun onInput(input: String) {
-                                        with(fillFragmentViewModel){
+                                        with(fillFragmentViewModel) {
                                             setQuestionInput(input, position)
                                             submitList(blankQuestionList)
                                             notifyItemChanged(position)
@@ -89,11 +94,11 @@ class FillFragment(
                 }
             }
 
-            with(fillFragmentViewModel){
-                btnPlay.setOnClickListener{
-                    if(playerState == PlayState.INIT){
+            with(fillFragmentViewModel) {
+                btnPlay.setOnClickListener {
+                    if (playerState == PlayState.INIT) {
                         spotifyManager.playTrack(songId)
-                    }else{
+                    } else {
                         spotifyManager.resumeTrack()
                     }
                     it.visibility = View.GONE
@@ -101,24 +106,24 @@ class FillFragment(
                     setPlayerState(PlayState.PLAYING)
                     timerStart()
                 }
-                btnPause.setOnClickListener{
+                btnPause.setOnClickListener {
                     stopPlayer()
 
                 }
-                btnReplay.setOnClickListener{
+                btnReplay.setOnClickListener {
                     spotifyManager.seekTo(0)
                     setCurTime(0)
                 }
 
-                btnNxt.setOnClickListener{
-                    setCurLine(curLine+1)
+                btnNxt.setOnClickListener {
+                    setCurLine(curLine + 1)
                     val curTimeStamp = blankQuestionList[curLine].lyricStartTimeStamp
                     spotifyManager.seekTo(curTimeStamp)
                     setCurTime(curTimeStamp)
 
                 }
-                btnPrv.setOnClickListener{
-                    setCurLine(curLine-1)
+                btnPrv.setOnClickListener {
+                    setCurLine(curLine - 1)
                     val curTimeStamp = blankQuestionList[curLine].lyricStartTimeStamp
                     spotifyManager.seekTo(curTimeStamp)
                     setCurTime(curTimeStamp)
@@ -132,33 +137,36 @@ class FillFragment(
     }
 
     @SuppressLint("SetTextI18n")
-    private fun registerObserve(){
-        with(mainActivityViewModel){
-            spotifyActivityResult.observe(viewLifecycleOwner){
+    private fun registerObserve() {
+        with(mainActivityViewModel) {
+            spotifyActivityResult.observe(viewLifecycleOwner) {
                 spotifyManager.onActivityResult(it.first, it.second, it.third)
             }
         }
 
-        with(fillFragmentViewModel){
-            lifecycleScope.launch{
-                repeatOnLifecycle(Lifecycle.State.STARTED){
-                    songResult.collect{
-                        when(it){
-                            is ApiResult.Success->{
+        with(fillFragmentViewModel) {
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    songResult.collect {
+                        when (it) {
+                            is ApiResult.Success -> {
                                 blankLyricAdapter.submitList(blankQuestionList)
-                                with(binding.loBasic){
+                                with(binding.loBasic) {
                                     tvAlbumTitle.text = it.data.songName
                                     tvAlbumSinger.text = it.data.songArtist
                                     Glide.with(requireContext())
                                         .load(it.data.albumJacket)
                                         .into(ivAlbumJacket)
                                 }
-                                binding.tvNumOfQuestions.text = fillFragmentViewModel.numOfQuestion.toString()
+                                binding.tvNumOfQuestions.text =
+                                    fillFragmentViewModel.numOfQuestion.toString()
                             }
-                            is ApiResult.Failure->{
+
+                            is ApiResult.Failure -> {
                                 Log.d(TAG, "registerObservers: Failure")
                             }
-                            is ApiResult.Loading->{
+
+                            is ApiResult.Loading -> {
                                 Log.d(TAG, "registerObservers: Loading")
                             }
                         }
@@ -166,22 +174,55 @@ class FillFragment(
                 }
             }
 
-            curTime.observe(viewLifecycleOwner){
-                if(timeLineIndexMap.contains(it)){
+            curTime.observe(viewLifecycleOwner) {
+                if (timeLineIndexMap.contains(it)) {
                     val curIdx = timeLineIndexMap[it]!!
                     val oldIdx = blankLyricAdapter.curPosition
                     blankLyricAdapter.apply {
                         setCurPosition(curIdx)
                         notifyItemChanged(oldIdx)
-                        if(curIdx!=-1){
+                        if (curIdx != -1) {
                             notifyItemChanged(curIdx)
                         }
                     }
-                    if(curIdx!=-1){
+                    if (curIdx != -1) {
                         (binding.rvLyrics.layoutManager as LinearLayoutManager)
-                            .scrollToPositionWithOffset(curIdx, binding.rvLyrics.height/3)
-                        binding.tvProgress.text = "${curIdx+1} / "
+                            .scrollToPositionWithOffset(curIdx, binding.rvLyrics.height / 3)
+                        binding.tvProgress.text = "${curIdx + 1} / "
                         setCurLine(curIdx)
+                    }
+                }
+            }
+
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    submitResult.collect {
+                        if (it is ApiResult.Success) {
+                            val data = (songResult.value as ApiResult.Success).data
+
+                            findNavController().navigate(
+                                FillFragmentDirections.actionFillFragmentToFillResultFragment(
+                                    ParcelableSubmitResult(
+                                        data.songName,
+                                        data.songArtist,
+                                        data.albumJacket,
+                                        ParcelableSubmitFillBlankData(
+                                            it.data.totalSize,
+                                            it.data.score,
+                                            it.data.result.map { res ->
+                                                ParcelableSubmitBlankResult(
+                                                    res.lyricBlank,
+                                                    res.originWord,
+                                                    res.userWord,
+                                                    res.isCorrect
+                                                )
+                                            }
+
+                                        )
+                                    )
+                                )
+                            )
+                        }
                     }
                 }
             }
@@ -190,13 +231,13 @@ class FillFragment(
 
     }
 
-    private fun stopPlayer(){
-        with(binding){
+    private fun stopPlayer() {
+        with(binding) {
             spotifyManager.pauseTrack()
             btnPause.visibility = View.GONE
             btnPlay.visibility = View.VISIBLE
-            with(fillFragmentViewModel){
-                if(playerState == PlayState.PLAYING){
+            with(fillFragmentViewModel) {
+                if (playerState == PlayState.PLAYING) {
                     setPlayerState(PlayState.PAUSED)
                     timerStop()
                 }

@@ -48,7 +48,11 @@
         android:id="@+id/fillFragment"
         android:name="com.ssafy.presentation.ui.study.fill.FillFragment"
         android:label="fragment_fill"
-        tools:layout="@layout/fragment_fill" />
+        tools:layout="@layout/fragment_fill" >
+        <action
+            android:id="@+id/action_fillFragment_to_fillResultFragment"
+            app:destination="@id/fillResultFragment" />
+    </fragment>
     <fragment
         android:id="@+id/pickFragment"
         android:name="com.ssafy.presentation.ui.study.pick.PickFragment"
@@ -89,4 +93,13 @@
                 app:destination="@id/pronouncePracticeFragment" />
         </fragment>
     </navigation>
+    <fragment
+        android:id="@+id/fillResultFragment"
+        android:name="com.ssafy.presentation.ui.study.fill.FillResultFragment"
+        android:label="fragment_fill_result"
+        tools:layout="@layout/fragment_fill_result" >
+        <argument
+            android:name="ResultArgs"
+            app:argType="com.ssafy.presentation.model.ParcelableSubmitResult" />
+    </fragment>
 </navigation>

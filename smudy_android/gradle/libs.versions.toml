@@ -57,6 +57,7 @@ dataStore = "1.0.0"
 
 #Calendar
 calendar = "2.5.0"
+core = "1.13.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -116,6 +117,8 @@ androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview"
 kakao = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao" }
 # DataStore
 dataStore = {group="androidx.datastore", name="datastore-preferences", version.ref="dataStore"}
+androidx-core = { group = "androidx.core", name = "core", version.ref = "core" }
+
 mpandroidchart = {group="com.github.PhilJay", name="MPAndroidChart", version.ref="mpandroid"}
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -125,6 +128,8 @@ kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 daggerHilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "parcelize" }
+safeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
+
 #googleservice = {id ="com.google.gms.google-services" , version.ref = "googleService" }
 kapt = { id = "org.jetbrains.kotlin.kapt", version = "1.8.0" }
 
