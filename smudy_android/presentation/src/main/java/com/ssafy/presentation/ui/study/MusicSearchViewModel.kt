@@ -63,10 +63,10 @@ class MusicSearchViewModel @Inject constructor(
             addStudyListUseCase(_musicsToAddList.toList()).collect {
                 when (it) {
                     is ApiResult.Success -> {
-                        if (it.data) {
-                            _isAddSuccess.emit("모든 곡을 추가하였습니다.")
+                        if (it.data!=-1) {
+                            _isAddSuccess.emit("중복된 곡을 제외한 ${it.data}곡을 추가하였습니다.")
                         } else {
-                            _isAddSuccess.emit("중복된 곡을 제외하고 추가하였습니다.")
+                            _isAddSuccess.emit("모든 곡이 이미 존재합니다.")
                         }
                     }
                     is ApiResult.Loading -> {}

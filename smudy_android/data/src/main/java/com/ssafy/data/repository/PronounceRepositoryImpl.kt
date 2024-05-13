@@ -53,7 +53,8 @@ class PronounceRepositoryImpl @Inject constructor(
         userFile: File,
         ttsFile: File,
         lyric: String,
-        lyricKo: String
+        lyricKo: String,
+        id:String
     ): Flow<ApiResult<GradedPronounce>> = flow {
         val recorderRequestBody = userFile.asRequestBody("audio/3gp".toMediaTypeOrNull())
         val ttsRequestBody = ttsFile.asRequestBody("audio/wav".toMediaTypeOrNull())
@@ -61,7 +62,7 @@ class PronounceRepositoryImpl @Inject constructor(
         val recorderPart =
             MultipartBody.Part.createFormData("userFile", userFile.name, recorderRequestBody)
         val ttsPart = MultipartBody.Part.createFormData("ttsFile", ttsFile.name, ttsRequestBody)
-        val pronounceLyricRequest = PronounceLyricRequest(lyric, lyricKo)
+        val pronounceLyricRequest = PronounceLyricRequest(lyric, lyricKo,id)
         val jsonStr = moshi.adapter(PronounceLyricRequest::class.java).toJson(pronounceLyricRequest)
         val requestBody = jsonStr.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
         val response = pronounceRemoteDataSource.gradePronounceProblem(recorderPart, ttsPart, requestBody)

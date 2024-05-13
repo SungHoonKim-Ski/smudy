@@ -9,5 +9,5 @@ import java.io.File
 interface PronounceRepository {
     suspend fun getPronounceProblemInfo(id: String): Flow<ApiResult<PronounceProblemInfo>>
     suspend fun getTranslatedLyric(lyric: String): Flow<ApiResult<String>>
-    suspend fun gradePronounceProblem(userFile: File, ttsFile: File, lyric: String, lyricKo: String): Flow<ApiResult<GradedPronounce>>
+    suspend fun gradePronounceProblem(userFile: File, ttsFile: File, lyric: String, lyricKo: String,id:String): Flow<ApiResult<GradedPronounce>>
 }

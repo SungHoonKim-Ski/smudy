@@ -4,7 +4,6 @@ import com.ssafy.data.model.DefaultResponse
 import com.ssafy.data.model.LoginInfoRequest
 import com.ssafy.data.model.auth.TokenResponse
 import retrofit2.http.Body
-import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface AuthService {
@@ -16,5 +15,5 @@ interface AuthService {
     suspend fun login(@Body loginInfoRequest: LoginInfoRequest): Result<DefaultResponse<TokenResponse>>
 
     @POST("auth/autologin")
-    suspend fun autologin(@Header("Authorization") accessToken: String): Result<DefaultResponse<Boolean>>
+    suspend fun autologin(): Result<DefaultResponse<Boolean>>
 }

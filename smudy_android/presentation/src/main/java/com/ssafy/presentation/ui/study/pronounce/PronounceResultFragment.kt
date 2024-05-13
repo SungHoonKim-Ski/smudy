@@ -56,7 +56,7 @@ class PronounceResultFragment : BaseFragment<FragmentPronounceResultBinding>(
         with(binding) {
             tvLyric.text = pronounceResult.lyricSentenceEn
             tvTranslatedLyric.text = pronounceResult.lyricSentenceKo
-            tvUserPronounce.text = pronounceResult.userLyricSTT
+            tvUserPronounce.text = pronounceResult.userLyricSttEn
             tvAlbumTitle.text = music.title
             tvAlbumSinger.text = music.artist
             Glide.with(_activity).load(music.jacket).into(ivAlbumJacket)

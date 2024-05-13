@@ -3,6 +3,7 @@ package com.ssafy.data.datasource.music
 import com.ssafy.data.api.MusicService
 import com.ssafy.data.model.DefaultResponse
 import com.ssafy.data.model.music.AddStudyListRequest
+import com.ssafy.data.model.music.CountResponse
 import com.ssafy.data.model.music.KeywordResponse
 import javax.inject.Inject
 
@@ -13,7 +14,7 @@ class MusicRemoteDataSourceImpl @Inject constructor(
         return musicService.searchKeyWord(query)
     }
 
-    override suspend fun addStudyList(studyList: AddStudyListRequest): Result<DefaultResponse<Boolean>> {
+    override suspend fun addStudyList(studyList: AddStudyListRequest): Result<DefaultResponse<CountResponse>> {
         return musicService.addStudyList(studyList)
     }
 }

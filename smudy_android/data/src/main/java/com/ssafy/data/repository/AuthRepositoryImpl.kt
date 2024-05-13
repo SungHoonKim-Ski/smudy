@@ -50,7 +50,7 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun autoLogin(): Flow<ApiResult<Boolean>> = flow {
         val accessToken = preferencesDataSource.getAccessToken()
         if (accessToken != null) {
-            val result = authRemoteDataSource.autoLogin(accessToken)
+            val result = authRemoteDataSource.autoLogin()
             val data = result.getOrNull()
             if (data != null) {
                 emit(ApiResult.Success(true))

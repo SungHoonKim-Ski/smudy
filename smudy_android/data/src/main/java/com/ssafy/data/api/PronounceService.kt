@@ -21,7 +21,7 @@ interface PronounceService {
     suspend fun getTranslatedLyric(@Query("lyric") lyric: String): Result<DefaultResponse<TranslatedLyricResponse>>
 
     @Multipart
-    @POST("study/pronounce/submit")
+    @POST("user/pronounce/submit")
     suspend fun gradePronounceProblem(
         @Part userFile: MultipartBody.Part,
         @Part ttsFile: MultipartBody.Part,

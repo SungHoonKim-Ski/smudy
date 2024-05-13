@@ -7,6 +7,12 @@ import javax.inject.Inject
 class GradePronounceProblemUseCase @Inject constructor(
     private val pronounceRepository: PronounceRepository
 ) {
-    suspend operator fun invoke(userFile: File, ttsFile: File, lyric: String, lyricKo: String) =
-        pronounceRepository.gradePronounceProblem(userFile, ttsFile, lyric, lyricKo)
+    suspend operator fun invoke(
+        userFile: File,
+        ttsFile: File,
+        lyric: String,
+        lyricKo: String,
+        id: String
+    ) =
+        pronounceRepository.gradePronounceProblem(userFile, ttsFile, lyric, lyricKo, id)
 }

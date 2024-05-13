@@ -33,8 +33,10 @@ class PronounceProblemViewModel @Inject constructor(
     private val _pronounceProblem =
         MutableStateFlow(PronounceProblem("", "", "", "", emptyList()))
     val pronounceProblem = _pronounceProblem.asStateFlow()
-    private val _translatedLyric = MutableStateFlow<List<String>>(emptyList())
-    val translateLyric = _translatedLyric.asStateFlow()
+    private var _songId:String = ""
+
+    private var _translatedLyric = emptyList<String>()
+    val translateLyric get() = _translatedLyric
 
     private val _navigationTrigger = MutableSharedFlow<Boolean>(
         replay = 0,
@@ -44,7 +46,7 @@ class PronounceProblemViewModel @Inject constructor(
 
     lateinit var pronounceResult: GradedPronounce
 
-    suspend fun triggerNavigation(shouldNavigate: Boolean) {
+    private suspend fun triggerNavigation(shouldNavigate: Boolean) {
             _navigationTrigger.emit(shouldNavigate)  // 이벤트 발행
     }
     fun getPronounceProblem(id: String) {
@@ -79,11 +81,12 @@ class PronounceProblemViewModel @Inject constructor(
             getTranslateLyricUseCase(lyric).collect {
                 when (it) {
                     is ApiResult.Success -> {
-                        _translatedLyric.emit(listOf(lyric, it.data))
+                        triggerNavigation(true)
+                        _translatedLyric=listOf(lyric, it.data)
                     }
 
                     is ApiResult.Failure -> {
-                        _translatedLyric.emit(listOf(lyric, ""))
+
                     }
 
                     is ApiResult.Loading -> {}
@@ -97,8 +100,9 @@ class PronounceProblemViewModel @Inject constructor(
             gradePronounceProblemUseCase(
                 userFile,
                 ttsFile,
-                translateLyric.value[0],
-                translateLyric.value[1]
+                translateLyric[0],
+                translateLyric[1],
+                _songId
             ).collect {
                 when (it) {
                     is ApiResult.Success -> {
@@ -108,7 +112,8 @@ class PronounceProblemViewModel @Inject constructor(
                                 it.data.ttsPronounce,
                                 it.data.lyricSentenceEn,
                                 "임시 데이터",
-                                it.data.userLyricSTT,
+                                it.data.userLyricSttEn,
+                                it.data.userLyricSttKo,
                                 LyricAiAnalyze(
                                     FormantsAvg(it.data.lyricAiAnalyze.refFormantsAvg.f1,it.data.lyricAiAnalyze.refFormantsAvg.f2),
                                     IntensityData(it.data.lyricAiAnalyze.refIntensityData.times,it.data.lyricAiAnalyze.refIntensityData.values),
@@ -129,5 +134,9 @@ class PronounceProblemViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun setSongId(id:String){
+        _songId = id
     }
 }

@@ -25,8 +25,9 @@ fun GradedPronounceResponse.toGradePronounce(): GradedPronounce =
         userPronounce,
         ttsPronounce,
         lyricSentenceEn,
-        "",
-        userLyricSTT,
+        lyricSentenceKo,
+        userLyricSttEn,
+        userLyricSttKo,
         lyricAiAnalyze.toLyricAiAnalyze()
         )
 

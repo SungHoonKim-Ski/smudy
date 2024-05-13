@@ -10,5 +10,5 @@ interface MusicRepository {
     suspend fun searchKeyword(query: String): Flow<ApiResult<List<String>>>
     fun getMusicPagingDate(query: String): Flow<PagingData<Study>>
 
-    suspend fun addStudyList(musicList:List<String>): Flow<ApiResult<Boolean>>
+    suspend fun addStudyList(musicList:List<String>): Flow<ApiResult<Int>>
 }

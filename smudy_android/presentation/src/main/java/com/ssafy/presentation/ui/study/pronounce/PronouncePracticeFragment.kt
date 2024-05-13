@@ -55,6 +55,8 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
     private fun initView() {
         with(binding) {
             dvRecordDrawing.onRequestCurrentAmplitude = { recorder?.maxAmplitude ?: 0 }
+            tvLyric.text = parentViewModel.translateLyric[0]
+            tvTranslatedLyric.text = parentViewModel.translateLyric[1]
         }
     }
 
@@ -169,28 +171,14 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
         }
     }
 
-    private fun setLyricView(lyrics: List<String>) {
-        with(binding) {
-            tvLyric.text = lyrics[0]
-            tvTranslatedLyric.text = lyrics[1]
-        }
-    }
-
     private fun initObserve() {
         lifecycleScope.launch {
             parentViewModel.pronounceProblem.collectLatest {
                 setMusicView(it)
             }
         }
-        lifecycleScope.launch {
-            parentViewModel.translateLyric.collect {
-                if (it.isNotEmpty()) {
-                    setLyricView(it)
-                }
-            }
-        }
         viewLifecycleOwner.lifecycleScope.launch {
-            parentViewModel.navigationTrigger.collectLatest {
+            parentViewModel.navigationTrigger.collect {
                 if (it) {
                     val bundle = Bundle().apply {
                         putParcelable("pronounceResult", parentViewModel.pronounceResult)
@@ -238,7 +226,7 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
             }
         })
 
-        tts.synthesizeToFile(parentViewModel.translateLyric.value[0], params, ttsFile, "UniqueID")
+        tts.synthesizeToFile(parentViewModel.translateLyric[0], params, ttsFile, "UniqueID")
     }
 
     fun readWavFile() {

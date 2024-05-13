@@ -35,26 +35,27 @@ class PronounceProblemFragment : BaseFragment<FragmentPronounceProblemBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getPronounceProblem(id)
+        viewModel.setSongId(id)
         initObserve()
         initView()
         initEvent()
     }
 
     private fun initObserve() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.pronounceProblem.collect {
-                    with(binding) {
-                        Glide.with(_activity).load(it.albumJacket).into(ivAlbumJacket)
-                        tvAlbumSinger.text = it.songName
-                        tvAlbumSinger.text = it.songArtist
-                        adapter.submitList(it.lyrics)
-                    }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.pronounceProblem.collect {
+                with(binding) {
+                    Glide.with(_activity).load(it.albumJacket).into(ivAlbumJacket)
+                    tvAlbumSinger.text = it.songName
+                    tvAlbumSinger.text = it.songArtist
+                    adapter.submitList(it.lyrics)
                 }
             }
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.translateLyric.collect{
-
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.navigationTrigger.collect {
+                if (it) {
+                    findNavController().navigate(R.id.action_pronounceProblemFragment_to_pronouncePracticeFragment)
                 }
             }
         }
@@ -67,13 +68,12 @@ class PronounceProblemFragment : BaseFragment<FragmentPronounceProblemBinding>(
         }
     }
 
-    private fun initEvent(){
+    private fun initEvent() {
         adapter.apply {
             setOnItemClickListener(
                 object : BaseHolder.ItemClickListener {
                     override fun onClick(position: Int) {
                         viewModel.getTranslateLyric(position)
-                        findNavController().navigate(R.id.action_pronounceProblemFragment_to_pronouncePracticeFragment)
                     }
                 }
             )
