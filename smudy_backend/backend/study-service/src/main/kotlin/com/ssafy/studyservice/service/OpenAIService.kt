@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.JsonMappingException
 import com.ssafy.studyservice.config.ObjectMapperConfig
 import com.ssafy.studyservice.dto.request.ExpressCheckRequest
+import com.ssafy.studyservice.dto.request.ai.SimilarityRequest
 import com.ssafy.studyservice.dto.response.ExpressCheckResponse
 import com.ssafy.studyservice.dto.response.gpt.ChatCompletionResponse
 import com.ssafy.studyservice.exception.exception.GptConnectException
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service
 @Service
 class OpenAIService(
         private val openAIClient: OpenAIClient,
+        private val aiService: AiService,
 ) {
 
     @Value("\${openAI.key}")
@@ -23,7 +25,7 @@ class OpenAIService(
     private val logger = KotlinLogging.logger {  }
 
     fun markingUserAnswer(request: ExpressCheckRequest): ExpressCheckResponse {
-        val lyricEn = revTranslateLyric(request.lyricSentenceKo)
+        val lyricEn = lyricKoToEn(request.lyricSentenceKo)
         val userKo = translateLyric(request.userLyricSentence)
         val score = scoreLyric(lyricEn, request.userLyricSentence)
 
@@ -44,7 +46,7 @@ class OpenAIService(
      * 이를 이용해 특정 가사의 한 문장의 해석을 보고
      * 유저가 작성한 문장과 GPT가 작성해준 문장간의 유사도를 비교해야 함
      */
-    fun revTranslateLyric(lyricKo: String): String {
+    fun lyricKoToEn(lyricKo: String): String {
         val mapper = ObjectMapperConfig().getObjectMapper()
 
         val request = mapOf(
@@ -85,35 +87,15 @@ class OpenAIService(
 
         return mapper.readValue(response, ChatCompletionResponse::class.java).choices[0].message.content
     }
-    fun scoreLyric(lyricEn: String, userEn: String): String {
-        val mapper = ObjectMapperConfig().getObjectMapper()
-
-        val request = mapOf(
-                "model" to "gpt-4",
-                "messages" to arrayOf(
-                        mapOf(
-                                "role" to "system",
-                                "content" to "You are a lyricist with 10 years of experience. A user has submitted lyrics for a song you wrote, creating a version with a similar theme. Now, you need to evaluate how well the user's submitted line captures the feel of your original lyrics. Rate the user's line out of 100, based solely on how well it preserves the essence and emotional tone of your work. Just provide the score.",
-                                "role" to "user",
-                                "content" to "Rate the similarity between $lyricEn and the sentence $userEn on a scale of 100. plz answer only score number"
-                        ),
+    fun scoreLyric(lyricEn: String, userEn: String): Int {
+        val response = aiService.getSimilarity(
+                SimilarityRequest(
+                        sentence1 = lyricEn,
+                        sentence2 = userEn
                 )
         )
-
-        val response = openAIClient.generateText("Bearer $apiKey", request)
-        lateinit var result: String
-
-        try {
-            result = mapper.readValue(response, ChatCompletionResponse::class.java).choices[0].message.content
-        } catch (e: JsonProcessingException) {
-            e.printStackTrace()
-            throw GptConnectException("Gpt API 서버 접속에 실패헀습니다")
-        } catch (e: JsonMappingException) {
-            e.printStackTrace()
-            throw GptConnectException("Gpt API 서버 접속에 실패했습니다")
-        }
-
-        return result
+        logger.info { "AI server response : $response" }
+        return (response.similarity.cosineSimilarity * 100).toInt()
     }
 
 //    fun translateAllProblems() {
