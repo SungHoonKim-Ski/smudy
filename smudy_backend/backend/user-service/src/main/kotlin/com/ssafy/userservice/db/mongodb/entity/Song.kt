@@ -18,6 +18,9 @@ class Song(
         @Field(name = "song_artist")
         var songArtist: String,
 
+        @Field(name = "song_artist_id")
+        var songArtistId: String,
+
         @Field(name = "song_duration")
         var songDuration: String,
 
