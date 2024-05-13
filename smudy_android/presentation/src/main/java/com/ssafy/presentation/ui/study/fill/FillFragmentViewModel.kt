@@ -1,5 +1,6 @@
 package com.ssafy.presentation.ui.study.fill
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,6 +19,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val TAG = "FillFragmentViewModel"
+
 @HiltViewModel
 class FillFragmentViewModel @Inject constructor(
     private val getSongWithBlankUseCase: GetSongWithBlankUseCase
@@ -29,17 +32,30 @@ class FillFragmentViewModel @Inject constructor(
 
     val timeLineIndexMap = mutableMapOf<Long, Int>()
     private val _blankQuestionList = mutableListOf<BlankQuestion>()
+
+    private var _numOfQuestions = 0
+    val numOfQuestion: Int get() = _numOfQuestions
+
+    private var _playerSate = PlayState.INIT
+    val playerState: PlayState
+        get() = _playerSate
+
+    fun setPlayerState(state: PlayState){
+        _playerSate = state
+    }
+
     val blankQuestionList: List<BlankQuestion>
         get() = _blankQuestionList
+
 
     fun setQuestionInput(input: String, idx: Int){
         _blankQuestionList[idx] = _blankQuestionList[idx].copy(
             inputAnswer = input
-        )}
+        )
+        Log.d(TAG, "setQuestionInput: ${_blankQuestionList[idx]}")
+    }
 
     fun getQuestionInput(idx: Int) = _blankQuestionList[idx].inputAnswer
-
-    val tmpList = mutableListOf<LyricBlank>()
 
     private var endTime = -1L
 
@@ -71,19 +87,19 @@ class FillFragmentViewModel @Inject constructor(
             getSongWithBlankUseCase(songId).collect {
                 if(it is ApiResult.Success){
                     endTime = it.data.lyricEnd.toMilliSecond()
-                    tmpList.clear()
-                    tmpList.addAll(it.data.lyricsBlank)
                     timeLineIndexMap.clear()
+                    timeLineIndexMap[0L] = -1
                     for((idx, value) in it.data.lyricsBlank.withIndex()){
                         timeLineIndexMap[value.lyricStartTimeStamp.toMilliSecond()] = idx
                     }
 
                     _blankQuestionList.clear()
                     _blankQuestionList.addAll(it.data.lyricsBlank.map{
-                        BlankQuestion(it.lyricBlank, it.lyricBlankAnswer, it.lyricStartTimeStamp, "_".repeat(it.lyricBlankAnswer.length),
+                        BlankQuestion(it.lyricBlank.replace("_", " "), it.lyricBlankAnswer, it.lyricStartTimeStamp, " ".repeat(it.lyricBlankAnswer.length),
                             it.lyricBlank.indexOf("_"), it.lyricBlank.lastIndexOf("_")
                         )
                     })
+                    _numOfQuestions = it.data.lyricsBlank.size
                 }
                 _songResult.emit(it)
             }
