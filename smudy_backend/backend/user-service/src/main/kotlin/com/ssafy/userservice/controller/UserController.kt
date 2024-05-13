@@ -116,6 +116,16 @@ class UserController (
         )
     }
 
+    @DeleteMapping("/studylist/delete")
+    fun removeStudyList(
+            @RequestParam(value = "songId", required = true) songId: String
+    ) {
+        logger.info { "/delete/$songId" }
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId())
+        studyListService.deleteUserStudyList(userInternalId, songId)
+
+    }
+
     @GetMapping("/history")
     fun getUserHistory(
         @RequestParam(value = "time", required = true) time: String

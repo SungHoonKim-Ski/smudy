@@ -57,6 +57,13 @@ dependencies {
 	implementation("se.michaelthelin.spotify:spotify-web-api-java:8.4.0")
 
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+
+	// https://mvnrepository.com/artifact/junit/junit
+	testImplementation("junit:junit:4.13.1")
+
+	// coroutine
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 }
 
 dependencyManagement {
