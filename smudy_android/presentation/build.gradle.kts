@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.daggerHilt)
     alias(libs.plugins.kapt)
+    alias(libs.plugins.parcelize)
+    alias(libs.plugins.safeArgs)
 
 }
 

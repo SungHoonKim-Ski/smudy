@@ -69,9 +69,6 @@ class FillFragmentViewModel @Inject constructor(
     fun submitAnswer(){
         viewModelScope.launch {
             submitFillBlankUseCase(songId, _blankQuestionList.map{ it.inputAnswer }).collect{
-                if(it is ApiResult.Success){
-
-                }
                 _submitResult.emit(it)
             }
         }

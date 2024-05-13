@@ -24,4 +24,6 @@
     <color name="tts_graph">#FF3936BE</color>
     <color name="user_graph">#FFF47500</color>
     <color name="dark_red">#FFDB2B42</color>
+    <color name="result_blue">#FF0066FF</color>
+
 </resources>

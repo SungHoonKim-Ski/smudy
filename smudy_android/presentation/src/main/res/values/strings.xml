@@ -36,4 +36,5 @@
     <string name="pronounce_btn_analyze">분석하기</string>
     <string name="progress_init">0 / </string>
     <string name="submit">제출하기</string>
+    <string name="confirm">완료</string>
 </resources>
