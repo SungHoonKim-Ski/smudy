@@ -10,8 +10,8 @@ import java.net.URI
 interface AIFeignClient {
 
 
-    @PostMapping("/api/ai/similarity")
-    fun getSimilarity(baseurl: URI ,@RequestBody request: SimilarityRequest) : String
+//    @PostMapping("/api/ai/similarity")
+//    fun getSimilarity(baseurl: URI ,@RequestBody request: SimilarityRequest) : String
 
 //    @PostMapping("/pronounce")
 //    fun getPronounce()
