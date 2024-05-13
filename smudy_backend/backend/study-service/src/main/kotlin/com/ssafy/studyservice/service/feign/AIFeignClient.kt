@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import java.net.URI
 
 
-@FeignClient(name = "myai")
+@FeignClient(name = "myAI")
 interface AIFeignClient {
 
 
