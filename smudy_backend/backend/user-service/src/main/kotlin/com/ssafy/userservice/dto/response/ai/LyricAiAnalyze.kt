@@ -7,6 +7,8 @@ data class LyricAiAnalyze(
         val test_pitch_data: PitchData,
         val ref_intensity_data: IntensityData,
         val test_intensity_data: IntensityData,
+        val test_full_text: String,
+        val ref_full_text: String,
         val ref_formants_avg: FormantsAvg,
         val test_formants_avg: FormantsAvg
 )

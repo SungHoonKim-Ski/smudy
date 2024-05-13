@@ -67,7 +67,7 @@ class GlobalExceptionHandler(
     protected fun handleFeignException(e: FeignException): ResponseEntity<Any> {
         val responseJson = e.contentUTF8()
         val responseMap = objectMapperConfig.getObjectMapper().readValue(responseJson, Map::class.java)
-
+        e.printStackTrace()
         return ResponseEntity
                 .status(e.status())
                 .body(responseMap)

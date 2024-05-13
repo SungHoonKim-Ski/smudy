@@ -22,8 +22,6 @@ class AiService (
                 val response = aiFeignClient.getSimilarity(baseUrl, request)
                 logger.info {"response : $response"}
                 return response
-//                val mapper = ObjectMapperConfig().getObjectMapper()
-//                return mapper.readValue(response, SimilarityResponse::class.java)
         }
 
 }
