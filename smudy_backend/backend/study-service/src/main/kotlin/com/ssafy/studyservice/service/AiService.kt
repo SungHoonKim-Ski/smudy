@@ -14,17 +14,16 @@ class AiService (
         @Value("\${ai.server}")
         private val AI_SERVER_URL: String,
         private val aiFeignClient: AIFeignClient,
-        private val objectMapperConfig: ObjectMapperConfig,
 ){
         private val logger = KotlinLogging.logger {  }
-        fun getSimilarity(request: SimilarityRequest) : String {
+        fun getSimilarity(request: SimilarityRequest) : SimilarityResponse {
                 val baseUrl = URI.create(AI_SERVER_URL)
                 logger.info {"request : $request"}
                 val response = aiFeignClient.getSimilarity(baseUrl, request)
                 logger.info {"response : $response"}
-
                 return response
+//                val mapper = ObjectMapperConfig().getObjectMapper()
+//                return mapper.readValue(response, SimilarityResponse::class.java)
         }
-
 
 }

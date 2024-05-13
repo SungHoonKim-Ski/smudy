@@ -14,7 +14,7 @@ interface AIFeignClient {
 
 
     @PostMapping("/api/ai/similarity")
-    fun getSimilarity(baseurl: URI, @RequestBody request: SimilarityRequest) : String
+    fun getSimilarity(baseurl: URI, @RequestBody request: SimilarityRequest) : SimilarityResponse
 
 //    @PostMapping("/api/ai/pronounce")
 //    fun getPronounce()
