@@ -2,6 +2,7 @@ package com.ssafy.smudy
 
 import com.ssafy.data.api.TokenService
 import com.ssafy.data.datasource.datastore.PreferencesDataSource
+import com.ssafy.data.model.auth.RefreshToken
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
@@ -24,7 +25,7 @@ class AuthAuthenticator @Inject constructor(
         }
 
         return runBlocking {
-            val tokenResponse = tokenService.reissueToken(refreshToken)
+            val tokenResponse = tokenService.reissueToken(RefreshToken(refreshToken))
             if (tokenResponse.isSuccessful && tokenResponse.body() != null) {
                 preferencesDataSource.setToken(tokenResponse.body()!!.data!!)
 
