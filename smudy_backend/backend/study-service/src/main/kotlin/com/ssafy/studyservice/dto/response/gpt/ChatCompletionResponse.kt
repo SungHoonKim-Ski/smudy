@@ -6,5 +6,4 @@ data class ChatCompletionResponse(
         val id: String,
         val model: String,
         val `object`: String,
-        val usage: Usage
 )

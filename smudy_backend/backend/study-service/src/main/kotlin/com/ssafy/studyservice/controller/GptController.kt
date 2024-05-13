@@ -3,7 +3,9 @@ package com.ssafy.studyservice.controller
 import com.ssafy.studyservice.dto.request.ExpressCheckRequest
 import com.ssafy.studyservice.dto.response.ExpressCheckResponse
 import com.ssafy.studyservice.dto.response.TranslateResponse
+import com.ssafy.studyservice.service.AiService
 import com.ssafy.studyservice.service.OpenAIService
+import com.ssafy.studyservice.service.feign.AIFeignClient
 import com.ssafy.studyservice.util.SingleResult
 import com.ssafy.studyservice.util.StudyResponseService
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/study")
 class GptController(
         private val openAIService: OpenAIService,
-        private val responseService: StudyResponseService
+        private val responseService: StudyResponseService,
 ) {
 
     private val logger = KotlinLogging.logger {  }
@@ -37,14 +39,6 @@ class GptController(
     @PostMapping("/express/check")
     fun checkExpress(@RequestBody request: ExpressCheckRequest): ResponseEntity<SingleResult<ExpressCheckResponse>> {
         logger.debug { "/express/check $request" }
-//        val response = ExpressCheckResponse(
-//                lyricSentenceEn = "Now I'm trying to get back",
-//                lyricSentenceKo = "지금은 다시 돌아가려 애쓰고 있어요",
-//                userLyricSentenceEn =  "I  plan to try to return in the future.",
-//                userLyricSentenceKo = "나는 미래에 돌아가려고 노력할 예정이에요",
-//                suggestLyricSentence = "I am trying to go back now." ,
-//                score = 90
-//        )
         return ResponseEntity.ok(
                 responseService.getSuccessSingleResult(
                         openAIService.markingUserAnswer(request)
@@ -52,10 +46,5 @@ class GptController(
                 )
         )
     }
-
-//    @GetMapping("/translateall")
-//    fun translateAll() {
-//        openAIService.translateAllProblems()
-//    }
 
 }
