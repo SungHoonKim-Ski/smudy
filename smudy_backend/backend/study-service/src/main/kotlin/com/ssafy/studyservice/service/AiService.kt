@@ -1,6 +1,7 @@
 package com.ssafy.studyservice.service
 
 import com.ssafy.studyservice.dto.request.ai.SimilarityRequest
+import com.ssafy.studyservice.dto.response.ai.SimilarityResponse
 import com.ssafy.studyservice.service.feign.AIFeignClient
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
@@ -13,7 +14,7 @@ class AiService (
         private val aiFeignClient: AIFeignClient,
 ){
 
-        fun getSimilarity(request: SimilarityRequest) : String {
+        fun getSimilarity(request: SimilarityRequest) : SimilarityResponse {
                 val baseUrl = URI.create(AI_SERVER_URL)
                 return aiFeignClient.getSimilarity(baseUrl, request)
         }
