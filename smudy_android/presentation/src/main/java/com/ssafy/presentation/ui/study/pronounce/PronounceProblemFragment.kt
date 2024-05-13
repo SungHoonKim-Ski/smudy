@@ -1,7 +1,6 @@
 package com.ssafy.presentation.ui.study.pronounce
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.Lifecycle
@@ -9,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseFragment
 import com.ssafy.presentation.base.BaseHolder
@@ -62,6 +62,7 @@ class PronounceProblemFragment : BaseFragment<FragmentPronounceProblemBinding>(
 
     private fun initView() {
         with(binding) {
+            activity?.findViewById<BottomNavigationView>(R.id.bn_bar)?.visibility = View.GONE
             rvLyrics.adapter = adapter
         }
     }
@@ -77,5 +78,10 @@ class PronounceProblemFragment : BaseFragment<FragmentPronounceProblemBinding>(
                 }
             )
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        activity?.findViewById<BottomNavigationView>(R.id.bn_bar)?.visibility = View.VISIBLE
     }
 }

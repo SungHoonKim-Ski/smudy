@@ -14,22 +14,20 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.ssafy.presentation.R
 import com.ssafy.presentation.databinding.DialogPronouncePitchBinding
-import com.ssafy.presentation.model.pronounce.PitchData
-import com.ssafy.presentation.model.pronounce.Timestamp
+import com.ssafy.presentation.model.pronounce.FormantsAvg
 
-class PronouncePitchDialog(
-    private val ttsPitchData: PitchData,
-    private val userPitchData: PitchData,
-    private val wordData: List<Timestamp>,
+class PronounceFormantDialog(
+    private val ttsFormantData: FormantsAvg,
+    private val userFormantData: FormantsAvg,
     private val context: Context
 ) : DialogFragment() {
     private var _binding: DialogPronouncePitchBinding? = null
     private val binding get() = _binding!!
     private val ttsLineDataSet: LineDataSet by lazy {
-        makeLineDataSet(R.color.tts_graph,makeDataSet(ttsPitchData,wordData),"Smudy")
+        makeLineDataSet(R.color.tts_graph, makeDataSet(ttsFormantData), "Smudy")
     }
     private val userLineDataSet: LineDataSet by lazy {
-        makeLineDataSet(R.color.user_graph,makeDataSet(userPitchData),"user")
+        makeLineDataSet(R.color.user_graph, makeDataSet(userFormantData), "user")
     }
 
     override fun onStart() {
@@ -39,6 +37,7 @@ class PronouncePitchDialog(
             setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -70,38 +69,31 @@ class PronouncePitchDialog(
     private fun initView() {
         with(binding) {
             val xAxis = lcPitchChart.xAxis
-            lcPitchChart.axisLeft.isEnabled = false
             lcPitchChart.axisRight.isEnabled = false
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             xAxis.setDrawGridLines(false)  // 격자선을 그리지 않음
             lcPitchChart.description.isEnabled=false
-            lcPitchChart.data = LineData(ttsLineDataSet,userLineDataSet)
+            lcPitchChart.data = LineData(ttsLineDataSet, userLineDataSet)
             lcPitchChart.invalidate()
         }
     }
 
-    private fun makeLineDataSet(lineColor: Int, entry: List<Entry>, label: String)=
+    private fun makeLineDataSet(lineColor: Int, entry: List<Entry>, label: String) =
         LineDataSet(entry, label).apply {
-            color = ContextCompat.getColor(context,lineColor)
+            color = ContextCompat.getColor(context, lineColor)
+            lineWidth = -1f
             valueTextColor = Color.BLACK
-            lineWidth = 2f
-            setDrawCircles(false)
+            setCircleColor(ContextCompat.getColor(context, lineColor))
+            setDrawCircles(true)
             setDrawCircleHole(false)
-            setDrawValues(false)
         }
 
 
-    private fun makeDataSet(pitchData: PitchData, timeStamp: List<Timestamp>) =
+    private fun makeDataSet(formantsData: FormantsAvg) =
         ArrayList<Entry>().apply {
-            pitchData.values.forEachIndexed { index, data ->
-                add(Entry(timeStamp[index].time.toFloat(), data.toFloat()))
-            }
-        }
-
-    private fun makeDataSet(pitchData: PitchData) =
-        ArrayList<Entry>().apply {
-            pitchData.times.forEachIndexed { index, data ->
-                add(Entry(data.toFloat(), pitchData.values[index].toFloat()))
+            formantsData.f1.forEachIndexed { index, data ->
+                if (data.toFloat() != 0f || formantsData.f2[index].toFloat() != 0f)
+                    add(Entry(data.toFloat(), formantsData.f2[index].toFloat()))
             }
         }
 }

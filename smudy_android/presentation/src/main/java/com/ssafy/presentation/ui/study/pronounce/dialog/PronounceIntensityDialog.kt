@@ -14,12 +14,12 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.ssafy.presentation.R
 import com.ssafy.presentation.databinding.DialogPronouncePitchBinding
-import com.ssafy.presentation.model.pronounce.PitchData
+import com.ssafy.presentation.model.pronounce.IntensityData
 import com.ssafy.presentation.model.pronounce.Timestamp
 
-class PronouncePitchDialog(
-    private val ttsPitchData: PitchData,
-    private val userPitchData: PitchData,
+class PronounceIntensityDialog(
+    private val ttsPitchData: IntensityData,
+    private val userPitchData: IntensityData,
     private val wordData: List<Timestamp>,
     private val context: Context
 ) : DialogFragment() {
@@ -91,14 +91,14 @@ class PronouncePitchDialog(
         }
 
 
-    private fun makeDataSet(pitchData: PitchData, timeStamp: List<Timestamp>) =
+    private fun makeDataSet(pitchData: IntensityData, timeStamp: List<Timestamp>) =
         ArrayList<Entry>().apply {
             pitchData.values.forEachIndexed { index, data ->
                 add(Entry(timeStamp[index].time.toFloat(), data.toFloat()))
             }
         }
 
-    private fun makeDataSet(pitchData: PitchData) =
+    private fun makeDataSet(pitchData: IntensityData) =
         ArrayList<Entry>().apply {
             pitchData.times.forEachIndexed { index, data ->
                 add(Entry(data.toFloat(), pitchData.values[index].toFloat()))

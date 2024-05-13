@@ -83,6 +83,10 @@
             android:id="@+id/pronounceResultFragment"
             android:name="com.ssafy.presentation.ui.study.pronounce.PronounceResultFragment"
             android:label="fragment_pronounce_result"
-            tools:layout="@layout/fragment_pronounce_result" />
+            tools:layout="@layout/fragment_pronounce_result" >
+            <action
+                android:id="@+id/action_pronounceResultFragment_to_pronouncePracticeFragment"
+                app:destination="@id/pronouncePracticeFragment" />
+        </fragment>
     </navigation>
 </navigation>
