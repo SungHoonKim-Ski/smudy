@@ -504,7 +504,8 @@ class UserController (
                 ttsPronounce = "https://file-examples.com/wp-content/storage/2017/04/file_example_MP4_480_1_5MG.mp4",
                 lyricSentenceEn = "Before the cool done run out, I'll be givin' it my bestest",
                 lyricSentenceKo = "이 기분이 사라지기 전에 내 최고의 것을 드릴께요",
-                userLyricSTT = "Before the coll done ran about, I will been give' it my best",
+                userLyricSttEn = "Before the coll done ran about, I will been give' it my best",
+                userLyricSttKo = "안성준 화이팅",
                 lyricAiAnalyze = sampleAiAnalyze
         )
         return ResponseEntity.ok(responseService.getSuccessSingleResult(response,"Pronounce 제출 완료"))
