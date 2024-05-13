@@ -8,6 +8,7 @@ import com.ssafy.userservice.dto.response.SongSimple
 import com.ssafy.userservice.dto.response.StudyListResponse
 import com.ssafy.userservice.exception.exception.EndOfPageException
 import com.ssafy.userservice.exception.exception.StudyListAllExistException
+import com.ssafy.userservice.util.isNull
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -44,6 +45,12 @@ class StudyListService (
     @Transactional
     fun getUserStudySongs(userInternalId: UUID, pageable: Pageable): List<SongIdMapping> {
         return studyListRepository.findAllByUserInternalId(userInternalId, pageable).toList()
+    }
+
+    @Transactional
+    fun deleteUserStudyList(userInternalId: UUID, songId: String) {
+        val removeStudy = studyListRepository.deleteByUserInternalIdAndSongId(userInternalId, songId)
+        if (removeStudy.isNull()) throw StudyListAllExistException("스터디 리스트 삭제 실패 songid : ${songId}")
     }
 
     @Transactional
