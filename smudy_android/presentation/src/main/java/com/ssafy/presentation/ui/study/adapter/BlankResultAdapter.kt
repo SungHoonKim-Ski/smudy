@@ -1,22 +1,16 @@
-package com.ssafy.presentation.ui.study.fill
+package com.ssafy.presentation.ui.study.adapter
 
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.text.style.UnderlineSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.ssafy.domain.model.SubmitFillBlankResult
 import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseAdapter
 import com.ssafy.presentation.base.BaseHolder
 import com.ssafy.presentation.databinding.ItemBlankLyricBinding
-import com.ssafy.presentation.model.BlankQuestion
 import com.ssafy.presentation.model.ParcelableSubmitBlankResult
-import com.ssafy.presentation.model.ParcelableSubmitFillBlankData
-import com.ssafy.presentation.model.ParcelableSubmitResult
-import com.ssafy.presentation.model.toQuestion
 
 
 private const val TAG = "BlankResultAdapter"

@@ -1,17 +1,12 @@
 package com.ssafy.presentation.ui.study.fill
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
@@ -21,17 +16,14 @@ import com.ssafy.domain.model.ApiResult
 import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseFragment
 import com.ssafy.presentation.base.BaseHolder
-import com.ssafy.presentation.base.toMilliSecond
 import com.ssafy.presentation.databinding.FragmentFillBinding
 import com.ssafy.presentation.model.ParcelableSubmitBlankResult
 import com.ssafy.presentation.model.ParcelableSubmitFillBlankData
 import com.ssafy.presentation.model.ParcelableSubmitResult
-import com.ssafy.presentation.model.toQuestion
 import com.ssafy.presentation.ui.MainActivityViewModel
+import com.ssafy.presentation.ui.study.adapter.BlankLyricAdapter
 import com.ssafy.util.spotify.SpotifyManager
-import dagger.Module
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

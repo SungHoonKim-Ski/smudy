@@ -1,4 +1,4 @@
-package com.ssafy.presentation.ui.study.fill
+package com.ssafy.presentation.ui.study.adapter
 
 
 import android.text.SpannableString
@@ -6,7 +6,6 @@ import android.text.Spanned
 import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseAdapter
