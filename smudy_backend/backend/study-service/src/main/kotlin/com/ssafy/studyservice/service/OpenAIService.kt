@@ -1,9 +1,12 @@
 package com.ssafy.studyservice.service
 
+import com.fasterxml.jackson.core.JsonProcessingException
+import com.fasterxml.jackson.databind.JsonMappingException
 import com.ssafy.studyservice.config.ObjectMapperConfig
 import com.ssafy.studyservice.dto.request.ExpressCheckRequest
 import com.ssafy.studyservice.dto.response.ExpressCheckResponse
 import com.ssafy.studyservice.dto.response.gpt.ChatCompletionResponse
+import com.ssafy.studyservice.exception.exception.GptConnectException
 import com.ssafy.studyservice.service.feign.OpenAIClient
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.beans.factory.annotation.Value
@@ -18,23 +21,6 @@ class OpenAIService(
     lateinit var apiKey: String
 
     private val logger = KotlinLogging.logger {  }
-    fun translateLyric(lyric: String): String {
-        val mapper = ObjectMapperConfig().getObjectMapper()
-
-        val request = mapOf(
-                "model" to "gpt-4",
-                "messages" to arrayOf(
-                        mapOf(
-                                "role" to "system",
-                                "content" to "Translate these English lyrics into Korean for me. Use casual language, not formal. $lyric"
-                        )
-                )
-        )
-
-        val response = openAIClient.generateText("Bearer $apiKey", request)
-
-        return mapper.readValue(response, ChatCompletionResponse::class.java).choices[0].message.content
-    }
 
     fun markingUserAnswer(request: ExpressCheckRequest): ExpressCheckResponse {
         val lyricEn = revTranslateLyric(request.lyricSentenceKo)
@@ -51,6 +37,13 @@ class OpenAIService(
         )
     }
 
+
+    /**
+     * 한국어로 직역된 노래 가사를 다시 영어로 변환해 주는 함수
+     *
+     * 이를 이용해 특정 가사의 한 문장의 해석을 보고
+     * 유저가 작성한 문장과 GPT가 작성해준 문장간의 유사도를 비교해야 함
+     */
     fun revTranslateLyric(lyricKo: String): String {
         val mapper = ObjectMapperConfig().getObjectMapper()
 
@@ -59,7 +52,11 @@ class OpenAIService(
                 "messages" to arrayOf(
                         mapOf(
                                 "role" to "system",
-                                "content" to "Translate these Korean lyrics into English for me. $lyricKo"
+                                "content" to "An inexperienced friend has made a common mistake by translating an English song lyric directly into Korean, without considering the cultural and emotional nuances. This literal translation has altered the original's poetic impact. Your task is to take this awkward Korean version and craft new English lyrics that not only correct the error but also retain the original sentiment and artistic flavor of the song.",
+                        ),
+                        mapOf(
+                                "role" to "user",
+                                "content" to "here is lyrics translated by koren $lyricKo"
                         )
                 )
         )
@@ -69,6 +66,25 @@ class OpenAIService(
         return mapper.readValue(response, ChatCompletionResponse::class.java).choices[0].message.content
     }
 
+    fun translateLyric(lyric: String): String {
+        val mapper = ObjectMapperConfig().getObjectMapper()
+
+        val request = mapOf(
+                "model" to "gpt-4",
+                "messages" to arrayOf(
+                        mapOf(
+                                "role" to "system",
+                                "content" to "You are a lyricist with 10 years of experience. When you receive a line of lyrics written in English, your task is to translate it into Korean while preserving its emotional impact and artistic nuances as much as possible. You are skilled at maintaining the original's essence and ensuring that the translated Korean lyrics resonate deeply with the local audience.",
+                                "role" to "user",
+                                "content" to "Translate these English lyrics into Korean for me. Use casual language, not formal. $lyric"
+                        )
+                )
+        )
+
+        val response = openAIClient.generateText("Bearer $apiKey", request)
+
+        return mapper.readValue(response, ChatCompletionResponse::class.java).choices[0].message.content
+    }
     fun scoreLyric(lyricEn: String, userEn: String): String {
         val mapper = ObjectMapperConfig().getObjectMapper()
 
@@ -77,14 +93,27 @@ class OpenAIService(
                 "messages" to arrayOf(
                         mapOf(
                                 "role" to "system",
+                                "content" to "You are a lyricist with 10 years of experience. A user has submitted lyrics for a song you wrote, creating a version with a similar theme. Now, you need to evaluate how well the user's submitted line captures the feel of your original lyrics. Rate the user's line out of 100, based solely on how well it preserves the essence and emotional tone of your work. Just provide the score.",
+                                "role" to "user",
                                 "content" to "Rate the similarity between $lyricEn and the sentence $userEn on a scale of 100. plz answer only score number"
-                        )
+                        ),
                 )
         )
 
         val response = openAIClient.generateText("Bearer $apiKey", request)
+        lateinit var result: String
 
-        return mapper.readValue(response, ChatCompletionResponse::class.java).choices[0].message.content
+        try {
+            result = mapper.readValue(response, ChatCompletionResponse::class.java).choices[0].message.content
+        } catch (e: JsonProcessingException) {
+            e.printStackTrace()
+            throw GptConnectException("Gpt API 서버 접속에 실패헀습니다")
+        } catch (e: JsonMappingException) {
+            e.printStackTrace()
+            throw GptConnectException("Gpt API 서버 접속에 실패했습니다")
+        }
+
+        return result
     }
 
 //    fun translateAllProblems() {

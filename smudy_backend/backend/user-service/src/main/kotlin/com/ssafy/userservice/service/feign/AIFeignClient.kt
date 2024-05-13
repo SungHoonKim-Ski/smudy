@@ -1,15 +1,12 @@
-package com.ssafy.studyservice.service.feign
+package com.ssafy.userservice.service.feign
 
-import com.ssafy.studyservice.dto.request.ai.SimilarityRequest
-import com.ssafy.studyservice.dto.response.ai.SimilarityResponse
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import java.net.URI
 
 
-@FeignClient(name = "myAI")
+@FeignClient(name = "myai")
 interface AIFeignClient {
 
 
