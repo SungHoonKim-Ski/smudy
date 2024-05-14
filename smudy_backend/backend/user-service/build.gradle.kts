@@ -64,6 +64,9 @@ dependencies {
 	// coroutine
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+
+	// feign okhttp
+	implementation("io.github.openfeign:feign-okhttp")
 }
 
 dependencyManagement {
