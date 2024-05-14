@@ -15,7 +15,7 @@ spring:
           dialect: org.hibernate.dialect.PostgreSQLDialect
 
     datasource:
-        url: jdbc:postgresql://localhost:5432/postgres
+        url: ENC(LOQ8dn9ei6+pX752IFd56v/dZi1VSH2nxeiAlgia3cptBT6YJ0zNRl1Dgwk6Ou6XWH7V9OlZKFSsbGBQ7aTrsg==)
         username: ENC(U1prS9CmmDnKNHS7OJdYtw==)
         password: ENC(G/jBy28DXfR039pmAt8RLn6V6vmQWVhJ)
         driver-class-name: org.postgresql.Driver
@@ -32,9 +32,9 @@ spring:
     ai:
       vectorstore:
         pgvector:
-        index-type: HNSW
-        distance-type: COSINE_DISTANCE
-        dimension: 1536
+          index-type: HNSW
+          distance-type: COSINE_DISTANCE
+          dimensions: 1536
 
       openai:
         api-key: sk-proj-0rB49TSpPmvh6kpyAfOqT3BlbkFJY9xQabVcDik5sYK8xdlO

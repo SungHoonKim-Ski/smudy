@@ -25,30 +25,6 @@ class RecommendService(
             userInternalId = userInternalId
         )
 
-        val originIds = HashSet<String>()
-        for(learnReport in userLearnReports) {
-            // song_id 중복 제거 후 저장
-            originIds.add(learnReport.songId)
-        }
-
-        val spotifyId = originIds.first()
-//        println("song_id: $spotifyId")
-        val song = songRepository.findBySpotifyId(spotifyId)
-            ?: throw SongNotFoundException("spotify Id가 ${spotifyId}인 노래가 존재하지 않음")
-
-        val albumName = song.albumName
-        val songName = song.songName
-        val songArtist = song.songArtist
-        val songGenre = song.songGenre
-
-        val result: List<Document> = vectorStore.similaritySearch(
-            SearchRequest.defaults()
-                .withQuery("$albumName $songArtist $songName $songGenre")
-                .withTopK(3)
-            )
-
-        println(result)
-
         val response = RecommendResponse()
 
         // 해당 유저의 히스토리가 존재하지 않음
@@ -111,8 +87,61 @@ class RecommendService(
         }
 
         else {
-            // TODO: 히스토리의 순회하면서 해당 노래와 유사한 노래 추천
+            // 히스토리의 순회하면서 해당 노래와 유사한 노래 추천
+            val originIds = HashSet<String>()
+            for(learnReport in userLearnReports) {
+                // song_id 중복 제거 후 저장
+                originIds.add(learnReport.songId)
+            }
 
+            val recommendIds = HashSet<String>()
+            for (spotifyId in originIds) {
+
+//                println("song_id: $spotifyId")
+                val song = songRepository.findBySpotifyId(spotifyId)
+                    ?: throw SongNotFoundException("spotify Id가 ${spotifyId}인 노래가 존재하지 않음")
+
+                val albumName = song.albumName
+                val songName = song.songName
+                val songArtist = song.songArtist
+                val songGenre = song.songGenre
+
+                val results: List<Document> = vectorStore.similaritySearch(
+                    SearchRequest
+                        .query("$albumName $songArtist $songName $songGenre")
+                        .withTopK(3)
+                )
+
+                // 첫 번째 요소를 제외한 2번째와 3번째 요소만 선택
+                val selectedResults = results.drop(1).take(2)
+                for (document in selectedResults) {
+                    recommendIds.add(document.id)
+                    // recommendIds가 6개가 되면 종료
+                    if (recommendIds.size == 6) {
+                        break
+                    }
+                }
+
+                // recommendIds가 6개가 되면 종료
+                if (recommendIds.size == 6) {
+                    break
+                }
+            }
+
+            for (spotifyId in recommendIds) {
+                val song = songRepository.findBySpotifyId(spotifyId)
+                    ?: throw SongNotFoundException("spotify Id가 ${spotifyId}인 노래가 존재하지 않음")
+                response.userRecommendSongs.add(
+                    SongSimple(
+                        songArtist = song.songArtist
+                        , songName = song.songName
+                        , spotifyId = song.spotifyId
+                        , albumJacket = song.albumJacket
+                    )
+                )
+            }
+
+//            println("Recommend IDs: $recommendIds")
         }
 
         return response

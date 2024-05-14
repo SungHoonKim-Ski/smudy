@@ -57,7 +57,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 
 	// spring ai
-//	implementation(platform("org.springframework.ai:spring-ai-bom:0.8.1-SNAPSHOT"))
 	implementation("org.springframework.ai:spring-ai-pgvector-store-spring-boot-starter")
 	implementation("org.springframework.ai:spring-ai-openai-spring-boot-starter")
 
