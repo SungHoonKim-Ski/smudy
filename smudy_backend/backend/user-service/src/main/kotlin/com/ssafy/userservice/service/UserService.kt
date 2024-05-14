@@ -277,14 +277,13 @@ class UserService(
         val mapper = ObjectMapperConfig().getObjectMapper()
 
 //        val parseAnalyze = mapper.readValue(mapper.writeValueAsString(analyzeResponse), EntityLyricAiAnalyze::class.java)
-        val resultToString = mapper.writeValueAsString(analyzeResponse)
 
         val learnReportPronounce = LearnReportPronounce(
                 learnReportId = -1,
                 learnReportPronounceUserEn = analyzeResponse.result.userFullText,
                 lyricSentenceEn = request.lyricSentenceEn,
                 lyricSentenceKo =  request.lyricSentenceKo,
-                lyricAiAnalyze = resultToString
+                lyricAiAnalyze = mapper.writeValueAsString(analyzeResponse)
         )
 
         savePronounce(
@@ -297,7 +296,7 @@ class UserService(
                 lyricSentenceEn = request.lyricSentenceEn,
                 lyricSentenceKo = request.lyricSentenceKo,
                 userLyricSttEn = analyzeResponse.result.userFullText,
-                lyricAiAnalyze = resultToString
+                lyricAiAnalyze = analyzeResponse
         )
     }
 

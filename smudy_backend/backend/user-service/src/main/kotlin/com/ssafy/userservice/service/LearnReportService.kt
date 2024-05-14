@@ -4,6 +4,7 @@ import com.ssafy.userservice.config.ObjectMapperConfig
 import com.ssafy.userservice.db.postgre.entity.*
 import com.ssafy.userservice.db.postgre.repository.*
 import com.ssafy.userservice.dto.response.*
+import com.ssafy.userservice.dto.response.ai.PronounceAnalyzeResponse
 import com.ssafy.userservice.exception.exception.HistoryNotFoundException
 import com.ssafy.userservice.exception.exception.LearnReportNotFoundException
 import com.ssafy.userservice.service.feign.StudyServiceClient
@@ -246,7 +247,7 @@ class LearnReportService (
                 userLyricEn = details.learnReportPronounceUserEn,
                 lyricSentenceEn = details.lyricSentenceEn,
                 lyricSentenceKo = details.lyricSentenceKo,
-                lyricAiAnalyze = mapper.writeValueAsString(details.lyricAiAnalyze),
+                lyricAiAnalyze = mapper.readValue(details.lyricAiAnalyze, PronounceAnalyzeResponse::class.java),
         )
     }
 
