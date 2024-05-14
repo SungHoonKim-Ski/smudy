@@ -79,7 +79,6 @@
                     tools:text="1 "/>
 
                 <TextView
-                    android:id="@+id/tv_num_of_questions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

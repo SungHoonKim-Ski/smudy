@@ -4,6 +4,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.ssafy.data.BuildConfig.BASE_URL
 import com.ssafy.data.api.AuthService
+import com.ssafy.data.api.ExpressService
 import com.ssafy.data.api.MusicService
 import com.ssafy.data.api.PronounceService
 import com.ssafy.data.api.ShuffleService
@@ -123,6 +124,8 @@ object NetworkModule {
     fun provideShuffleService(retrofit: Retrofit): ShuffleService =
         retrofit.create(ShuffleService::class.java)
 
-
+    @Provides
+    @Singleton
+    fun provideExpressService(retrofit: Retrofit): ExpressService = retrofit.create(ExpressService::class.java)
 
 }
