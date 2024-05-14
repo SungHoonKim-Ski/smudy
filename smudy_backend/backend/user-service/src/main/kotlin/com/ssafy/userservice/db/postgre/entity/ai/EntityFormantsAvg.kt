@@ -8,8 +8,8 @@ import jakarta.persistence.Embeddable
 data class EntityFormantsAvg (
 
     @ElementCollection
-    var F1: List<Double>,
+    var f1: List<Double>,
 
     @ElementCollection
-    var F2: List<Double>,
+    var f2: List<Double>,
 )

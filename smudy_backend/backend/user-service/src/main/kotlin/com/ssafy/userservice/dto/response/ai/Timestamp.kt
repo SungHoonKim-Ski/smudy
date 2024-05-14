@@ -7,9 +7,7 @@ data class Timestamp(
 
         val word: String,
 
-        @get: JsonProperty("start_time")
-        val startTime: Double,
+        val start_time: Double,
 
-        @get: JsonProperty("end_time")
-        val endTime: Double
+        val end_time: Double
 )

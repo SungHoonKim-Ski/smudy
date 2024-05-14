@@ -1,5 +1,9 @@
 package com.ssafy.userservice.db.postgre.entity
 
+import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.ssafy.userservice.db.postgre.entity.ai.EntityLyricAiAnalyze
+import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
+import com.ssafy.userservice.util.LyricAIConverter
 import jakarta.persistence.*
 
 @Entity
@@ -22,6 +26,6 @@ class LearnReportPronounce(
         @Column(name = "lyric_sentence_ko", nullable = false)
         var lyricSentenceKo: String,
 
-        @Column(name = "lyric_ai_analyze", columnDefinition = "json", nullable = false)
-        var lyricAiAnalyze: String
+        @Column(name = "lyric_ai_analyze", nullable = false)
+        var lyricAiAnalyze: String,
 )

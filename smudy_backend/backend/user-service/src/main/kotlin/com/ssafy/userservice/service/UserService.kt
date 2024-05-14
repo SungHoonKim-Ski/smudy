@@ -276,14 +276,15 @@ class UserService(
 
         val mapper = ObjectMapperConfig().getObjectMapper()
 
-//        val parseAnalyze = mapper.readValue(, EntityLyricAiAnalyze::class.java)
+//        val parseAnalyze = mapper.readValue(mapper.writeValueAsString(analyzeResponse), EntityLyricAiAnalyze::class.java)
+        val resultToString = mapper.writeValueAsString(analyzeResponse)
 
         val learnReportPronounce = LearnReportPronounce(
                 learnReportId = -1,
-                learnReportPronounceUserEn = analyzeResponse.userFullText,
+                learnReportPronounceUserEn = analyzeResponse.result.userFullText,
                 lyricSentenceEn = request.lyricSentenceEn,
                 lyricSentenceKo =  request.lyricSentenceKo,
-                lyricAiAnalyze = mapper.writeValueAsString(analyzeResponse)
+                lyricAiAnalyze = resultToString
         )
 
         savePronounce(
@@ -295,18 +296,18 @@ class UserService(
         return SubmitPronounceResponse(
                 lyricSentenceEn = request.lyricSentenceEn,
                 lyricSentenceKo = request.lyricSentenceKo,
-                userLyricSttEn = analyzeResponse.userFullText,
-                lyricAiAnalyze = analyzeResponse
+                userLyricSttEn = analyzeResponse.result.userFullText,
+                lyricAiAnalyze = resultToString
         )
     }
 
     fun getPronounceAnalyze (
             userFile: MultipartFile,
             ttsFile: MultipartFile,
-    ) : LyricAiAnalyze {
+    ) : PronounceAnalyzeResponse{
         return aiService.getPronounce(
                 ttsFile = ttsFile, userFile = userFile
-        ).result
+        )
     }
 
     @Transactional
