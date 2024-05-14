@@ -2,13 +2,11 @@ package com.ssafy.userservice.service
 
 import com.ssafy.userservice.config.ObjectMapperConfig
 import com.ssafy.userservice.db.postgre.entity.*
-import com.ssafy.userservice.db.postgre.entity.ai.EntityLyricAiAnalyze
 import com.ssafy.userservice.db.postgre.repository.UserRepository
 import com.ssafy.userservice.dto.request.*
 import com.ssafy.userservice.dto.response.*
+import com.ssafy.userservice.dto.response.ai.LyricAICover
 import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
-import com.ssafy.userservice.dto.response.ai.PronounceAnalyzeResponse
-import com.ssafy.userservice.dto.response.feign.ExpressResponse
 import com.ssafy.userservice.exception.exception.LearnReportNotSavedException
 import com.ssafy.userservice.exception.exception.UserNotFoundException
 import com.ssafy.userservice.service.feign.StudyServiceClient
@@ -278,12 +276,13 @@ class UserService(
 
 //        val parseAnalyze = mapper.readValue(mapper.writeValueAsString(analyzeResponse), EntityLyricAiAnalyze::class.java)
 
+        val cover = LyricAICover(lyricAiAnalyze = analyzeResponse)
         val learnReportPronounce = LearnReportPronounce(
                 learnReportId = -1,
-                learnReportPronounceUserEn = analyzeResponse.result.userFullText,
+                learnReportPronounceUserEn = analyzeResponse.userFullText,
                 lyricSentenceEn = request.lyricSentenceEn,
                 lyricSentenceKo =  request.lyricSentenceKo,
-                lyricAiAnalyze = mapper.writeValueAsString(analyzeResponse)
+                lyricAiAnalyze = mapper.writeValueAsString(cover)
         )
 
         savePronounce(
@@ -295,7 +294,7 @@ class UserService(
         return SubmitPronounceResponse(
                 lyricSentenceEn = request.lyricSentenceEn,
                 lyricSentenceKo = request.lyricSentenceKo,
-                userLyricSttEn = analyzeResponse.result.userFullText,
+                userLyricSttEn = analyzeResponse.userFullText,
                 lyricAiAnalyze = analyzeResponse
         )
     }
@@ -303,7 +302,7 @@ class UserService(
     fun getPronounceAnalyze (
             userFile: MultipartFile,
             ttsFile: MultipartFile,
-    ) : PronounceAnalyzeResponse{
+    ) : LyricAiAnalyze{
         return aiService.getPronounce(
                 ttsFile = ttsFile, userFile = userFile
         )

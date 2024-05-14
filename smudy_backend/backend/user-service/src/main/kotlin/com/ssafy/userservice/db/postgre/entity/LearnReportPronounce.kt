@@ -1,9 +1,5 @@
 package com.ssafy.userservice.db.postgre.entity
 
-import com.fasterxml.jackson.annotation.JsonSubTypes
-import com.ssafy.userservice.db.postgre.entity.ai.EntityLyricAiAnalyze
-import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
-import com.ssafy.userservice.util.LyricAIConverter
 import jakarta.persistence.*
 
 @Entity

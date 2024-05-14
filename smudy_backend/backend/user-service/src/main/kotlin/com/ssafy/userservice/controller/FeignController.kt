@@ -1,13 +1,7 @@
 package com.ssafy.userservice.controller
 
-import com.ssafy.userservice.config.ObjectMapperConfig
-import com.ssafy.userservice.db.postgre.entity.LearnReportPronounce
-import com.ssafy.userservice.db.postgre.entity.ai.EntityLyricAiAnalyze
-import com.ssafy.userservice.db.postgre.repository.LearnReportPronounceRepository
 import com.ssafy.userservice.dto.request.SignUpRequest
 import com.ssafy.userservice.dto.response.*
-import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
-import com.ssafy.userservice.dto.response.ai.PronounceAnalyzeResponse
 import com.ssafy.userservice.dto.response.feign.FillResponse
 import com.ssafy.userservice.dto.response.feign.PronounceResponse
 import com.ssafy.userservice.service.SongService

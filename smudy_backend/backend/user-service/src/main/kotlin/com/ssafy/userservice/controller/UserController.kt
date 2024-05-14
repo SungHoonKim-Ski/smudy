@@ -1,9 +1,7 @@
 package com.ssafy.userservice.controller
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ssafy.userservice.dto.request.*
 import com.ssafy.userservice.dto.response.*
-import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
 import com.ssafy.userservice.exception.exception.RequestNotNumberException
 import com.ssafy.userservice.service.*
 import com.ssafy.userservice.util.CommonResult
