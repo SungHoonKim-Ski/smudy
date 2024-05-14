@@ -46,6 +46,12 @@ jwt:
 image:
   streak: ENC(NMGpSv9IzxhnmHY9vjfgHpmhBXwAcmc7xPRnSZFTIWKsULWP65pDXrfT0NySjbh/gqremDt9B6UDmYPN4ss7ceITUa6OzuqZyYFFfrIFgWo=)
 
+ai:
+  server: ENC(YlSysAx3i37cDCxSAM/vqOxsanvggguMHgmCPTYn2ozGx4vta2FN1Q==)
+
+openAI:
+  key:
+    ENC(xu6+KbV1SydVKv3/90LbAVe/rL72sXTScajRz+qQui1pqcbEq6+iKpfX5sAw6YgpatR0VJm13K1hJRhaKzQRwqvAD4tkBOO1)
 logging:
   level:
     org:

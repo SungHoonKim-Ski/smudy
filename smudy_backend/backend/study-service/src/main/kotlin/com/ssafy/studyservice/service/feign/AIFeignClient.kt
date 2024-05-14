@@ -12,10 +12,7 @@ import java.net.URI
 @FeignClient(name = "myAI", url = "https://sunghoon.site")
 interface AIFeignClient {
 
-
     @PostMapping("/api/ai/similarity")
     fun getSimilarity(baseurl: URI, @RequestBody request: SimilarityRequest) : SimilarityResponse
 
-//    @PostMapping("/api/ai/pronounce")
-//    fun getPronounce()
 }

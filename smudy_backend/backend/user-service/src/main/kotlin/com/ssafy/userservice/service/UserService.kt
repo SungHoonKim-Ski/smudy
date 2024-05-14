@@ -19,6 +19,7 @@ class UserService(
         private val songService: SongService,
         private val learnReportService: LearnReportService,
         private val studyServiceClient: StudyServiceClient,
+        private val aiService: AiService,
 ) {
 
     private val logger = KotlinLogging.logger{ }
@@ -261,7 +262,7 @@ class UserService(
 
 //    @Transactional
 //    fun savePronounce(userInternalId: UUID, request: SubmitPronounceRequest) : SubmitPronounceResponse {
-//
+//        aiService.getPronounce()
 //    }
 
     fun addStreak(total: Int, score: Int, userInternalId: UUID, albumJacket: String) : Boolean {
