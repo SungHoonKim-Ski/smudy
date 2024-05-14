@@ -47,8 +47,28 @@ class ShuffleFragment : BaseFragment<FragmentShuffleBinding>(
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun initView(){
         with(binding){
+
+            tvNumOfQuestions.text = "5"
+
             rvSelected.apply{
-                adapter = selectedAdapter
+                adapter = selectedAdapter.apply{
+                    setOnItemClickListener(object: BaseHolder.ItemClickListener{
+                        @SuppressLint("NotifyDataSetChanged")
+                        override fun onClick(position: Int) {
+                            with(shuffleViewModel){
+                                val destIdx = currentList[position].origPosition
+                                selectedList[curIdx.value!!].removeAt(position)
+                                selectedAdapter.submitList(selectedList[curIdx.value!!])
+                                inputWords[curIdx.value!!][position] = ""
+                                selectedAdapter.notifyDataSetChanged()
+                                shuffledList[curIdx.value!!][destIdx] = shuffledList[curIdx.value!!][destIdx].copy(isVisible = true)
+                                candidAdapter.submitList(shuffledList[curIdx.value!!])
+                                candidAdapter.notifyItemChanged(destIdx)
+                            }
+                        }
+
+                    })
+                }
                 layoutManager = FlexboxLayoutManager(context).apply {
                     flexWrap = FlexWrap.WRAP
                     flexDirection = FlexDirection.ROW
@@ -64,14 +84,16 @@ class ShuffleFragment : BaseFragment<FragmentShuffleBinding>(
             rvShuffle.apply{
                 adapter = candidAdapter.apply{
                     setOnItemClickListener(object: BaseHolder.ItemClickListener{
+                        @SuppressLint("NotifyDataSetChanged")
                         override fun onClick(position: Int) {
                             with(shuffleViewModel){
-                                val curList = selectedList[curIdx]
-                                val curIdx = curList.size-20
-                                curList.add( curIdx, currentList[position])
-                                selectedAdapter.submitList(curList)
-                                selectedAdapter.notifyItemInserted(curIdx)
-                                Log.d(TAG, "onClick: ${selectedAdapter.currentList}")
+                                val destIdx =  selectedList[curIdx.value!!].size-20
+                                selectedList[curIdx.value!!].add(destIdx,currentList[position].copy())
+                                selectedAdapter.submitList(selectedList[curIdx.value!!])
+                                selectedAdapter.notifyDataSetChanged()
+                                shuffledList[curIdx.value!!][position] = shuffledList[curIdx.value!!][position].copy(isVisible = false)
+                                candidAdapter.submitList(shuffledList[curIdx.value!!])
+                                inputWords[curIdx.value!!][destIdx] = selectedList[curIdx.value!!][destIdx].word
                             }
 
                         }
@@ -90,9 +112,20 @@ class ShuffleFragment : BaseFragment<FragmentShuffleBinding>(
 
         with(shuffleViewModel){
             getShuffle("1EzrEOXmMH3G43AXT1y7pA")
+            with(binding){
+                btnNxt.setOnClickListener {
+                    Log.d(TAG, "initView: ${curIdx.value!!+1}")
+                    setCurIdx(curIdx.value!!+1) 
+                }
+                btnPrv.setOnClickListener { setCurIdx(curIdx.value!!-1) }
+                btnConfirm.setOnClickListener { submitShuffle("1EzrEOXmMH3G43AXT1y7pA") }
+            }
         }
+
+
     }
 
+    @SuppressLint("SetTextI18n")
     private fun registerObserve(){
         with(shuffleViewModel){
             lifecycleScope.launch{
@@ -101,13 +134,7 @@ class ShuffleFragment : BaseFragment<FragmentShuffleBinding>(
 
                         if( it is ApiResult.Success){
                             val data = it.data
-
                             setCurIdx(0)
-                            candidAdapter.submitList(
-                                shuffledList[curIdx]
-                            )
-                            binding.tvLyricKr.text = koreanList[curIdx]
-                            selectedAdapter.submitList(selectedList[curIdx])
 
                             with(binding.loBasic) {
                                 tvAlbumTitle.text = data.songName
@@ -119,6 +146,41 @@ class ShuffleFragment : BaseFragment<FragmentShuffleBinding>(
                         }
                     }
                 }
+            }
+            
+            lifecycleScope.launch { 
+                repeatOnLifecycle(Lifecycle.State.STARTED){
+                    shuffleSubmitResult.collect{
+                        if(it is ApiResult.Success){
+                            Log.d(TAG, "registerObserve: ${it.data}")
+                        }
+                    }
+                }
+            }
+
+            curIdx.observe(viewLifecycleOwner){
+                Log.d(TAG, "registerObserve: $it")
+                if(it>-1){
+                    binding.tvProgress.text = "${it+1} /"
+                    candidAdapter.submitList(
+                        shuffledList[it]
+                    )
+                    binding.tvLyricKr.text = koreanList[it]
+                    selectedAdapter.submitList(selectedList[it])
+                    if(it>=4){
+                        binding.btnNxt.isEnabled = false
+                        binding.btnConfirm.isEnabled = true
+                    }else{
+                        binding.btnConfirm.isEnabled = false
+                        if(it<=0){
+                            binding.btnPrv.isEnabled = false
+                        }else{
+                            binding.btnNxt.isEnabled = true
+                            binding.btnPrv.isEnabled = true
+                        }
+                    }
+                }
+
             }
         }
     }

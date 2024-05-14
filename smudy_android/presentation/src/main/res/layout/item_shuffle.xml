@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="@dimen/fragment_padding"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:backgroundTint="@color/box_blue"
     app:cardCornerRadius="@dimen/streak_size"
@@ -12,17 +11,18 @@
     <TextView
         android:id="@+id/tv_word"
         android:layout_width="wrap_content"
-        android:maxWidth="100dp"
+        android:maxWidth="110dp"
         android:layout_height="40dp"
-        android:layout_marginHorizontal="@dimen/fragment_padding"
-        android:paddingVertical="@dimen/margin_small"
+        android:layout_marginHorizontal="8dp"
+        android:paddingVertical="@dimen/text_gap"
         android:autoSizeMaxTextSize="13sp"
-        android:autoSizeMinTextSize="10sp"
+        android:autoSizeMinTextSize="11sp"
         android:autoSizeTextType="uniform"
+        android:autoSizeStepGranularity="1sp"
         android:textAppearance="@style/Noto_Sans.TEXT.B.13"
         android:includeFontPadding="false"
+        android:maxLines="1"
         android:gravity="center"
-        tools:text="a" />
-
+        tools:text="abc"/>
 
 </androidx.cardview.widget.CardView>

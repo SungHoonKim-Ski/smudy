@@ -106,9 +106,9 @@
                 android:id="@+id/tv_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text = "@string/progress_init"
-                android:textAppearance="@style/Jalnan.TEXT.R.12"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:text="@string/progress_init"
+                android:textAppearance="@style/Jalnan.TEXT.R.12" />
             <TextView
                 android:id="@+id/tv_num_of_questions"
                 android:layout_width="wrap_content"

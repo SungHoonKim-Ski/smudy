@@ -2,6 +2,7 @@ package com.ssafy.presentation.ui.study.shuffle
 
 import android.annotation.SuppressLint
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,12 +19,12 @@ class ShuffleAdapter : BaseAdapter<ShuffleWord>() {
         override fun bindInfo(data: ShuffleWord) {
             with(binding){
                 tvWord.text = data.word
-                if (data.word.isBlank()) {
-                    Log.d(TAG, "bindInfo: ")
-
+                if (data.word.isBlank() || !data.isVisible) {
+                    binding.root.visibility = View.INVISIBLE
+                }else{
+                    binding.root.visibility = View.VISIBLE
                 }
                 binding.root.setOnClickListener{
-                    Log.d(TAG, "bindInfo: clicked")
                     clickListener.onClick(layoutPosition)
                     it.visibility = View.INVISIBLE
                 }

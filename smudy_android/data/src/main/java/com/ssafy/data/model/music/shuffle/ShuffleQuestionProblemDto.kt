@@ -5,9 +5,10 @@ import com.ssafy.domain.model.ShuffleQuestionProblem
 
 data class ShuffleQuestionProblemDto(
     val lyricSentenceEn: String,
-    val lyricSentenceKo: String
+    val lyricSentenceKo: String,
+    val userLyricSentence: String =""
 ): MappingDto<ShuffleQuestionProblem> {
     override fun toDomain() = ShuffleQuestionProblem(
-        lyricSentenceEn, lyricSentenceKo
+        lyricSentenceEn, lyricSentenceKo, userLyricSentence
     )
 }
