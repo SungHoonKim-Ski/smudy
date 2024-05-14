@@ -41,8 +41,8 @@ spring:
           dimensions: 1536
 
       openai:
-        api-key: sk-proj-0rB49TSpPmvh6kpyAfOqT3BlbkFJY9xQabVcDik5sYK8xdlO
-        base-url: https://api.openai.com
+        api-key: ENC(9C0yUGipkBxnnhJu0y8PR8Ck+yft/m/oySh3l2Clnxb2oKQq5iIuj/4rean6V04jzlTkrsGeOVtQ5e3e8FijXRV8goe6SRFz)
+        base-url: ENC(2JF/UA8bcRsrTeZX7COKp1Tp608XATgEpS+M8i9Vbho=)
         embedding:
           options:
             model: text-embedding-3-small
