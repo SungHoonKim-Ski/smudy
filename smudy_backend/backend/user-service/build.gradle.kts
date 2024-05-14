@@ -17,9 +17,12 @@ java {
 
 repositories {
 	mavenCentral()
+	maven(url="https://repo.spring.io/milestone")
+	maven(url="https://repo.spring.io/snapshot")
 }
 
 extra["springCloudVersion"] = "2023.0.1"
+extra["springAiVersion"] = "0.8.1"
 
 dependencies {
 
@@ -44,7 +47,7 @@ dependencies {
 	implementation("org.hibernate.orm:hibernate-core:6.2.8.Final")
 	implementation("com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations")
 
-	// https://mvnrepository.com/artifact/com.github.ulisesbocchio/jasypt-spring-boot-starter
+	// jasypt
 	implementation("com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5")
 
 	// Security
@@ -53,15 +56,17 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 
-	// Spotify
-	implementation("se.michaelthelin.spotify:spotify-web-api-java:8.4.0")
+	// spring ai
+//	implementation(platform("org.springframework.ai:spring-ai-bom:0.8.1-SNAPSHOT"))
+	implementation("org.springframework.ai:spring-ai-pgvector-store-spring-boot-starter")
+	implementation("org.springframework.ai:spring-ai-openai-spring-boot-starter")
 
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
 }
 
 dependencyManagement {
 	imports {
 		mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+		mavenBom("org.springframework.ai:spring-ai-bom:${property("springAiVersion")}")
 	}
 }
 
