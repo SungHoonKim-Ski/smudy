@@ -34,8 +34,8 @@ class JwtAuthenticationFilter(
                 }
             }
             filterChain.doFilter(request, response)
-        } catch (e: ExpiredJwtException) {
-            if (request.requestURL.contains("/reissue")) {
+        } catch (e: ExpiredJwtException) { // 만료되었으나 accessToken의 subject가 필요한 경우
+            if (request.requestURL.contains("reissue")) {
                 val authentication = jwtTokenProvider.getAuthenticationWithClaims(e.claims)
                 SecurityContextHolder.getContext().authentication = authentication
                 filterChain.doFilter(request, response)

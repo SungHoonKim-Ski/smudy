@@ -46,6 +46,11 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
 	implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
 	implementation("org.springframework.boot:spring-boot-starter-security")
+
+	// https://mvnrepository.com/artifact/junit/junit
+	testImplementation("junit:junit:4.13.1")
+
+
 }
 
 dependencyManagement {

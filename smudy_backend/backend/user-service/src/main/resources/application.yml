@@ -28,6 +28,10 @@ spring:
         database: ENC(XXx2efl26LFLrUJKaKlCMA==)
         username: ENC(RCqgUnR3zVGKs7wAmzAmAw==)
         password: ENC(fnLscKJDfmi24jpS6um5dWC70TuDihWm)
+    cloud:
+      openfeign:
+        okhttp:
+          enabled: true
 
     ai:
       vectorstore:
@@ -57,8 +61,20 @@ eureka:
 jwt:
   secret: ENC(+ebEWdCqIhlFeh2InAoDO8eKE9YTAk9L9vTOk5p9unmreZG3u1P2Lya2PTS9jfEtTUx2rziDI/3UuesNgNJA0QFgb5uJV2XiIo1FRaDv/IGhWHPij+AgXUXkYebPwzT1vvu7ndrwzh4=)
 
+image:
+  streak: ENC(NMGpSv9IzxhnmHY9vjfgHpmhBXwAcmc7xPRnSZFTIWKsULWP65pDXrfT0NySjbh/gqremDt9B6UDmYPN4ss7ceITUa6OzuqZyYFFfrIFgWo=)
+
+ai:
+  server: ENC(YlSysAx3i37cDCxSAM/vqOxsanvggguMHgmCPTYn2ozGx4vta2FN1Q==)
+
+openAI:
+  key:
+    ENC(xu6+KbV1SydVKv3/90LbAVe/rL72sXTScajRz+qQui1pqcbEq6+iKpfX5sAw6YgpatR0VJm13K1hJRhaKzQRwqvAD4tkBOO1)
+
 logging:
   level:
     org:
       springframework:
         security: debug
+    com.ssafy.userservice.service.feign: debug
+

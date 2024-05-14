@@ -41,6 +41,7 @@ class User(
 
         @Column(name = "user_is_activate", nullable = false)
         var isActive: Boolean = true
+
 ) : UserDetails {
 
         override fun getUsername(): String {
@@ -74,5 +75,9 @@ class User(
         override fun isEnabled(): Boolean {
                 // 계정의 활성화 여부를 반환
                 return isActive
+        }
+
+        fun userExpUp() {
+                userExp += 100
         }
 }

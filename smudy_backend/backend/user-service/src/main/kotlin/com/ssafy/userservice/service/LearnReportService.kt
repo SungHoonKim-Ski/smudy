@@ -7,9 +7,7 @@ import com.ssafy.userservice.exception.exception.HistoryNotFoundException
 import com.ssafy.userservice.exception.exception.LearnReportNotFoundException
 import com.ssafy.userservice.service.feign.StudyServiceClient
 import io.github.oshai.kotlinlogging.KotlinLogging
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
-import org.springframework.data.domain.Sort
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.sql.Date
@@ -30,8 +28,15 @@ class LearnReportService (
         private val pickRepository: LearnReportPickRepository,
         private val expressRepository: LearnReportExpressRepository,
 
+        @Value("\${image.streak}")
+        val streakImageUrl: String
 ) {
+
+
+
     val logger = KotlinLogging.logger {  }
+
+
     @Transactional
     fun getUserStreak(userInternalId: UUID) : StreakResponse {
 
@@ -39,7 +44,7 @@ class LearnReportService (
         val ninetyDaysAgo = LocalDate.now().minusDays(90).toEpochDay()
 
         val userStreaks = streakRepository
-                .findALlByUserInternalIdAndStreakDateAfter(
+                .findByUserInternalIdAndStreakDateLessThanEqual(
                         userInternalId
                         , Date(ninetyDaysAgo)
                 )
@@ -54,6 +59,7 @@ class LearnReportService (
                         streakDate = streak.streakDate.time
                 )
             } ?: StreakSimple(
+                    albumJacket = streakImageUrl,
                     streakDate = Date.valueOf(date.toString()).time
             )
         }
@@ -69,7 +75,8 @@ class LearnReportService (
         )
 
         if (userLearnReports.isEmpty())
-            throw HistoryNotFoundException("해당 날짜에 히스토리가 존재하지 않음")
+//            throw HistoryNotFoundException("해당 날짜에 히스토리가 존재하지 않음")
+            return HistoryResponse(emptyList())
 
         val songIdSongMap = songService.findAllBySongIdsIn(
             userLearnReports.map { it.songId }
@@ -92,7 +99,7 @@ class LearnReportService (
     @Transactional
     fun getUserLearnReport(userInternalId: UUID, timestamp: Long) : HistoryResponse {
 
-        val currentLocalDate = Date(timestamp * 1000).toLocalDate()
+        val currentLocalDate = Date(timestamp).toLocalDate()
         val formatterStart = DateTimeFormatter.ofPattern("yyyy-MM-01")
         val startLocalDate = LocalDate.parse(currentLocalDate.format(formatterStart))
 
@@ -235,10 +242,7 @@ class LearnReportService (
                 ?: throw LearnReportNotFoundException("Express에 해당하는 학습 기록 상세 ID가 존재하지 않음")
         logger.info { "box : ${details.learnReportId}" }
         return HistoryPronounceResponse(
-                userLyricSttEn = details.learnReportPronounceSttEn,
-                userLyricSttKo = details.learnReportPronounceSttKo,
-                userPronounce = details.learnReportUserPronounce,
-                ttsPronounce = details.learnReportTtsPronounce,
+                userLyricEn = details.learnReportPronounceUserEn,
                 lyricSentenceEn = details.lyricSentenceEn,
                 lyricSentenceKo = details.lyricSentenceKo,
                 lyricAiAnalyze = details.lyricAiAnalyze,

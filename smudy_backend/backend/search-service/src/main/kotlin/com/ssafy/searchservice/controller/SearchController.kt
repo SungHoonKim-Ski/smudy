@@ -41,9 +41,14 @@ class SearchController (
             response.songNames.add(SongName(song.songName))
         }
 
-        return ResponseEntity.ok(
+        return if(result.size == 0) {
+            // no content 는 본문을 포함하지 않음
+            ResponseEntity.noContent().build()
+        } else {
+            ResponseEntity.ok(
                 responseService.getSuccessSingleResult(response, "자동완성 성공")
-        )
+            )
+        }
     }
 
     @GetMapping("")
@@ -68,12 +73,14 @@ class SearchController (
             )
         }
 
-        return ResponseEntity.ok(
-            responseService.getSuccessSingleResult(
-                response
-                ,"음악 검색 성공"
+        return if(result.size == 0) {
+            // no content 는 본문을 포함하지 않음
+            ResponseEntity.noContent().build()
+        } else {
+            ResponseEntity.ok(
+                responseService.getSuccessSingleResult(response, "음악검색 성공")
             )
-        )
+        }
     }
 
     @GetMapping("/recommend")

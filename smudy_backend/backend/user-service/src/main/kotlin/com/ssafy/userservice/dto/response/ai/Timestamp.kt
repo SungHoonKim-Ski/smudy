@@ -1,7 +1,14 @@
 package com.ssafy.userservice.dto.response.ai
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 data class Timestamp(
+
         val word: String,
-        val start_time: Double,
-        val end_time: Double
+
+        @get: JsonProperty("start_time")
+        val startTime: Double,
+
+        @get: JsonProperty("end_time")
+        val endTime: Double
 )
