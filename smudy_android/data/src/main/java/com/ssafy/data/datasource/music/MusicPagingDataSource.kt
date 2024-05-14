@@ -49,6 +49,6 @@ class MusicPagingDataSource(
     }
 
     companion object {
-        private const val STARTING_PAGE_INDEX = 1
+        private const val STARTING_PAGE_INDEX = 0
     }
 }

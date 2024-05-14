@@ -2,6 +2,7 @@ package com.ssafy.data.api
 
 import com.ssafy.data.model.DefaultResponse
 import com.ssafy.data.model.music.AddStudyListRequest
+import com.ssafy.data.model.music.CountResponse
 import com.ssafy.data.model.music.KeywordResponse
 import com.ssafy.data.model.music.MusicListResponse
 import com.ssafy.data.model.music.StudyListResponse
@@ -17,7 +18,7 @@ interface MusicService {
     suspend fun getStudyList(@Query("page") page: Int): Response<DefaultResponse<StudyListResponse>>
 
     @POST("user/studylist/add")
-    suspend fun addStudyList(@Body studyList: AddStudyListRequest): Result<DefaultResponse<Boolean>>
+    suspend fun addStudyList(@Body studyList: AddStudyListRequest): Result<DefaultResponse<CountResponse>>
 
     @GET("search/autocreate")
     suspend fun searchKeyWord(@Query("query") query: String): Result<DefaultResponse<KeywordResponse>>

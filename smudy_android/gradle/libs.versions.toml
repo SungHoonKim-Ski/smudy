@@ -14,7 +14,7 @@ constraintlayout = "2.1.4"
 navigation = "2.7.7"
 parcelize = "1.9.23"
 ksp = "1.9.10-1.0.13"
-
+mpandroid="3.1.0"
 # Coroutine
 coroutine = "1.7.3"
 
@@ -119,6 +119,7 @@ kakao = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao" }
 dataStore = {group="androidx.datastore", name="datastore-preferences", version.ref="dataStore"}
 androidx-core = { group = "androidx.core", name = "core", version.ref = "core" }
 
+mpandroidchart = {group="com.github.PhilJay", name="MPAndroidChart", version.ref="mpandroid"}
 flexbox = {group = "com.google.android.flexbox", name = "flexbox", version = "3.0.0"}
 
 [plugins]
@@ -133,7 +134,6 @@ safeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigati
 
 #googleservice = {id ="com.google.gms.google-services" , version.ref = "googleService" }
 kapt = { id = "org.jetbrains.kotlin.kapt", version = "1.8.0" }
-
 
 
 [bundles]
@@ -151,4 +151,4 @@ hilt = ["hilt-android", "hilt-compiler", "hilt-navigation", "dagger-compiler"]
 
 navigation = ["navigation-fragment", "navigation-ui"]
 
-presentationBundle = ["glide", "viewpager", "paging", "circleImageView", "calendarView"]
+presentationBundle = ["glide", "viewpager", "paging", "circleImageView", "calendarView", "mpandroidchart"]

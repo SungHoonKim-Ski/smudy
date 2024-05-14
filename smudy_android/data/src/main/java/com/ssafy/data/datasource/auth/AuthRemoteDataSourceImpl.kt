@@ -17,7 +17,7 @@ class AuthRemoteDataSourceImpl @Inject constructor(
         return authService.login(loginInfoRequest)
     }
 
-    override suspend fun autoLogin(accessToken: String): Result<DefaultResponse<Boolean>> {
-        return authService.autologin(accessToken)
+    override suspend fun autoLogin(): Result<DefaultResponse<Boolean>> {
+        return authService.autologin()
     }
 }
