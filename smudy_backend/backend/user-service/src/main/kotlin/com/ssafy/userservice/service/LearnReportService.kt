@@ -242,10 +242,7 @@ class LearnReportService (
                 ?: throw LearnReportNotFoundException("Express에 해당하는 학습 기록 상세 ID가 존재하지 않음")
         logger.info { "box : ${details.learnReportId}" }
         return HistoryPronounceResponse(
-                userLyricSttEn = details.learnReportPronounceSttEn,
-                userLyricSttKo = details.learnReportPronounceSttKo,
-                userPronounce = details.learnReportUserPronounce,
-                ttsPronounce = details.learnReportTtsPronounce,
+                userLyricEn = details.learnReportPronounceUserEn,
                 lyricSentenceEn = details.lyricSentenceEn,
                 lyricSentenceKo = details.lyricSentenceKo,
                 lyricAiAnalyze = details.lyricAiAnalyze,

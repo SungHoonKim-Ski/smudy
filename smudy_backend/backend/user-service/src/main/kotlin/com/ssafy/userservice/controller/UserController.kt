@@ -279,12 +279,15 @@ class UserController (
     ): ResponseEntity<SingleResult<SubmitPronounceResponse>> {
 
         logger.debug { "/fill/pronounce $request" }
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId())
 
-        // TODO savePronounce -> 유저 히스토리 데이터 저장
         return ResponseEntity.ok(
                 responseService.getSuccessSingleResult(
-                        aiService.getPronounce(
-                                userFile, ttsFile, request
+                        userService.analyzeAndSavePronounce(
+                                userFile = userFile,
+                                ttsFile = ttsFile,
+                                request = request,
+                                userInternalId = userInternalId
                         )
                         ,"Pronounce 제출 완료"
                 )

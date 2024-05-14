@@ -15,23 +15,17 @@ class LearnReportPronounce(
         @Column(name = "learn_report_id")
         var learnReportId: Int,
 
-        @Column(name = "learn_report_pronounce_stt_en", nullable = false)
-        var learnReportPronounceSttEn: String,
+        @Column(name = "learn_report_pronounce_user_en", nullable = false)
+        var learnReportPronounceUserEn: String,
 
-        @Column(name = "learn_report_pronounce_stt_ko", nullable = false)
-        var learnReportPronounceSttKo: String,
+//        @Column(name = "learn_report_pronounce_stt_ko", nullable = false)
+//        var learnReportPronounceSttKo: String,
 
         @Column(name = "lyric_sentence_en", nullable = false)
         var lyricSentenceEn: String,
 
         @Column(name = "lyric_sentence_ko", nullable = false)
         var lyricSentenceKo: String,
-
-        @Column(name = "learn_report_user_pronounce", nullable = false)
-        var learnReportUserPronounce: String,
-
-        @Column(name = "learn_report_tts_pronounce", nullable = false)
-        var learnReportTtsPronounce: String,
 
         @Convert(converter = LyricAIConverter::class)
         @Column(name = "lyric_ai_analyze", columnDefinition = "jsonb", nullable = false)
