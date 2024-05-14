@@ -7,4 +7,5 @@ data class PickResponse(
         val songName: String,
         val albumJacket: String,
         val problemResponses: MutableList<Problem> = mutableListOf()
+
 )
