@@ -5,7 +5,6 @@ import com.ssafy.userservice.db.postgre.entity.*
 import com.ssafy.userservice.db.postgre.repository.UserRepository
 import com.ssafy.userservice.dto.request.*
 import com.ssafy.userservice.dto.response.*
-import com.ssafy.userservice.dto.response.ai.LyricAICover
 import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
 import com.ssafy.userservice.exception.exception.LearnReportNotSavedException
 import com.ssafy.userservice.exception.exception.UserNotFoundException
@@ -276,13 +275,12 @@ class UserService(
 
 //        val parseAnalyze = mapper.readValue(mapper.writeValueAsString(analyzeResponse), EntityLyricAiAnalyze::class.java)
 
-        val cover = LyricAICover(lyricAiAnalyze = analyzeResponse)
         val learnReportPronounce = LearnReportPronounce(
                 learnReportId = -1,
                 learnReportPronounceUserEn = analyzeResponse.userFullText,
                 lyricSentenceEn = request.lyricSentenceEn,
                 lyricSentenceKo =  request.lyricSentenceKo,
-                lyricAiAnalyze = mapper.writeValueAsString(cover)
+                lyricAiAnalyze = mapper.writeValueAsString(analyzeResponse)
         )
 
         savePronounce(
