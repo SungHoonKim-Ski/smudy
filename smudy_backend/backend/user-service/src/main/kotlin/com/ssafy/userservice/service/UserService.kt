@@ -1,6 +1,8 @@
 package com.ssafy.userservice.service
 
+import com.ssafy.userservice.config.ObjectMapperConfig
 import com.ssafy.userservice.db.postgre.entity.*
+import com.ssafy.userservice.db.postgre.entity.ai.EntityLyricAiAnalyze
 import com.ssafy.userservice.db.postgre.repository.UserRepository
 import com.ssafy.userservice.dto.request.*
 import com.ssafy.userservice.dto.response.*
@@ -271,6 +273,11 @@ class UserService(
     ) : SubmitPronounceResponse {
 
         val analyzeResponse = getPronounceAnalyze(ttsFile = ttsFile, userFile = userFile)
+
+        val mapper = ObjectMapperConfig().getObjectMapper()
+        val value = mapper.readValue(json, EntityLyricAiAnalyze::class.java)
+
+        val parseAnalyze =
 
         val learnReportPronounce = LearnReportPronounce(
                 learnReportId = -1,

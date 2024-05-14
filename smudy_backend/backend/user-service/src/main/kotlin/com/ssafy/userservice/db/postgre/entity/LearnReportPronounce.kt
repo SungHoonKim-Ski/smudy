@@ -1,6 +1,7 @@
 package com.ssafy.userservice.db.postgre.entity
 
 import com.ssafy.userservice.config.ObjectMapperConfig
+import com.ssafy.userservice.db.postgre.entity.ai.EntityLyricAiAnalyze
 import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
 import com.ssafy.userservice.util.LyricAIConverter
 import io.hypersistence.utils.hibernate.type.json.JsonType
@@ -29,5 +30,5 @@ class LearnReportPronounce(
 
         @Convert(converter = LyricAIConverter::class)
         @Column(name = "lyric_ai_analyze", columnDefinition = "json", nullable = false)
-        var lyricAiAnalyze: LyricAiAnalyze
+        var lyricAiAnalyze: EntityLyricAiAnalyze
 )

@@ -27,7 +27,6 @@ class UserController (
         private val studyListService: StudyListService,
         private val jwtService: JwtService,
         private val recommendService: RecommendService,
-        private val aiService: AiService,
 ){
     private val logger = KotlinLogging.logger{ }
 

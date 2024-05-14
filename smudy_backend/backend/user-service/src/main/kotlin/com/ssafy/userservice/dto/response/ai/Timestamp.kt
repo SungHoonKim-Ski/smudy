@@ -2,6 +2,7 @@ package com.ssafy.userservice.dto.response.ai
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
+
 data class Timestamp(
 
         val word: String,
