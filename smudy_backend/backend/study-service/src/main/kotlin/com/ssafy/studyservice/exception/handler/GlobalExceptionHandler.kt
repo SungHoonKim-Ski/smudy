@@ -59,6 +59,10 @@ class GlobalExceptionHandler(
         return errorResponseService.getErrorResponse(CommonErrorCode.JWT_TOKEN_EXPIRED, e)
     }
 
+    @ExceptionHandler(GptConnectException::class)
+    protected fun handleGptConnectException(e: GptConnectException): ResponseEntity<ErrorResponse> {
+        return errorResponseService.getErrorResponse(CommonErrorCode.FEIGN_CONNECT_ERROR, e)
+    }
 
     @ExceptionHandler(FeignException::class)
     protected fun handleFeignException(e: FeignException): ResponseEntity<Any> {

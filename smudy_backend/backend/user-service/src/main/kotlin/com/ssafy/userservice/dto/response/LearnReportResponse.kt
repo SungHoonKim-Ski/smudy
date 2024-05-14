@@ -6,5 +6,5 @@ data class LearnReportResponse(
         val songName: String,
         val songArtist: String,
         val problemType: String,
-        val learnReportDate: Long
+        val learnReportDate: Long,
 )
