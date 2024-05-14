@@ -275,16 +275,15 @@ class UserService(
         val analyzeResponse = getPronounceAnalyze(ttsFile = ttsFile, userFile = userFile)
 
         val mapper = ObjectMapperConfig().getObjectMapper()
-        val value = mapper.readValue(json, EntityLyricAiAnalyze::class.java)
 
-        val parseAnalyze =
+        val parseAnalyze = mapper.readValue(mapper.writeValueAsString(analyzeResponse), EntityLyricAiAnalyze::class.java)
 
         val learnReportPronounce = LearnReportPronounce(
                 learnReportId = -1,
                 learnReportPronounceUserEn = analyzeResponse.userFullText,
                 lyricSentenceEn = request.lyricSentenceEn,
                 lyricSentenceKo =  request.lyricSentenceKo,
-                lyricAiAnalyze = analyzeResponse
+                lyricAiAnalyze = parseAnalyze
         )
 
         savePronounce(
