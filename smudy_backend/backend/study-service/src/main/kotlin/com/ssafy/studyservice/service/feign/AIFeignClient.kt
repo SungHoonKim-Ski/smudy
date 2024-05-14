@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RequestBody
 import java.net.URI
 
 
-@FeignClient(name = "myAI")
+@FeignClient(name = "myAI", url = "https://sunghoon.site")
 interface AIFeignClient {
 
 
     @PostMapping("/api/ai/similarity")
-    fun getSimilarity(baseurl: URI ,@RequestBody request: SimilarityRequest) : String
+    fun getSimilarity(baseurl: URI, @RequestBody request: SimilarityRequest) : SimilarityResponse
 
-//    @PostMapping("/pronounce")
+//    @PostMapping("/api/ai/pronounce")
 //    fun getPronounce()
 }
