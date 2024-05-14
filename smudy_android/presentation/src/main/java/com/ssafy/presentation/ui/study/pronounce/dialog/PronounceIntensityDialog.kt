@@ -13,6 +13,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.ssafy.presentation.R
+import com.ssafy.presentation.databinding.DialogPronounceIntensityBinding
 import com.ssafy.presentation.databinding.DialogPronouncePitchBinding
 import com.ssafy.presentation.model.pronounce.IntensityData
 import com.ssafy.presentation.model.pronounce.Timestamp
@@ -23,7 +24,7 @@ class PronounceIntensityDialog(
     private val wordData: List<Timestamp>,
     private val context: Context
 ) : DialogFragment() {
-    private var _binding: DialogPronouncePitchBinding? = null
+    private var _binding: DialogPronounceIntensityBinding? = null
     private val binding get() = _binding!!
     private val ttsLineDataSet: LineDataSet by lazy {
         makeLineDataSet(R.color.tts_graph,makeDataSet(ttsPitchData,wordData),"Smudy")
@@ -44,7 +45,7 @@ class PronounceIntensityDialog(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DialogPronouncePitchBinding.inflate(inflater, container, false)
+        _binding = DialogPronounceIntensityBinding.inflate(inflater, container, false)
         return binding.root
     }
 
