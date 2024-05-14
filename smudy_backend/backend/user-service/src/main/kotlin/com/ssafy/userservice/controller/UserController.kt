@@ -279,25 +279,15 @@ class UserController (
     ): ResponseEntity<SingleResult<SubmitPronounceResponse>> {
 
         logger.debug { "/fill/pronounce $request" }
-//        val mapper = jacksonObjectMapper()
-//        val userInternalId = UUID.fromString(jwtService.getUserInternalId())
 
-//        val response = SubmitPronounceResponse(
-//                userPronounce = "https://file-examples.com/wp-content/storage/2017/04/file_example_MP4_480_1_5MG.mp4",
-//                ttsPronounce = "https://file-examples.com/wp-content/storage/2017/04/file_example_MP4_480_1_5MG.mp4",
-//                lyricSentenceEn = "Before the cool done run out, I'll be givin' it my bestest",
-//                lyricSentenceKo = "이 기분이 사라지기 전에 내 최고의 것을 드릴께요",
-//                userLyricSttEn = "Before the coll done ran about, I will been give' it my best",
-//                userLyricSttKo = "안성준 화이팅",
-//                lyricAiAnalyze = sampleAiAnalyze
-//        )
         // TODO savePronounce -> 유저 히스토리 데이터 저장
         return ResponseEntity.ok(
                 responseService.getSuccessSingleResult(
                         aiService.getPronounce(
                                 userFile, ttsFile, request
                         )
-                        ,"Pronounce 제출 완료")
+                        ,"Pronounce 제출 완료"
+                )
         )
     }
 
