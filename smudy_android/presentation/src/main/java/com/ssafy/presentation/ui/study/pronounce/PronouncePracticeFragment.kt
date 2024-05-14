@@ -103,11 +103,11 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
     @RequiresApi(Build.VERSION_CODES.S)
     private fun startRecording() {
         binding.dvRecordDrawing.clearVisualization()
-        file = File(_activity.cacheDir, "recorde.3gp")
+        file = File(_activity.cacheDir, "recorde.mp4")
         recorder = MediaRecorder(_activity)
             .apply {
                 setAudioSource(MediaRecorder.AudioSource.MIC)
-                setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
+                setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
                 setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
                 setOutputFile(file)
                 prepare()

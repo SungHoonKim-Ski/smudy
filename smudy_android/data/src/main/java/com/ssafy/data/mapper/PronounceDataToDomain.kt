@@ -22,8 +22,6 @@ fun PronounceResponse.toPronounceProblemInfo(): PronounceProblemInfo =
 
 fun GradedPronounceResponse.toGradePronounce(): GradedPronounce =
     GradedPronounce(
-        userPronounce,
-        ttsPronounce,
         lyricSentenceEn,
         lyricSentenceKo,
         userLyricSttEn,

@@ -15,7 +15,7 @@ class PreferencesDataSource @Inject constructor(
 
     suspend fun setToken(token: TokenResponse) {
         dataStore.edit {
-            it[ACCESS_TOKEN_KEY] = token.accessToken
+            it[ACCESS_TOKEN_KEY] = "${token.grantType} ${token.accessToken}"
             it[REFRESH_TOKEN_KEY] = token.refreshToken
         }
     }

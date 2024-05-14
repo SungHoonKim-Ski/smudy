@@ -94,7 +94,7 @@ class PronounceIntensityDialog(
     private fun makeDataSet(pitchData: IntensityData, timeStamp: List<Timestamp>) =
         ArrayList<Entry>().apply {
             pitchData.values.forEachIndexed { index, data ->
-                add(Entry(timeStamp[index].time.toFloat(), data.toFloat()))
+                add(Entry(pitchData.times[index].toFloat(), data.toFloat()))
             }
         }
 

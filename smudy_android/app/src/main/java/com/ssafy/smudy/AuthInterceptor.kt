@@ -20,10 +20,9 @@ class AuthInterceptor @Inject constructor(
 
         if (accessToken != null) {
             request = chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $accessToken")
+                .addHeader("Authorization", accessToken)
                 .build()
         }
-        Log.d(TAG, "okhttp.after_intercept : $request")
         return chain.proceed(request)
     }
 }

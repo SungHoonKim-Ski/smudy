@@ -56,7 +56,7 @@ class PronounceRepositoryImpl @Inject constructor(
         lyricKo: String,
         id:String
     ): Flow<ApiResult<GradedPronounce>> = flow {
-        val recorderRequestBody = userFile.asRequestBody("audio/3gp".toMediaTypeOrNull())
+        val recorderRequestBody = userFile.asRequestBody("audio/mp4".toMediaTypeOrNull())
         val ttsRequestBody = ttsFile.asRequestBody("audio/wav".toMediaTypeOrNull())
 
         val recorderPart =

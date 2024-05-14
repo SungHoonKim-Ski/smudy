@@ -108,10 +108,8 @@ class PronounceProblemViewModel @Inject constructor(
                     is ApiResult.Success -> {
                         pronounceResult =
                             GradedPronounce(
-                                it.data.userPronounce,
-                                it.data.ttsPronounce,
                                 it.data.lyricSentenceEn,
-                                "임시 데이터",
+                                it.data.lyricSentenceKo,
                                 it.data.userLyricSttEn,
                                 it.data.userLyricSttKo,
                                 LyricAiAnalyze(

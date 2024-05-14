@@ -15,23 +15,21 @@ class AuthAuthenticator @Inject constructor(
     private val tokenService: TokenService
 ) : Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? {
-        val refreshToken = runBlocking {
-            preferencesDataSource.getRefreshToken()
-        }
-
-        if (refreshToken == null) {
+        val refreshToken = runBlocking { preferencesDataSource.getRefreshToken() }
+        val accessToken = runBlocking { preferencesDataSource.getAccessToken() }
+        if (refreshToken == null || accessToken == null) {
             response.close()
             return null
         }
 
         return runBlocking {
-            val tokenResponse = tokenService.reissueToken(RefreshToken(refreshToken))
+            val tokenResponse = tokenService.reissueToken(accessToken,RefreshToken(refreshToken))
             if (tokenResponse.isSuccessful && tokenResponse.body() != null) {
                 preferencesDataSource.setToken(tokenResponse.body()!!.data!!)
-
+                val header = "${tokenResponse.body()!!.data!!.grantType} ${tokenResponse.body()!!.data!!.accessToken}"
                 response.request
                     .newBuilder()
-                    .header("Authorization", tokenResponse.body()!!.data!!.accessToken)
+                    .header("Authorization", header)
                     .build()
             } else {
                 // 토큰 삭제
