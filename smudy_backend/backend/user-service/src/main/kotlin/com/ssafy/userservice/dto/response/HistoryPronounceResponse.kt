@@ -6,5 +6,5 @@ data class HistoryPronounceResponse (
         val lyricSentenceEn: String,
         val lyricSentenceKo: String,
         val userLyricEn: String,
-        val lyricAiAnalyze: EntityLyricAiAnalyze
+        val lyricAiAnalyze: String
 )
