@@ -28,6 +28,6 @@ class LearnReportPronounce(
         var lyricSentenceKo: String,
 
         @Convert(converter = LyricAIConverter::class)
-        @Column(name = "lyric_ai_analyze", columnDefinition = "jsonb", nullable = false)
+        @Column(name = "lyric_ai_analyze", columnDefinition = "json", nullable = false)
         var lyricAiAnalyze: LyricAiAnalyze
 )
