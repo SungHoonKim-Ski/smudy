@@ -1,14 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.study.shuffle.ShuffleFragment">
+    tools:context=".ui.study.shuffle.ShuffleFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:background="@color/light_gray"
+        android:gravity="center"
+        android:paddingVertical="@dimen/margin_small"
+        android:text="@string/shuffle_title"
+        android:textAppearance="@style/Jalnan.TEXT.R.12"
+        android:textColor="@color/white" />
 
-</FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/fragment_padding"
+        android:gravity="center"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="@dimen/jacket_size_regular"
+            android:layout_height="@dimen/jacket_size_regular"
+            android:src="@drawable/ic_app_character"
+            android:layout_gravity="bottom"
+            />
+
+        <TextView
+            android:id="@+id/tv_lyric_kr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_speech_bubble2"
+            android:includeFontPadding="false"
+            android:paddingTop="@dimen/speech_bubble_padding_top"
+            android:paddingBottom="@dimen/speech_bubble_padding"
+            android:paddingHorizontal="@dimen/speech_bubble_padding"
+            android:text="아침에 홀로"
+            android:textAppearance="@style/Nanum_Square.TEXT.EB.16" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_selected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/fragment_padding"
+        android:layout_marginBottom="@dimen/icon_size_regular"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_shuffle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/fragment_padding"
+        android:layout_marginBottom="@dimen/icon_size_regular"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/music_player_background"
+        android:orientation="horizontal"
+        android:padding="@dimen/item_padding">
+
+        <include
+            android:id="@+id/lo_basic"
+            layout="@layout/layout_music_basic"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text = "@string/progress_init"
+                    android:textAppearance="@style/Jalnan.TEXT.R.12"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:id="@+id/tv_num_of_questions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/Jalnan.TEXT.R.12"
+                    tools:text="20"
+                    android:layout_gravity="center"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/confirm"
+                android:textAppearance="@style/Nanum_Square.TEXT.EB.12"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/smudy_mint" />
+
+        </LinearLayout>
+
+</LinearLayout>
+</LinearLayout>

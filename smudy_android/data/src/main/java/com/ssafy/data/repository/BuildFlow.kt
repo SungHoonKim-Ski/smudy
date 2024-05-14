@@ -30,6 +30,8 @@ fun <T> buildFlow(
                 emit(ApiResult.Failure(ApiError(exception.code, exception.message)))
             }
             emit(ApiResult.Failure(ApiError(exception.code, exception.message)))
+        }else{
+            emit(ApiResult.Failure(ApiError(exception!!.message!!, exception.message!! )))
         }
     }
 }.onStart { emit(ApiResult.Loading()) }

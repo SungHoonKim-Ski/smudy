@@ -1,4 +1,4 @@
-package com.ssafy.data.model.music
+package com.ssafy.data.model.music.fill
 
 import com.ssafy.domain.model.InputAnswer
 

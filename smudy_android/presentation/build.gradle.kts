@@ -64,8 +64,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.annotation)
     implementation(libs.androidx.lifecycle.livedata.ktx)
-//    ksp(libs.hilt.compiler)
-//    ksp(libs.dagger.compiler)
+    implementation(libs.flexbox)
 
     kapt(libs.hilt.compiler)
     implementation(libs.bundles.hilt)

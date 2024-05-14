@@ -1,4 +1,4 @@
-package com.ssafy.data.model.music
+package com.ssafy.data.model.music.fill
 
 import com.ssafy.data.model.MappingDto
 import com.ssafy.domain.model.SubmitFillBlankData

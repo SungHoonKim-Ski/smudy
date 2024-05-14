@@ -8,6 +8,8 @@ import com.ssafy.data.datasource.study.remote.StudyRemoteDataSource
 import com.ssafy.data.datasource.study.remote.StudyRemoteDataSourceImpl
 import com.ssafy.data.datasource.study.remote.pronounce.PronounceRemoteDataSource
 import com.ssafy.data.datasource.study.remote.pronounce.PronounceRemoteDataSourceImpl
+import com.ssafy.data.datasource.study.remote.shuffle.ShuffleRemoteDataSource
+import com.ssafy.data.datasource.study.remote.shuffle.ShuffleRemoteDataSourceImpl
 import com.ssafy.data.datasource.user.remote.UserInfoRemoteDataSource
 import com.ssafy.data.datasource.user.remote.UserInfoRemoteDataSourceImpl
 import dagger.Binds
@@ -34,4 +36,8 @@ abstract class RemoteDataSourceModule {
 
     @Binds
     abstract fun bindPronounceRemoteDataSource(pronounceRemoteDataSourceImpl: PronounceRemoteDataSourceImpl): PronounceRemoteDataSource
+
+    @Binds
+    abstract fun bindShuffleRemoteDataSource(shuffleRemoteDataSourceImpl: ShuffleRemoteDataSourceImpl): ShuffleRemoteDataSource
+
 }

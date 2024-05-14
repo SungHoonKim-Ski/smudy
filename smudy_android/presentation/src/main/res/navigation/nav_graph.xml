@@ -98,4 +98,9 @@
             android:name="ResultArgs"
             app:argType="com.ssafy.presentation.model.ParcelableSubmitResult" />
     </fragment>
+    <fragment
+        android:id="@+id/shuffleFragment"
+        android:name="com.ssafy.presentation.ui.study.shuffle.ShuffleFragment"
+        android:label="fragment_shuffle"
+        tools:layout="@layout/fragment_shuffle" />
 </navigation>

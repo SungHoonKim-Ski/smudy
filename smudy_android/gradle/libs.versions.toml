@@ -119,6 +119,8 @@ kakao = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao" }
 dataStore = {group="androidx.datastore", name="datastore-preferences", version.ref="dataStore"}
 androidx-core = { group = "androidx.core", name = "core", version.ref = "core" }
 
+flexbox = {group = "com.google.android.flexbox", name = "flexbox", version = "3.0.0"}
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -131,6 +133,7 @@ safeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigati
 
 #googleservice = {id ="com.google.gms.google-services" , version.ref = "googleService" }
 kapt = { id = "org.jetbrains.kotlin.kapt", version = "1.8.0" }
+
 
 
 [bundles]

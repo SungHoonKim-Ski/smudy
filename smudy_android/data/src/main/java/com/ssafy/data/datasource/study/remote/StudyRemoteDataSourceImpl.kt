@@ -2,9 +2,9 @@ package com.ssafy.data.datasource.study.remote
 
 import com.ssafy.data.api.StudyService
 import com.ssafy.data.mapper.toNonDefault
-import com.ssafy.data.model.music.SongWithBlankDto
-import com.ssafy.data.model.music.SubmitFillBlankRequest
-import com.ssafy.data.model.music.SubmitFillBlankResponse
+import com.ssafy.data.model.music.fill.SongWithBlankDto
+import com.ssafy.data.model.music.fill.SubmitFillBlankRequest
+import com.ssafy.data.model.music.fill.SubmitFillBlankResponse
 import com.ssafy.data.model.user.DailyLyricDto
 import com.ssafy.domain.model.InputAnswer
 import javax.inject.Inject

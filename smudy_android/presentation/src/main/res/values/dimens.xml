@@ -11,6 +11,9 @@
     <dimen name="margin_small">10dp</dimen>
     <dimen name="margin_regular">16dp</dimen>
 
+    <dimen name="speech_bubble_padding_top">30dp</dimen>
+    <dimen name="speech_bubble_padding">40dp</dimen>
+
     <dimen name="jacket_size_small">50dp</dimen>
     <dimen name="jacket_size_medium">60dp</dimen>
     <dimen name="jacket_size_regular">80dp</dimen>
