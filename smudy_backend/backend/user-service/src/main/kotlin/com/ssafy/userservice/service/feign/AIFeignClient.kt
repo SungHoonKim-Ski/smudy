@@ -15,7 +15,7 @@ interface AIFeignClient {
     @PostMapping("/api/ai/pronounce", consumes = ["multipart/form-data"])
     fun analyzeUserAndTTS(
             baseurl: URI,
-            @RequestPart("userPronounce") userPronounce: MultipartFile,
-            @RequestPart("ttsPronounce") ttsPronounce: MultipartFile
+            @RequestPart("test_file") userPronounce: MultipartFile,
+            @RequestPart("ref_file") ttsPronounce: MultipartFile
     ): LyricAiAnalyze
 }
