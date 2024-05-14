@@ -36,16 +36,16 @@ class AiService (
                         )
                 logger.info {"response : $aiResponse"}
 
-                val userTranslate = openAIService.translateLyric(aiResponse.test_full_text)
+                val userTranslate = openAIService.translateLyric(aiResponse.result.userFullText)
 
                 val response = SubmitPronounceResponse(
                         userPronounce = "https://file-examples.com/wp-content/storage/2017/04/file_example_MP4_480_1_5MG.mp4",
                         ttsPronounce = "https://file-examples.com/wp-content/storage/2017/04/file_example_MP4_480_1_5MG.mp4",
                         lyricSentenceEn = request.lyricSentenceEn,
                         lyricSentenceKo = request.lyricSentenceKo,
-                        userLyricSttEn = aiResponse.test_full_text,
+                        userLyricSttEn = aiResponse.result.userFullText,
                         userLyricSttKo = userTranslate,
-                        lyricAiAnalyze = aiResponse
+                        lyricAiAnalyze = aiResponse.result
                 )
 
                 return response
