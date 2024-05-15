@@ -8,8 +8,12 @@ import com.ssafy.domain.usecase.study.express.CheckExpressProblemUseCase
 import com.ssafy.domain.usecase.study.express.GetExpressProblemInfoUseCase
 import com.ssafy.presentation.model.Music
 import com.ssafy.presentation.model.express.ExpressQuestion
+import com.ssafy.presentation.model.express.ExpressResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,6 +29,7 @@ class ExpressViewModel @Inject constructor(
 
     // 전체 문제 list
     private var expressProblems: MutableList<ExpressQuestion> = mutableListOf()
+    private var expressResults: MutableList<ExpressResult> = mutableListOf()
 
     // 현재 풀이 문제 index flow
     private val _currentProblemIndex = MutableStateFlow(-1)
@@ -34,6 +39,16 @@ class ExpressViewModel @Inject constructor(
     // 앨범 정보 dto flow
     private val _album = MutableStateFlow(Music("", "", ""))
     val album = _album.asStateFlow()
+
+    private val _navigationTrigger = MutableSharedFlow<String>(
+        replay = 0,
+        extraBufferCapacity = 1
+    )
+    val navigationTrigger: SharedFlow<String> = _navigationTrigger.asSharedFlow()
+    private suspend fun triggerNavigation(destination: String) {
+        _navigationTrigger.emit(destination)  // 이벤트 발행
+    }
+
     fun setSongId(id: String) {
         songId = id
         viewModelScope.launch {
@@ -73,23 +88,48 @@ class ExpressViewModel @Inject constructor(
     fun getCurrentExpressProblem(idx: Int): String =
         if (expressProblems.isEmpty()) "" else expressProblems[idx].lyricSentenceKo
 
-    fun checkExpressProblem() {
+    fun getCurrentExpressResult(): ExpressResult = expressResults.last()
+    fun getAlbumInfo(): Music = _album.value
+    fun getCurrentCount(): Int = currentProblemIndex.value
+
+    fun isComplete(count: Int) = viewModelScope.launch {
+        if (expressProblems.size == count) {
+            triggerNavigation(NAVIGATE_TO_STUDY)
+        } else {
+            _currentProblemIndex.emit(currentProblemIndex.value + 1)
+        }
+    }
+
+    fun checkExpressProblem(answer: String) {
         viewModelScope.launch {
             checkExpressProblemUseCase(
                 expressProblems[_currentProblemIndex.value].lyricSentenceEn,
                 expressProblems[_currentProblemIndex.value].lyricSentenceKo,
-                "I'm in love"
+                answer
             ).collect {
-                when(it) {
+                when (it) {
                     is ApiResult.Success -> {
-                        Log.e("TAG", "checkExpressProblem: ${it.data}")
+                        expressResults.add(
+                            ExpressResult(
+                                it.data.suggestLyricSentence,
+                                it.data.lyricSentenceKo,
+                                it.data.userLyricSentenceEn,
+                                it.data.userLyricSentenceKo,
+                                it.data.score
+                            )
+                        )
+                        triggerNavigation(SHOW_DIALOG)
                     }
 
                     is ApiResult.Failure -> {}
                     is ApiResult.Loading -> {}
                 }
             }
-            _currentProblemIndex.emit(currentProblemIndex.value + 1)
         }
+    }
+
+    companion object {
+        private val SHOW_DIALOG = "show_dialog"
+        private val NAVIGATE_TO_STUDY = "result_screen"
     }
 }

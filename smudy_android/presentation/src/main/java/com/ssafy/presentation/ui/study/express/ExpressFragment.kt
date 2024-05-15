@@ -1,8 +1,11 @@
 package com.ssafy.presentation.ui.study.express
 
+import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -11,7 +14,6 @@ import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseFragment
 import com.ssafy.presentation.databinding.FragmentExpressBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -19,6 +21,16 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
     { FragmentExpressBinding.bind(it) }, R.layout.fragment_express
 ) {
     private val viewModel: ExpressViewModel by viewModels()
+    private lateinit var backPressedCallback: OnBackPressedCallback
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val id = arguments?.getString("id")
@@ -49,12 +61,40 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
                     tvLyricKr.text = viewModel.getCurrentExpressProblem(it)
                 }
             }
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.navigationTrigger.collect {
+                    when (it) {
+                        "show_dialog" -> {
+                            ExpressResultDialog(
+                                viewModel.getCurrentExpressResult(),
+                                viewModel.getCurrentCount(),
+                                viewModel.getAlbumInfo(),
+                                _activity
+                            ) { onDismissDialog(it) }.show(
+                                parentFragmentManager,
+                                "ExpressResult"
+                            )
+                        }
+
+                        "result_screen" -> {
+
+                        }
+                    }
+                }
+            }
         }
     }
 
-    private fun initEvent(){
-        with(binding){
-            btnConfirm.setOnClickListener { viewModel.checkExpressProblem() }
+    private fun onDismissDialog(count: Int) {
+        viewModel.isComplete(count)
+    }
+
+    private fun initEvent() {
+        with(binding) {
+            btnConfirm.setOnClickListener {
+                val answer = etAnswerSentence.text.toString()
+                viewModel.checkExpressProblem(answer)
+            }
         }
     }
 }

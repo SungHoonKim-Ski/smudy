@@ -1,0 +1,155 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:paddingHorizontal="10dp">
+
+    <!-- Report Title -->
+    <TextView
+        android:id="@+id/tvReportTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="Report"
+        android:textAppearance="@style/Jalnan.TEXT.R.20"/>
+
+    <!-- 추천 문장 -->
+    <TextView
+        android:id="@+id/tvRecommendedTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="추천 문장"
+        android:textAppearance="@style/Gyungi.BODY_TEXT.B.16" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/pronounce_result_menu_pitch"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_recommended_english"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/Noto_Sans.TEXT.R.11"/>
+
+        <TextView
+            android:id="@+id/tv_recommended_korean"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/Noto_Sans.TEXT.L.11"/>
+    </LinearLayout>
+
+    <!-- 답변 문장 -->
+    <TextView
+        android:id="@+id/tv_answer_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="답변 문장"
+        android:textAppearance="@style/Gyungi.BODY_TEXT.B.16" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/pronounce_result_menu_intensity"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_answer_english"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/Noto_Sans.TEXT.R.11"/>
+
+        <TextView
+            android:id="@+id/tv_answer_korean"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/Noto_Sans.TEXT.L.11"/>
+    </LinearLayout>
+
+    <!-- 노래 정보 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_album_jacket"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="8dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_album_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Noto_Sans.TEXT.B.16"
+                tools:text="VIVA LA VIDA"/>
+
+            <TextView
+                android:id="@+id/tv_album_singer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Noto_Sans.TEXT.R.11"
+                tools:text="Cold Play"/>
+        </LinearLayout>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="8dp"
+            android:gravity="end">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/Jalnan.TEXT.R.12"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" / 5"
+                    android:textAppearance="@style/Jalnan.TEXT.R.12"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="90"
+                android:textAppearance="@style/Jalnan.TEXT.R.24"/>
+
+            <!-- Next Button -->
+            <Button
+                android:id="@+id/btnNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/smudy_mint"
+                android:text="다음"
+                android:textColor="@color/white"
+                android:textAppearance="@style/Nanum_Square.TEXT.R.16"
+                android:padding="0dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
