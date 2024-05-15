@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 data class FormantsAvg(
 
-        val `F1`: List<Double>,
+        @get: JsonProperty("F1")
+        val f1: List<Double>,
 
-        val `F2`: List<Double>
+        @get: JsonProperty("F2")
+        val f2: List<Double>
 )

@@ -1,14 +1,36 @@
 package com.ssafy.userservice.dto.response.ai
 
+import com.fasterxml.jackson.annotation.JsonProperty
+
 data class LyricAiAnalyze(
-        val ref_timestamps: List<Timestamp>,
-        val test_timestamps: List<Timestamp>,
-        val ref_pitch_data: PitchData,
-        val test_pitch_data: PitchData,
-        val ref_intensity_data: IntensityData,
-        val test_intensity_data: IntensityData,
-        val test_full_text: String,
-        val ref_full_text: String,
-        val ref_formants_avg: FormantsAvg,
-        val test_formants_avg: FormantsAvg
+
+        @get: JsonProperty("ref_timestamps")
+        val ttsTimestamps: List<Timestamp>,
+
+        @get: JsonProperty("test_timestamps")
+        val userTimestamps: List<Timestamp>,
+
+        @get: JsonProperty("ref_full_text")
+        val ttsFullText: String,
+
+        @get: JsonProperty("test_full_text")
+        val userFullText: String,
+
+        @get: JsonProperty("ref_pitch_data")
+        val ttsPitchData: PitchData,
+
+        @get: JsonProperty("test_pitch_data")
+        val userPitchData: PitchData,
+
+        @get: JsonProperty("ref_intensity_data")
+        val ttsIntensityData: IntensityData,
+
+        @get: JsonProperty("test_intensity_data")
+        val userIntensityData: IntensityData,
+
+        @get: JsonProperty("ref_formants_avg")
+        val ttsFormantsAvg: FormantsAvg,
+
+        @get: JsonProperty("test_formants_avg")
+        val userFormantsAvg: FormantsAvg
 )

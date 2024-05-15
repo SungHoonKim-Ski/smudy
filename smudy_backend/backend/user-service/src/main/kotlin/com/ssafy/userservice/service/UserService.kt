@@ -1,16 +1,18 @@
 package com.ssafy.userservice.service
 
+import com.ssafy.userservice.config.ObjectMapperConfig
 import com.ssafy.userservice.db.postgre.entity.*
 import com.ssafy.userservice.db.postgre.repository.UserRepository
 import com.ssafy.userservice.dto.request.*
 import com.ssafy.userservice.dto.response.*
-import com.ssafy.userservice.dto.response.feign.ExpressResponse
+import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
 import com.ssafy.userservice.exception.exception.LearnReportNotSavedException
 import com.ssafy.userservice.exception.exception.UserNotFoundException
 import com.ssafy.userservice.service.feign.StudyServiceClient
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
 @Service
@@ -260,10 +262,75 @@ class UserService(
         return "Express 제출 완료"
     }
 
-//    @Transactional
-//    fun savePronounce(userInternalId: UUID, request: SubmitPronounceRequest) : SubmitPronounceResponse {
-//        aiService.getPronounce()
-//    }
+    fun analyzeAndSavePronounce(
+            userInternalId: UUID,
+            request: SubmitPronounceRequest,
+            userFile: MultipartFile,
+            ttsFile: MultipartFile,
+    ) : SubmitPronounceResponse {
+
+        val analyzeResponse = getPronounceAnalyze(ttsFile = ttsFile, userFile = userFile)
+
+        val mapper = ObjectMapperConfig().getObjectMapper()
+
+//        val parseAnalyze = mapper.readValue(mapper.writeValueAsString(analyzeResponse), EntityLyricAiAnalyze::class.java)
+
+        val learnReportPronounce = LearnReportPronounce(
+                learnReportId = -1,
+                learnReportPronounceUserEn = analyzeResponse.userFullText,
+                lyricSentenceEn = request.lyricSentenceEn,
+                lyricSentenceKo =  request.lyricSentenceKo,
+                lyricAiAnalyze = mapper.writeValueAsString(analyzeResponse)
+        )
+
+        savePronounce(
+                learnReportPronounce = learnReportPronounce,
+                songId = request.songId,
+                userInternalId = userInternalId
+        )
+
+        return SubmitPronounceResponse(
+                lyricSentenceEn = request.lyricSentenceEn,
+                lyricSentenceKo = request.lyricSentenceKo,
+                userLyricSttEn = analyzeResponse.userFullText,
+                lyricAiAnalyze = analyzeResponse
+        )
+    }
+
+    fun getPronounceAnalyze (
+            userFile: MultipartFile,
+            ttsFile: MultipartFile,
+    ) : LyricAiAnalyze{
+        return aiService.getPronounce(
+                ttsFile = ttsFile, userFile = userFile
+        )
+    }
+
+    @Transactional
+    fun savePronounce(
+            learnReportPronounce: LearnReportPronounce,
+            songId: String,
+            userInternalId: UUID,
+    ) {
+
+        val learnReport = learnReportService.saveLearnReport(
+                                    LearnReport(
+                                            learnReportId = -1,
+                                            userInternalId = userInternalId,
+                                            songId = songId,
+                                            problemType = "PRONOUNCE",
+                                            learnReportScore = -1,
+                                            learnReportTotal = -1
+                                    )
+        )
+
+        if (learnReport.learnReportId == -1) {
+            throw LearnReportNotSavedException("PRONOUNCE 저장 중 에러")
+        }
+
+        learnReportPronounce.learnReportId = learnReport.learnReportId
+        learnReportService.saveLearnReportPronounce(learnReportPronounce)
+    }
 
     fun addStreak(total: Int, score: Int, userInternalId: UUID, albumJacket: String) : Boolean {
         if (isCorrect(total, score)) {

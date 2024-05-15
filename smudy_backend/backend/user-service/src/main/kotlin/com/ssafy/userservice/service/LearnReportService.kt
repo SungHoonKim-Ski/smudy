@@ -1,8 +1,12 @@
 package com.ssafy.userservice.service
 
+import com.ssafy.userservice.config.ObjectMapperConfig
+import com.ssafy.userservice.db.mongodb.entity.Lyric
 import com.ssafy.userservice.db.postgre.entity.*
 import com.ssafy.userservice.db.postgre.repository.*
 import com.ssafy.userservice.dto.response.*
+import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
+import com.ssafy.userservice.dto.response.ai.PronounceAnalyzeResponse
 import com.ssafy.userservice.exception.exception.HistoryNotFoundException
 import com.ssafy.userservice.exception.exception.LearnReportNotFoundException
 import com.ssafy.userservice.service.feign.StudyServiceClient
@@ -32,9 +36,8 @@ class LearnReportService (
         val streakImageUrl: String
 ) {
 
-
-
     val logger = KotlinLogging.logger {  }
+    val mapper = ObjectMapperConfig().getObjectMapper()
 
 
     @Transactional
@@ -241,14 +244,12 @@ class LearnReportService (
         val details = pronounceRepository.findById(userLeanHistoryId).getOrNull()
                 ?: throw LearnReportNotFoundException("Express에 해당하는 학습 기록 상세 ID가 존재하지 않음")
         logger.info { "box : ${details.learnReportId}" }
+
         return HistoryPronounceResponse(
-                userLyricSttEn = details.learnReportPronounceSttEn,
-                userLyricSttKo = details.learnReportPronounceSttKo,
-                userPronounce = details.learnReportUserPronounce,
-                ttsPronounce = details.learnReportTtsPronounce,
+                userLyricEn = details.learnReportPronounceUserEn,
                 lyricSentenceEn = details.lyricSentenceEn,
                 lyricSentenceKo = details.lyricSentenceKo,
-                lyricAiAnalyze = details.lyricAiAnalyze,
+                lyricAiAnalyze = mapper.readValue(details.lyricAiAnalyze, LyricAiAnalyze::class.java),
         )
     }
 

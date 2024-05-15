@@ -14,7 +14,7 @@ import java.util.*
 @RequestMapping("/api/user/feign")
 class FeignController (
         private val songService: SongService,
-        private val userService: UserService
+        private val userService: UserService,
 ){
     private val logger = KotlinLogging.logger{ }
 
