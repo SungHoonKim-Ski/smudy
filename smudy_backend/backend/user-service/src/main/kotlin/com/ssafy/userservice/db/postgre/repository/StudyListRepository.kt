@@ -16,5 +16,5 @@ interface StudyListRepository : JpaRepository<StudyList, Int> {
 
     fun findAllByUserInternalIdAndSongIdIn(userInternalId: UUID, songIds: List<String>) : List<SongIdMapping>
 
-    fun deleteByUserInternalIdAndSongId(userInternalId: UUID, songId: String) : StudyList?
+    fun deleteByUserInternalIdAndSongId(userInternalId: UUID, songId: String) : Int
 }
