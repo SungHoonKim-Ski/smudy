@@ -23,10 +23,10 @@ data class LyricAiAnalyze(
         val userPitchData: PitchData,
 
         @get: JsonProperty("ref_intensity_data")
-        val ttsIntensityData: IntensityData,
+        val ttsIntensityData: List<IntensityData>,
 
         @get: JsonProperty("test_intensity_data")
-        val userIntensityData: IntensityData,
+        val userIntensityData: List<IntensityData>,
 
         @get: JsonProperty("ref_formants_avg")
         val ttsFormantsAvg: FormantsAvg,
