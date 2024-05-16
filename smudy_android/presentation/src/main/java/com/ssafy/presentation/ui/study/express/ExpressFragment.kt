@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -81,6 +80,7 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
             }
             viewLifecycleOwner.lifecycleScope.launch {
                 viewModel.navigationTrigger.collect {
+                    hideLoading()
                     when (it) {
                         "show_dialog" -> {
                             ExpressResultDialog(
@@ -118,6 +118,7 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
     private fun initEvent() {
         with(binding) {
             btnConfirm.setOnClickListener {
+                showLoading()
                 val answer = etAnswerSentence.text.toString()
                 viewModel.checkExpressProblem(answer)
             }

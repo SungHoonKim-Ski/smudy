@@ -55,6 +55,7 @@ class PronounceProblemFragment : BaseFragment<FragmentPronounceProblemBinding>(
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.navigationTrigger.collect {
                 if (it) {
+                    hideLoading()
                     findNavController().navigate(R.id.action_pronounceProblemFragment_to_pronouncePracticeFragment)
                 }
             }
@@ -73,6 +74,7 @@ class PronounceProblemFragment : BaseFragment<FragmentPronounceProblemBinding>(
             setOnItemClickListener(
                 object : BaseHolder.ItemClickListener {
                     override fun onClick(position: Int) {
+                        showLoading()
                         viewModel.getTranslateLyric(position)
                     }
                 }

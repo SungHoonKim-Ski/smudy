@@ -95,6 +95,7 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
                 startTtsPlaying()
             }
             btnGradePronounce.setOnClickListener {
+                showLoading()
                 parentViewModel.gradePronounceProblem(file, ttsFile)
             }
         }
@@ -180,6 +181,7 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
         viewLifecycleOwner.lifecycleScope.launch {
             parentViewModel.navigationTrigger.collect {
                 if (it) {
+                    hideLoading()
                     val bundle = Bundle().apply {
                         putParcelable("pronounceResult", parentViewModel.pronounceResult)
                         putParcelable(
