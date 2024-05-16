@@ -418,7 +418,7 @@ class UserService(
     }
 
     fun isCorrect(total: Int, score: Int): Boolean {
-        return score/total * 100 >= 70
+        return score/total.toFloat() * 100 >= 70
     }
 
     fun isCorrect(average: Int) :  Boolean{
