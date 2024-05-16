@@ -1,9 +1,8 @@
 package com.ssafy.userservice.service.feign
 
-import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
+import com.ssafy.userservice.dto.response.ai.PronounceAnalyzeResponse
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.multipart.MultipartFile
 import java.net.URI
@@ -15,7 +14,7 @@ interface AIFeignClient {
     @PostMapping("/api/ai/pronounce", consumes = ["multipart/form-data"])
     fun analyzeUserAndTTS(
             baseurl: URI,
-            @RequestPart("userPronounce") userPronounce: MultipartFile,
-            @RequestPart("ttsPronounce") ttsPronounce: MultipartFile
-    ): LyricAiAnalyze
+            @RequestPart("test_file") userPronounce: MultipartFile,
+            @RequestPart("ref_file") ttsPronounce: MultipartFile
+    ): PronounceAnalyzeResponse
 }

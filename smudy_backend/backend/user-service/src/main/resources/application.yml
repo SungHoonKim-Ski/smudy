@@ -28,6 +28,24 @@ spring:
         database: ENC(XXx2efl26LFLrUJKaKlCMA==)
         username: ENC(RCqgUnR3zVGKs7wAmzAmAw==)
         password: ENC(fnLscKJDfmi24jpS6um5dWC70TuDihWm)
+    cloud:
+      openfeign:
+        okhttp:
+          enabled: true
+
+    ai:
+      vectorstore:
+        pgvector:
+          index-type: HNSW
+          distance-type: COSINE_DISTANCE
+          dimensions: 1536
+
+      openai:
+        api-key: ENC(9C0yUGipkBxnnhJu0y8PR8Ck+yft/m/oySh3l2Clnxb2oKQq5iIuj/4rean6V04jzlTkrsGeOVtQ5e3e8FijXRV8goe6SRFz)
+        base-url: ENC(2JF/UA8bcRsrTeZX7COKp1Tp608XATgEpS+M8i9Vbho=)
+        embedding:
+          options:
+            model: text-embedding-3-small
 
 eureka:
   client:
@@ -52,8 +70,11 @@ ai:
 openAI:
   key:
     ENC(xu6+KbV1SydVKv3/90LbAVe/rL72sXTScajRz+qQui1pqcbEq6+iKpfX5sAw6YgpatR0VJm13K1hJRhaKzQRwqvAD4tkBOO1)
+
 logging:
   level:
     org:
       springframework:
         security: debug
+    com.ssafy.userservice.service.feign: debug
+

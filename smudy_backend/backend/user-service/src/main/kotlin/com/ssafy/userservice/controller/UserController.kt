@@ -1,9 +1,7 @@
 package com.ssafy.userservice.controller
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ssafy.userservice.dto.request.*
 import com.ssafy.userservice.dto.response.*
-import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
 import com.ssafy.userservice.exception.exception.RequestNotNumberException
 import com.ssafy.userservice.service.*
 import com.ssafy.userservice.util.CommonResult
@@ -27,7 +25,6 @@ class UserController (
         private val studyListService: StudyListService,
         private val jwtService: JwtService,
         private val recommendService: RecommendService,
-        private val aiService: AiService,
 ){
     private val logger = KotlinLogging.logger{ }
 
@@ -117,14 +114,18 @@ class UserController (
         )
     }
 
-    @DeleteMapping("/studylist/delete")
+    @DeleteMapping("/studylist")
     fun removeStudyList(
             @RequestParam(value = "songId", required = true) songId: String
-    ) {
+    ) : ResponseEntity<CommonResult>{
         logger.info { "/delete/$songId" }
         val userInternalId = UUID.fromString(jwtService.getUserInternalId())
         studyListService.deleteUserStudyList(userInternalId, songId)
-
+        return ResponseEntity.ok(
+                responseService.getSuccessMessageResult(
+                        "스터디리스트 삭제 완료"
+                )
+        )
     }
 
     @GetMapping("/history")
@@ -279,25 +280,18 @@ class UserController (
     ): ResponseEntity<SingleResult<SubmitPronounceResponse>> {
 
         logger.debug { "/fill/pronounce $request" }
-//        val mapper = jacksonObjectMapper()
-//        val userInternalId = UUID.fromString(jwtService.getUserInternalId())
+        val userInternalId = UUID.fromString(jwtService.getUserInternalId())
 
-//        val response = SubmitPronounceResponse(
-//                userPronounce = "https://file-examples.com/wp-content/storage/2017/04/file_example_MP4_480_1_5MG.mp4",
-//                ttsPronounce = "https://file-examples.com/wp-content/storage/2017/04/file_example_MP4_480_1_5MG.mp4",
-//                lyricSentenceEn = "Before the cool done run out, I'll be givin' it my bestest",
-//                lyricSentenceKo = "이 기분이 사라지기 전에 내 최고의 것을 드릴께요",
-//                userLyricSttEn = "Before the coll done ran about, I will been give' it my best",
-//                userLyricSttKo = "안성준 화이팅",
-//                lyricAiAnalyze = sampleAiAnalyze
-//        )
-        // TODO savePronounce -> 유저 히스토리 데이터 저장
         return ResponseEntity.ok(
                 responseService.getSuccessSingleResult(
-                        aiService.getPronounce(
-                                userFile, ttsFile, request
+                        userService.analyzeAndSavePronounce(
+                                userFile = userFile,
+                                ttsFile = ttsFile,
+                                request = request,
+                                userInternalId = userInternalId
                         )
-                        ,"Pronounce 제출 완료")
+                        ,"Pronounce 제출 완료"
+                )
         )
     }
 
