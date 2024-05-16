@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.study.shuffle.ShuffleFragment"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.study.shuffle.ShuffleFragment">
 
     <TextView
         android:layout_width="match_parent"
@@ -20,18 +20,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin_regular"
+        android:gravity="center"
         android:orientation="horizontal"
         android:paddingHorizontal="@dimen/fragment_padding"
-        android:gravity="center"
-        tools:ignore="UseCompoundDrawables"
-        android:layout_marginVertical="@dimen/margin_regular">
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:layout_width="@dimen/jacket_size_regular"
             android:layout_height="@dimen/jacket_size_regular"
-            android:src="@drawable/ic_app_character"
             android:layout_gravity="bottom"
-            />
+            android:src="@drawable/ic_app_character" />
 
         <TextView
             android:id="@+id/tv_lyric_kr"
@@ -39,9 +38,9 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_speech_bubble2"
             android:includeFontPadding="false"
+            android:paddingHorizontal="@dimen/speech_bubble_padding"
             android:paddingTop="@dimen/speech_bubble_padding_top"
             android:paddingBottom="@dimen/speech_bubble_padding"
-            android:paddingHorizontal="@dimen/speech_bubble_padding"
             android:text="아침에 홀로"
             android:textAppearance="@style/Nanum_Square.TEXT.EB.16" />
     </LinearLayout>
@@ -50,21 +49,21 @@
         android:id="@+id/rv_selected"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/fragment_padding"
-        android:layout_marginBottom="@dimen/icon_size_regular"/>
+        android:layout_marginBottom="@dimen/icon_size_regular"
+        android:paddingHorizontal="@dimen/fragment_padding" />
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_shuffle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/fragment_padding"
-        android:layout_marginBottom="@dimen/icon_size_regular"/>
+        android:layout_marginBottom="@dimen/icon_size_regular"
+        android:paddingHorizontal="@dimen/fragment_padding" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -84,8 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/icon_size_regular"
-            >
+            android:layout_marginEnd="@dimen/icon_size_regular">
 
             <ImageView
                 android:id="@+id/btn_prv"
@@ -101,32 +99,33 @@
                 android:layout_gravity="center"
                 android:text="@string/progress_init"
                 android:textAppearance="@style/Jalnan.TEXT.R.12" />
+
             <TextView
                 android:id="@+id/tv_num_of_questions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:textAppearance="@style/Jalnan.TEXT.R.12"
-                tools:text="20"
-                android:layout_gravity="center"/>
+                tools:text="20" />
 
             <ImageView
                 android:id="@+id/btn_nxt"
                 android:layout_width="@dimen/icon_size_regular"
                 android:layout_height="@dimen/icon_size_regular"
+                android:layout_gravity="center"
                 android:src="@drawable/ic_arrow_right"
-                tools:ignore="ContentDescription"
-                android:layout_gravity="center"/>
+                tools:ignore="ContentDescription" />
         </LinearLayout>
 
         <Button
             android:id="@+id/btn_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/confirm"
-            android:textAppearance="@style/Nanum_Square.TEXT.EB.12"
-            android:textColor="@color/white"
+            android:layout_gravity="center"
             android:backgroundTint="@color/sl_mint_color"
-            android:layout_gravity="center"/>
+            android:text="@string/submit"
+            android:textAppearance="@style/Nanum_Square.TEXT.EB.12"
+            android:textColor="@color/white" />
 
-</LinearLayout>
+    </LinearLayout>
 </LinearLayout>

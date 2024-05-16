@@ -26,6 +26,9 @@
     <color name="dark_red">#FFDB2B42</color>
     <color name="result_blue">#FF0066FF</color>
 
+    <color name="correct_answer_box_yellow">#FFFFFDF6</color>
+    <color name="incorrect_answer_box_red">#FFFFF6F6</color>
+
     <color name="pronounce_result_menu_pitch">#80FFE194</color>
     <color name="pronounce_result_menu_intensity">#80FFC6C6</color>
     <color name="pronounce_result_menu_formant">#80B8E4A0</color>

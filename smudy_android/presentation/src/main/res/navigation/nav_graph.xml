@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_studyFragment_to_pronounce"
             app:destination="@id/nav_pronounce" />
+        <action
+            android:id="@+id/action_studyFragment_to_shuffleFragment"
+            app:destination="@id/shuffleFragment" />
     </fragment>
     <fragment
         android:id="@+id/historyFragment"
@@ -106,5 +109,18 @@
         android:id="@+id/shuffleFragment"
         android:name="com.ssafy.presentation.ui.study.shuffle.ShuffleFragment"
         android:label="fragment_shuffle"
-        tools:layout="@layout/fragment_shuffle" />
+        tools:layout="@layout/fragment_shuffle" >
+        <action
+            android:id="@+id/action_shuffleFragment_to_shuffleResultFragment"
+            app:destination="@id/shuffleResultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shuffleResultFragment"
+        android:name="com.ssafy.presentation.ui.study.shuffle.ShuffleResultFragment"
+        android:label="fragment_shuffle_result"
+        tools:layout="@layout/fragment_shuffle_result">
+        <argument
+            android:name="ResultArgs"
+            app:argType="com.ssafy.presentation.model.ParcelableShuffleSubmitResult" />
+    </fragment>
 </navigation>
