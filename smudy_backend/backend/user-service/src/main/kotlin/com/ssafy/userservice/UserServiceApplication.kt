@@ -24,12 +24,6 @@ fun feignLoggerLever(): Logger.Level {
 	return Logger.Level.FULL
 }
 
-@PostConstruct
-fun init() {
-	TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
-}
-
-
 //@Bean
 //fun getFeignErrorDecoder(): FeignErrorDecoder {
 //	return FeignErrorDecoder()

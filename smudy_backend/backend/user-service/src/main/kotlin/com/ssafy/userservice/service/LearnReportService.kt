@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.sql.Date
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.jvm.optionals.getOrNull
@@ -103,11 +104,12 @@ class LearnReportService (
     fun getUserLearnReport(userInternalId: UUID, timestamp: Long) : HistoryResponse {
 
         val currentLocalDate = Date(timestamp).toLocalDate()
-        val formatterStart = DateTimeFormatter.ofPattern("yyyy-MM-01")
+
+        val formatterStart = DateTimeFormatter.ofPattern("yyyy-MM-01").withZone(ZoneId.of("Asia/Seoul"))
         val startLocalDate = LocalDate.parse(currentLocalDate.format(formatterStart))
 
         val endDate = currentLocalDate.lengthOfMonth()
-        val formatterEnd = DateTimeFormatter.ofPattern("yyyy-MM-$endDate")
+        val formatterEnd = DateTimeFormatter.ofPattern("yyyy-MM-$endDate").withZone(ZoneId.of("Asia/Seoul"))
         val endLocalDate = LocalDate.parse(currentLocalDate.format(formatterEnd))
         val oneDay = 86400000
         logger.info { "start : ${Date(startLocalDate.toEpochDay() * oneDay)}" }
