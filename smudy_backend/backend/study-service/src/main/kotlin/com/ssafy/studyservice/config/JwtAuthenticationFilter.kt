@@ -73,9 +73,10 @@ class JwtAuthenticationFilter(
             e: Exception
     ) {
         val objectMapper = ObjectMapper()
-        response.status = CommonErrorCode.INTERNAL_SERVER_ERROR.getHttpStatus().value()
+        val error = CommonErrorCode.INTERNAL_SERVER_ERROR
+        response.status = error.getHttpStatus().value()
         response.contentType = MediaType.APPLICATION_JSON_VALUE
-        val errorResponse = ErrorResponse(CommonErrorCode.INTERNAL_SERVER_ERROR, e.message ?: "INTER")
+        val errorResponse = ErrorResponse(error, e.message ?: "INTERNAL_SERVER_ERROR")
         try {
             response.writer.write(objectMapper.writeValueAsString(errorResponse))
         } catch (e: IOException) {
