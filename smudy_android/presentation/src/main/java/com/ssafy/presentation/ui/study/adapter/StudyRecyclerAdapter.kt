@@ -17,7 +17,6 @@ class StudyRecyclerAdapter(private val studyTypeClickListener: StudyTypeClickLis
     inner class PagingViewHolder(private val binding: ItemMusicListButtonHorizontalBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(musicInfo: Study, position: Int) = with(binding) {
-            Log.e("TAG", "bind: $musicInfo")
             tvAlbumTitle.text = musicInfo.title
             tvAlbumSinger.text = musicInfo.singer
             Glide.with(root).load(musicInfo.thumbnail).into(ivAlbumJacket)

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/fragment_padding"
+    android:orientation="vertical">
+    <!-- Report Title -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_report_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text=""
+            android:textAppearance="@style/Jalnan.TEXT.R.20"/>
+        <TextView
+            android:id="@+id/tv_report_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text=""
+            android:textAppearance="@style/Jalnan.TEXT.R.20"/>
+    </LinearLayout>
+
+    <!-- 추천 문장 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="추천 문장"
+        android:textAppearance="@style/Gyungi.BODY_TEXT.B.16" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/pronounce_result_menu_pitch"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_recommended_english"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/Noto_Sans.TEXT.R.11"/>
+
+        <TextView
+            android:id="@+id/tv_recommended_korean"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/Noto_Sans.TEXT.L.11"/>
+    </LinearLayout>
+
+    <!-- 답변 문장 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="답변 문장"
+        android:textAppearance="@style/Gyungi.BODY_TEXT.B.16" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/pronounce_result_menu_intensity"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_answer_english"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/Noto_Sans.TEXT.R.11"/>
+
+        <TextView
+            android:id="@+id/tv_answer_korean"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/Noto_Sans.TEXT.L.11"/>
+    </LinearLayout>
+</LinearLayout>

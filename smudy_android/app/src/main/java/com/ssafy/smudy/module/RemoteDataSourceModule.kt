@@ -6,6 +6,8 @@ import com.ssafy.data.datasource.music.MusicRemoteDataSource
 import com.ssafy.data.datasource.music.MusicRemoteDataSourceImpl
 import com.ssafy.data.datasource.study.remote.StudyRemoteDataSource
 import com.ssafy.data.datasource.study.remote.StudyRemoteDataSourceImpl
+import com.ssafy.data.datasource.study.remote.express.ExpressRemoteDataSource
+import com.ssafy.data.datasource.study.remote.express.ExpressRemoteDataSourceImpl
 import com.ssafy.data.datasource.study.remote.pronounce.PronounceRemoteDataSource
 import com.ssafy.data.datasource.study.remote.pronounce.PronounceRemoteDataSourceImpl
 import com.ssafy.data.datasource.study.remote.shuffle.ShuffleRemoteDataSource
@@ -40,4 +42,6 @@ abstract class RemoteDataSourceModule {
     @Binds
     abstract fun bindShuffleRemoteDataSource(shuffleRemoteDataSourceImpl: ShuffleRemoteDataSourceImpl): ShuffleRemoteDataSource
 
+    @Binds
+    abstract fun bindExpressRemoteDataSource(expressRemoteDataSourceImpl: ExpressRemoteDataSourceImpl): ExpressRemoteDataSource
 }

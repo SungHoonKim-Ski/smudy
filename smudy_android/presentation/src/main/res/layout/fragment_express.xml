@@ -40,6 +40,19 @@
             android:textAppearance="@style/Nanum_Square.TEXT.EB.16" />
     </LinearLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/fragment_padding">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_answer_sentence"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="영어 표현을 써보세요."
+            android:inputType="text"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ',.?!"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -79,7 +92,6 @@
                     tools:text="1 "/>
 
                 <TextView
-                    android:id="@+id/tv_num_of_questions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

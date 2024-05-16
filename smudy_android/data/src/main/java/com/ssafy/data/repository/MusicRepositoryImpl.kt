@@ -40,10 +40,17 @@ class MusicRepositoryImpl @Inject constructor(
                 )
             } else {
                 val exception = response.exceptionOrNull()
-                if (exception is NetworkException){
+                if (exception is NetworkException) {
                     emit(ApiResult.Failure(ApiError(exception.code, exception.message)))
                 } else {
-                    emit(ApiResult.Failure(ApiError("204",(exception as NullPointerException).message!!)))
+                    emit(
+                        ApiResult.Failure(
+                            ApiError(
+                                "204",
+                                (exception as NullPointerException).message!!
+                            )
+                        )
+                    )
                 }
             }
         }.onStart { emit(ApiResult.Loading()) }
@@ -68,6 +75,18 @@ class MusicRepositoryImpl @Inject constructor(
                 } else {
                     emit(ApiResult.Failure(ApiError(exception.code, exception.message)))
                 }
+            }
+        }.onStart { emit(ApiResult.Loading()) }
+
+    override suspend fun deleteStudyList(songId: String): Flow<ApiResult<Boolean>> =
+        flow<ApiResult<Boolean>> {
+            val response = musicRemoteDataSource.deleteStudyList(songId)
+            val data = response.getOrNull()
+            if (data != null) {
+                emit(ApiResult.Success(true))
+            } else {
+                val exception = response.exceptionOrNull() as NetworkException
+                emit(ApiResult.Failure(ApiError(exception.code, exception.message)))
             }
         }.onStart { emit(ApiResult.Loading()) }
 

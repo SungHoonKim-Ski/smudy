@@ -2,12 +2,14 @@ package com.ssafy.smudy.module
 
 import com.ssafy.data.datasource.study.remote.StudyRemoteDataSourceImpl
 import com.ssafy.data.repository.AuthRepositoryImpl
+import com.ssafy.data.repository.ExpressRepositoryImpl
 import com.ssafy.data.repository.MusicRepositoryImpl
 import com.ssafy.data.repository.PronounceRepositoryImpl
 import com.ssafy.data.repository.ShuffleRepositoryImpl
 import com.ssafy.data.repository.StudyRepositoryImpl
 import com.ssafy.data.repository.UserRepositoryImpl
 import com.ssafy.domain.repository.AuthRepository
+import com.ssafy.domain.repository.ExpressRepository
 import com.ssafy.domain.repository.MusicRepository
 import com.ssafy.domain.repository.PronounceRepository
 import com.ssafy.domain.repository.ShuffleRepository
@@ -40,5 +42,8 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindShuffleRepository(shuffleRepositoryImpl: ShuffleRepositoryImpl): ShuffleRepository
+
+    @Binds
+    abstract fun bindExpressRepository(expressRepositoryImpl: ExpressRepositoryImpl): ExpressRepository
 
 }

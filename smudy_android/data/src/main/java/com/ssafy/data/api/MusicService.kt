@@ -8,6 +8,7 @@ import com.ssafy.data.model.music.MusicListResponse
 import com.ssafy.data.model.music.StudyListResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -28,4 +29,7 @@ interface MusicService {
         @Query("query") query: String,
         @Query("page") page: Int
     ): Response<DefaultResponse<MusicListResponse>>
+
+    @DELETE("user/studylist")
+    suspend fun deleteStudyList(@Query("songId") songId: String): Result<DefaultResponse<Boolean>>
 }
