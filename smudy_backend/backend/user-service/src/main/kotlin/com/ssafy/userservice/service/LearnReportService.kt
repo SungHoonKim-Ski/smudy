@@ -104,14 +104,20 @@ class LearnReportService (
     fun getUserLearnReport(userInternalId: UUID, timestamp: Long) : HistoryResponse {
 
         val currentLocalDate = Date(timestamp).toLocalDate()
-
-        val formatterStart = DateTimeFormatter.ofPattern("yyyy-MM-01").withZone(ZoneId.of("Asia/Seoul"))
+        
+        val formatterStart = DateTimeFormatter.ofPattern("yyyy-MM-01")
         val startLocalDate = LocalDate.parse(currentLocalDate.format(formatterStart))
 
         val endDate = currentLocalDate.lengthOfMonth()
-        val formatterEnd = DateTimeFormatter.ofPattern("yyyy-MM-$endDate").withZone(ZoneId.of("Asia/Seoul"))
+        val formatterEnd = DateTimeFormatter.ofPattern("yyyy-MM-$endDate")
         val endLocalDate = LocalDate.parse(currentLocalDate.format(formatterEnd))
         val oneDay = 86400000
+
+        logger.info { "start : $startLocalDate" }
+
+        logger.info { "end : $endLocalDate" }
+        logger.info { "ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ" }
+        
         logger.info { "start : ${Date(startLocalDate.toEpochDay() * oneDay)}" }
 
         logger.info { "end : ${Date(endLocalDate.toEpochDay() * oneDay)}" }
