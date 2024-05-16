@@ -54,7 +54,7 @@ class OpenAIService(
                 "messages" to arrayOf(
                         mapOf(
                                 "role" to "system",
-                                "content" to "An inexperienced friend has made a common mistake by translating an English song lyric directly into Korean, without considering the cultural and emotional nuances. This literal translation has altered the original's poetic impact. Your task is to take this awkward Korean version and craft new English lyrics that not only correct the error but also retain the original sentiment and artistic flavor of the song.",
+                                "content" to "An inexperienced friend has made a common mistake by translating an English song lyric directly into Korean, without considering the cultural and emotional nuances. This literal translation has altered the original's poetic impact. Your task is to take this awkward Korean version and craft new English lyrics that not only correct the error but also retain the original sentiment and artistic flavor of the song.Do not include any additional explanations, only the answer sentence.",
                         ),
                         mapOf(
                                 "role" to "user",
@@ -76,7 +76,7 @@ class OpenAIService(
                 "messages" to arrayOf(
                         mapOf(
                                 "role" to "system",
-                                "content" to "You are a lyricist with 10 years of experience. When you receive a line of lyrics written in English, your task is to translate it into Korean while preserving its emotional impact and artistic nuances as much as possible. You are skilled at maintaining the original's essence and ensuring that the translated Korean lyrics resonate deeply with the local audience.",
+                                "content" to "You are a lyricist with 10 years of experience. When you receive a line of lyrics written in English, your task is to translate it into Korean while preserving its emotional impact and artistic nuances as much as possible. You are skilled at maintaining the original's essence and ensuring that the translated Korean lyrics resonate deeply with the local audience.Do not include any additional explanations, only the answer sentence.",
                                 "role" to "user",
                                 "content" to "Translate these English lyrics into Korean for me. Use casual language, not formal. $lyric"
                         )
