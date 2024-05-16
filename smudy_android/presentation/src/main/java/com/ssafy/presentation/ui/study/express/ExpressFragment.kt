@@ -41,6 +41,7 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
         }
         viewModel.setSongId(id!!)
     }
+
     override fun onResume() {
         super.onResume()
         activity?.findViewById<BottomNavigationView>(R.id.bn_bar)?.visibility = View.GONE
@@ -50,15 +51,18 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
         super.onStop()
         activity?.findViewById<BottomNavigationView>(R.id.bn_bar)?.visibility = View.VISIBLE
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObserve()
         initEvent()
     }
+
     override fun onDetach() {
         super.onDetach()
         backPressedCallback.remove()
     }
+
     private fun initObserve() {
         with(binding) {
             viewLifecycleOwner.lifecycleScope.launch {
@@ -92,10 +96,14 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
 
                         "result_screen" -> {
                             val bundle = Bundle().apply {
-                                putParcelableArrayList("result",viewModel.getExpressProblem())
-                                putParcelable("song",viewModel.getAlbumInfo())
+                                putParcelableArrayList("result", viewModel.getExpressProblem())
+                                putParcelable("song", viewModel.getAlbumInfo())
+                                putBoolean("IsHistory", false)
                             }
-                            findNavController().navigate(R.id.action_expressFragment_to_expressResultFragment,bundle)
+                            findNavController().navigate(
+                                R.id.action_expressFragment_to_expressResultFragment,
+                                bundle
+                            )
                         }
                     }
                 }
@@ -129,7 +137,8 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
                 // Handle the negative button click, e.g., do nothing
             }.create()
         dialog.setOnShowListener {
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.dark_red))
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(resources.getColor(R.color.dark_red))
         }
         dialog.show()
     }

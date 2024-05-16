@@ -14,6 +14,8 @@ import com.ssafy.data.datasource.study.remote.shuffle.ShuffleRemoteDataSource
 import com.ssafy.data.datasource.study.remote.shuffle.ShuffleRemoteDataSourceImpl
 import com.ssafy.data.datasource.user.remote.UserInfoRemoteDataSource
 import com.ssafy.data.datasource.user.remote.UserInfoRemoteDataSourceImpl
+import com.ssafy.data.datasource.user.remote.history.StudyHistoryRemoteDataSource
+import com.ssafy.data.datasource.user.remote.history.StudyHistoryRemoteDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -44,4 +46,7 @@ abstract class RemoteDataSourceModule {
 
     @Binds
     abstract fun bindExpressRemoteDataSource(expressRemoteDataSourceImpl: ExpressRemoteDataSourceImpl): ExpressRemoteDataSource
+
+    @Binds
+    abstract fun bindStudyHistoryRemoteDataSource(studyHistoryRemoteDataSourceImpl: StudyHistoryRemoteDataSourceImpl): StudyHistoryRemoteDataSource
 }

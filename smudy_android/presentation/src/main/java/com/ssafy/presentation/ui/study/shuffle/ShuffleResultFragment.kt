@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.collection.intIntMapOf
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.ssafy.domain.model.ShuffleQuestionProblem
@@ -28,6 +29,7 @@ class ShuffleResultFragment : BaseFragment<FragmentShuffleResultBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        initEvent()
     }
 
     @SuppressLint("SetTextI18n")
@@ -61,4 +63,15 @@ class ShuffleResultFragment : BaseFragment<FragmentShuffleResultBinding>(
         })
     }
 
+    private fun initEvent(){
+        with(binding){
+            btnConfirm.setOnClickListener {
+                if (args.IsHistory){
+                    findNavController().popBackStack()
+                } else {
+                    findNavController().navigate(R.id.action_shuffleResultFragment_to_studyFragment)
+                }
+            }
+        }
+    }
 }

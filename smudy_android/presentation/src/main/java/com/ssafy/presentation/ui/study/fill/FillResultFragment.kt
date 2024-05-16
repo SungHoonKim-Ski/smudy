@@ -2,6 +2,7 @@ package com.ssafy.presentation.ui.study.fill
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.ssafy.presentation.R
@@ -22,13 +23,14 @@ class FillResultFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        initEvent()
     }
 
     private fun initView(){
         resultAdapter.submitList(args.ResultArgs.result.result)
         with(binding){
             tvNumOfQuestions.text = args.ResultArgs.result.totalSize.toString()
-            tvNumOfCorrect.text = args.ResultArgs.result.score.toString()
+            tvNumOfCorrect.text = "${args.ResultArgs.result.score} / "
             rvLyrics.apply{
                 adapter = resultAdapter
             }
@@ -43,4 +45,15 @@ class FillResultFragment(
         }
     }
 
+    private fun initEvent(){
+        with(binding){
+            btnConfirm.setOnClickListener {
+                if (args.IsHistory){
+                    findNavController().popBackStack()
+                } else {
+                    findNavController().navigate(R.id.action_fillResultFragment_to_studyFragment)
+                }
+            }
+        }
+    }
 }

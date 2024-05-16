@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.kizitonwose.calendar.core.CalendarDay
 import com.kizitonwose.calendar.core.CalendarMonth
@@ -28,11 +29,13 @@ import com.kizitonwose.calendar.view.MonthScrollListener
 import com.ssafy.domain.model.ApiResult
 import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseFragment
+import com.ssafy.presentation.base.BaseHolder
 import com.ssafy.presentation.base.displayText
 import com.ssafy.presentation.databinding.FragmentHistoryBinding
 import com.ssafy.presentation.ui.history.adapter.HistoryAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.selects.select
 import java.text.SimpleDateFormat
@@ -47,10 +50,10 @@ private const val TAG = "HistoryFragment"
 @AndroidEntryPoint
 class HistoryFragment : BaseFragment<FragmentHistoryBinding>(
     { FragmentHistoryBinding.bind(it) }, R.layout.fragment_history
-) {
+), HistoryAdapter.HistoryClickListener {
 
     private val historyViewModel: HistoryViewModel by viewModels()
-    private val historyAdapter = HistoryAdapter()
+    private val historyAdapter = HistoryAdapter(this)
     private lateinit var daysOfWeek: List<DayOfWeek>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,7 +73,7 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(
         with(binding) {
             cvCalendar.setup(startMonth, endMonth, daysOfWeek.first())
             cvCalendar.scrollToMonth(currentMonth)
-            cvCalendar.monthScrollListener = object: MonthScrollListener{
+            cvCalendar.monthScrollListener = object : MonthScrollListener {
                 override fun invoke(p1: CalendarMonth) {
                     historyViewModel.setCurrentMonth(p1.yearMonth)
                 }
@@ -81,7 +84,7 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(
         }
         configureBinders(daysOfWeek)
 
-        with(historyViewModel){
+        with(historyViewModel) {
             setCurrentMonth(currentMonth)
         }
     }
@@ -101,10 +104,10 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(
                     }
                 }
             }
-            
+
             lifecycleScope.launch {
-                currentMonth.observe(viewLifecycleOwner){
-                    if(it!=null){
+                currentMonth.observe(viewLifecycleOwner) {
+                    if (it != null) {
                         Log.d(TAG, "registerObserve: $it")
                         getHistory(
                             it.atStartOfMonth().atStartOfDay(ZoneId.of("Asia/Seoul"))
@@ -116,18 +119,49 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(
             }
 
             lifecycleScope.launch {
-                historyGroup.observe(viewLifecycleOwner){
+                historyGroup.observe(viewLifecycleOwner) {
                     configureBinders(daysOfWeek)
                 }
             }
 
             lifecycleScope.launch {
-                selectedDate.observe(viewLifecycleOwner){
-                    if(it!=null){
+                selectedDate.observe(viewLifecycleOwner) {
+                    if (it != null) {
                         binding.tvDate.text = it.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
                         historyAdapter.submitList(
                             historyGroup.value!![it]
                         )
+                    }
+                }
+            }
+            viewLifecycleOwner.lifecycleScope.launch {
+                navigationTrigger.collectLatest {
+                    when (it) {
+                        "EXPRESS" -> {
+                            val bundle = Bundle().apply {
+                                putParcelableArrayList("result",historyViewModel.getExpressHistoryResult())
+                                putParcelable("song",historyViewModel.getSelectedMusicInfo())
+                                putBoolean("IsHistory", true)
+                            }
+                            findNavController().navigate(R.id.action_historyFragment_to_expressResultFragment,bundle)
+                        }
+                        "FILL" -> {
+                            findNavController().navigate(
+                                HistoryFragmentDirections.actionHistoryFragmentToFillResultFragment(
+                                    historyViewModel.getFillHistoryResult(), true
+                                )
+                            )
+                        }
+
+                        "PICK" -> {
+                            findNavController().navigate(
+                                HistoryFragmentDirections.actionHistoryFragmentToShuffleResultFragment(
+                                    historyViewModel.getPickHistoryResult(), true
+                                )
+                            )
+                        }
+
+                        "PRONOUNCE" -> {}
                     }
                 }
             }
@@ -137,8 +171,13 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(
     private fun configureBinders(daysOfWeek: List<DayOfWeek>) {
         binding.cvCalendar.apply {
             dayBinder = object : MonthDayBinder<CalendarDayViewContainer> {
-                override fun create(view: View) = CalendarDayViewContainer(view.apply{
-                    updateLayoutParams { height = dpToPx(resources.getInteger(R.integer.history_calendar_day_size)  , requireContext()) }
+                override fun create(view: View) = CalendarDayViewContainer(view.apply {
+                    updateLayoutParams {
+                        height = dpToPx(
+                            resources.getInteger(R.integer.history_calendar_day_size),
+                            requireContext()
+                        )
+                    }
                 }).apply {
                     setDayViewClickListener(object : CalendarDayViewContainer.DayViewClickListener {
                         @SuppressLint("SimpleDateFormat")
@@ -167,10 +206,10 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(
                     dayText.text = data.date.dayOfMonth.toString()
 
                     val jacket = historyViewModel.historyGroup.value!![data.date]
-                    if(jacket!=null){
+                    if (jacket != null) {
                         Glide.with(requireContext())
                             .load(jacket[0].jacket)
-                            .into( binding.ivAlbumJacket)
+                            .into(binding.ivAlbumJacket)
                     }
                     if (data.position == DayPosition.MonthDate) {
                         dayText.setTextColor(
@@ -221,6 +260,21 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(
 
                 }
             }
+        }
+    }
+
+    override fun onClick(type: String, id: Long, title: String, jacket: String, artist: String) {
+        when (type) {
+            "EXPRESS" -> {
+                historyViewModel.getExpressHistory(id, title, jacket, artist)
+            }
+            "FILL" -> {
+                historyViewModel.getFillHistory(id, title, jacket, artist)
+            }
+            "PICK" -> {
+                historyViewModel.getPickHistory(id, title, jacket, artist)
+            }
+            "PRONOUNCE" -> {}
         }
     }
 }

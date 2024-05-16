@@ -7,9 +7,22 @@ import androidx.lifecycle.viewModelScope
 import com.ssafy.domain.model.ApiResult
 import com.ssafy.domain.model.user.StudyReport
 import com.ssafy.domain.usecase.user.GetHistoryUseCase
+import com.ssafy.domain.usecase.user.history.GetExpressStudyHistoryUseCase
+import com.ssafy.domain.usecase.user.history.GetFillStudyHistoryUseCase
+import com.ssafy.domain.usecase.user.history.GetPickStudyHistoryUseCase
+import com.ssafy.presentation.model.Music
+import com.ssafy.presentation.model.ParcelableShuffleSubmitResult
+import com.ssafy.presentation.model.ParcelableSubmitBlankResult
+import com.ssafy.presentation.model.ParcelableSubmitFillBlankData
+import com.ssafy.presentation.model.ParcelableSubmitResult
+import com.ssafy.presentation.model.express.ExpressResult
+import com.ssafy.presentation.model.toParcelable
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.Instant
@@ -21,7 +34,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
-    private val getHistoryUseCase: GetHistoryUseCase
+    private val getHistoryUseCase: GetHistoryUseCase,
+    private val getPickStudyHistoryUseCase: GetPickStudyHistoryUseCase,
+    private val getFillStudyHistoryUseCase: GetFillStudyHistoryUseCase,
+    private val getExpressStudyHistoryUseCase: GetExpressStudyHistoryUseCase
 ) : ViewModel() {
 
     private val _selectedDate = MutableLiveData<LocalDate?>(null)
@@ -42,6 +58,20 @@ class HistoryViewModel @Inject constructor(
     private val _currentMonth = MutableLiveData<YearMonth?>(null)
     val currentMonth: LiveData<YearMonth?>
         get() = _currentMonth
+
+    private lateinit var _parcelableShuffleSubmitResult: ParcelableShuffleSubmitResult
+    private lateinit var _parcelableSubmitResult: ParcelableSubmitResult
+    private lateinit var _expressHistoryResult: ArrayList<ExpressResult>
+    private lateinit var _selectedMusicInfo: Music
+
+    private val _navigationTrigger = MutableSharedFlow<String>(
+        replay = 0,
+        extraBufferCapacity = 1
+    )
+    val navigationTrigger: SharedFlow<String> = _navigationTrigger.asSharedFlow()
+    private suspend fun triggerNavigation(shouldNavigate: String) {
+        _navigationTrigger.emit(shouldNavigate)  // 이벤트 발행
+    }
 
     fun setCurrentMonth(yearMonth: YearMonth?) {
         _currentMonth.postValue(yearMonth)
@@ -64,4 +94,85 @@ class HistoryViewModel @Inject constructor(
         )
     }
 
+    fun getPickHistory(learnReportId: Long, title: String, jacket: String, artist: String) {
+        viewModelScope.launch {
+            getPickStudyHistoryUseCase(learnReportId.toString()).collect {
+                when (it) {
+                    is ApiResult.Success -> {
+                        _parcelableShuffleSubmitResult = ParcelableShuffleSubmitResult(
+                            title,
+                            artist,
+                            jacket,
+                            it.data.totalSize,
+                            it.data.score,
+                            it.data.correct.map { it.toParcelable() },
+                            it.data.wrong.map { it.toParcelable() })
+                        triggerNavigation("PICK")
+                    }
+
+                    is ApiResult.Failure -> {}
+                    is ApiResult.Loading -> {}
+                }
+            }
+        }
+    }
+
+    fun getPickHistoryResult(): ParcelableShuffleSubmitResult {
+        return _parcelableShuffleSubmitResult
+    }
+
+    fun getFillHistory(learnReportId: Long, title: String, jacket: String, artist: String) {
+        viewModelScope.launch {
+            getFillStudyHistoryUseCase(learnReportId.toString()).collect {
+                when (it) {
+                    is ApiResult.Success -> {
+                        _parcelableSubmitResult = ParcelableSubmitResult(title, artist, jacket,
+                            ParcelableSubmitFillBlankData(
+                                it.data.totalSize,
+                                it.data.score,
+                                it.data.result.map { res ->
+                                    ParcelableSubmitBlankResult(
+                                        res.lyricBlank,
+                                        res.originWord,
+                                        res.userWord,
+                                        res.isCorrect
+                                    )
+                                }
+                            ))
+                        triggerNavigation("FILL")
+                    }
+
+                    is ApiResult.Failure -> {}
+                    is ApiResult.Loading -> {}
+                }
+            }
+        }
+    }
+
+    fun getFillHistoryResult(): ParcelableSubmitResult {
+        return _parcelableSubmitResult
+    }
+
+    fun getExpressHistory(learnReportId: Long, title: String, jacket: String, artist: String){
+        viewModelScope.launch {
+            getExpressStudyHistoryUseCase(learnReportId.toString()).collect{
+                when (it) {
+                    is ApiResult.Success -> {
+                        _selectedMusicInfo = Music(title, artist, jacket)
+                        _expressHistoryResult = arrayListOf<ExpressResult>().apply {
+                            it.data.map { data ->
+                                add(ExpressResult(data.suggestLyricSentence,data.lyricSentenceKo,data.userLyricSentenceEn,data.userLyricSentenceKo,data.score))
+                            }
+                        }
+                        triggerNavigation("EXPRESS")
+                    }
+                    is ApiResult.Failure -> {}
+                    is ApiResult.Loading -> {}
+                }
+            }
+        }
+    }
+
+    fun getExpressHistoryResult() = _expressHistoryResult
+    fun getSelectedMusicInfo() = _selectedMusicInfo
 }

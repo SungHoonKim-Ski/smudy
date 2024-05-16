@@ -19,26 +19,34 @@ val historyColorMap = mapOf(
     "EXPRESS" to R.color.navy_blue,
     "PRONOUNCE" to R.color.light_pink
 )
-class HistoryAdapter: BaseAdapter<StudyReport>() {
 
-    class HistoryHolder(private val binding: ItemHistoryBinding) : BaseHolder<StudyReport>(binding){
+class HistoryAdapter(private val historyClickListener: HistoryClickListener) :
+    BaseAdapter<StudyReport>() {
+
+    inner class HistoryHolder(private val binding: ItemHistoryBinding) :
+        BaseHolder<StudyReport>(binding) {
         override fun bindInfo(data: StudyReport) {
-            with(binding){
-                with(loBasic){
+            with(binding) {
+                with(loBasic) {
                     tvAlbumTitle.text = data.title
                     tvAlbumSinger.text = data.artist
                     Glide.with(root.context)
                         .load(data.jacket)
                         .into(ivAlbumJacket)
                 }
-                with(btnType){
+                with(btnType) {
                     text = data.type
                     backgroundTintList = ContextCompat.getColorStateList(
                         root.context, historyColorMap[data.type]!!
                     )
+                    setOnClickListener { historyClickListener.onClick(data.type,data.id,data.title,data.jacket,data.artist) }
                 }
             }
         }
+    }
+
+    interface HistoryClickListener {
+        fun onClick(type: String, id:Long,title:String,jacket:String,artist:String)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseHolder<StudyReport> {

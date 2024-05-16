@@ -21,6 +21,7 @@ class ExpressResultFragment : BaseFragment<FragmentExpressResultBinding>(
     private val expressResultAdapter by lazy { ExpressResultAdapter() }
     private lateinit var data: ArrayList<ExpressResult>
     private lateinit var musicInfo: Music
+    private var isHistory:Boolean = false
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +29,8 @@ class ExpressResultFragment : BaseFragment<FragmentExpressResultBinding>(
         arguments?.let {
             data = it.getParcelableArrayList("result")!!
             musicInfo = it.getParcelable("song",Music::class.java)!!
+            isHistory=it.getBoolean("IsHistory")
+
         } ?: run {
             Toast.makeText(context, "오류가 발생했습니다. 다시 시도 해주세요.", Toast.LENGTH_SHORT).show()
             findNavController().popBackStack()
@@ -60,7 +63,13 @@ class ExpressResultFragment : BaseFragment<FragmentExpressResultBinding>(
 
     private fun initEvent() {
         with(binding) {
-            btnComplete.setOnClickListener { findNavController().navigate(R.id.action_expressResultFragment_to_studyFragment) }
+            btnComplete.setOnClickListener {
+                if (isHistory){
+                    findNavController().popBackStack()
+                } else {
+                    findNavController().navigate(R.id.action_expressResultFragment_to_studyFragment)
+                }
+            }
         }
     }
 }

@@ -44,7 +44,17 @@
         android:id="@+id/historyFragment"
         android:name="com.ssafy.presentation.ui.history.HistoryFragment"
         android:label="fragment_history"
-        tools:layout="@layout/fragment_history" />
+        tools:layout="@layout/fragment_history" >
+        <action
+            android:id="@+id/action_historyFragment_to_shuffleResultFragment"
+            app:destination="@id/shuffleResultFragment" />
+        <action
+            android:id="@+id/action_historyFragment_to_fillResultFragment"
+            app:destination="@id/fillResultFragment" />
+        <action
+            android:id="@+id/action_historyFragment_to_expressResultFragment"
+            app:destination="@id/expressResultFragment" />
+    </fragment>
     <fragment
         android:id="@+id/musicSearchFragment"
         android:name="com.ssafy.presentation.ui.study.MusicSearchFragment"
@@ -112,6 +122,16 @@
         <argument
             android:name="ResultArgs"
             app:argType="com.ssafy.presentation.model.ParcelableSubmitResult" />
+        <action
+            android:id="@+id/action_fillResultFragment_to_studyFragment"
+            app:destination="@id/studyFragment" />
+        <action
+            android:id="@+id/action_fillResultFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
+        <argument
+            android:name="IsHistory"
+            app:argType="boolean"
+            android:defaultValue="false"/>
     </fragment>
     <fragment
         android:id="@+id/shuffleFragment"
@@ -130,6 +150,13 @@
         <argument
             android:name="ResultArgs"
             app:argType="com.ssafy.presentation.model.ParcelableShuffleSubmitResult" />
+        <action
+            android:id="@+id/action_shuffleResultFragment_to_studyFragment"
+            app:destination="@id/studyFragment" />
+        <argument
+            android:name="IsHistory"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/expressResultFragment"
