@@ -22,7 +22,7 @@ fun feignLoggerLever(): Logger.Level {
 	return Logger.Level.FULL
 }
 
-@Bean
-fun getFeignErrorDecoder(): FeignErrorDecoder {
-	return FeignErrorDecoder()
-}
+//@Bean
+//fun getFeignErrorDecoder(): FeignErrorDecoder {
+//	return FeignErrorDecoder()
+//}
