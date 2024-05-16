@@ -115,6 +115,8 @@ class UserService(
             )
         }
 
+        wrongService.saveAll(wrongs)
+
 
         val userLearnReport = learnReportService.saveLearnReport(
                 LearnReport(
