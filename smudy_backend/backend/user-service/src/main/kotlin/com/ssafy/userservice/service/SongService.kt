@@ -94,5 +94,4 @@ class SongService(
         return songRepository.findBySpotifyId(songId)
                 ?: throw SongNotFoundException("spotify Id가 ${songId}인 노래가 존재하지 않음")
     }
-
 }

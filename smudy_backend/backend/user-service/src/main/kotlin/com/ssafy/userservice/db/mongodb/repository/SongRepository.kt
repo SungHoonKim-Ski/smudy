@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface SongRepository : MongoRepository<Song, String> {
+interface SongRepository : MongoRepository<Song, String>, SongRepositoryCustom {
     fun findBySpotifyId(spotifyId: String): Song?
     fun findDistinctFirstBySpotifyId(spotifyId: String): Song?
     fun findSongBySongArtist(songArtist: String): List<Song>
