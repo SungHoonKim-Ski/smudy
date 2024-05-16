@@ -49,7 +49,7 @@ class JwtAuthenticationFilter(
         } catch (e: Exception) {
             SecurityContextHolder.clearContext();
             e.printStackTrace()
-            setErrorResponse(response, CommonErrorCode.JWT_ERROR)
+            setErrorResponse(response, e)
         }
     }
 
@@ -61,6 +61,22 @@ class JwtAuthenticationFilter(
         response.status = errorCode.getHttpStatus().value()
         response.contentType = MediaType.APPLICATION_JSON_VALUE
         val errorResponse = ErrorResponse(errorCode, errorCode.getMessage())
+        try {
+            response.writer.write(objectMapper.writeValueAsString(errorResponse))
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun setErrorResponse(
+            response: HttpServletResponse,
+            e: Exception
+    ) {
+        val objectMapper = ObjectMapper()
+        val error = CommonErrorCode.INTERNAL_SERVER_ERROR
+        response.status = error.getHttpStatus().value()
+        response.contentType = MediaType.APPLICATION_JSON_VALUE
+        val errorResponse = ErrorResponse(error, e.message ?: "INTERNAL_SERVER_ERROR")
         try {
             response.writer.write(objectMapper.writeValueAsString(errorResponse))
         } catch (e: IOException) {

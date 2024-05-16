@@ -1024,35 +1024,35 @@ class StudyController (
                 albumJacket = "https://i.scdn.co/image/ab67616d00001e02125b1a330b6f6100ab19dbed",
         )
 
-        response.problems.add(
+        response.problemResponses.add(
                 Problem(
                         lyricSentenceEn = "Well, you done, done me in, you bet I felt it",
                         lyricSentenceKo = "당신은 나를 사로잡았고 내가 그렇다는 걸 알겠죠"
                 )
         )
 
-        response.problems.add(
+        response.problemResponses.add(
                 Problem(
                         lyricSentenceEn = "I tried to be chill, but you're so hot that I melted",
                         lyricSentenceKo = "난 냉정해지려고 했는데, 당신이 너무 멋있어서 녹아버렸어요"
                 )
         )
 
-        response.problems.add(
+        response.problemResponses.add(
                 Problem(
                         lyricSentenceEn = "I fell right through the cracks",
                         lyricSentenceKo = "난 좁은 틈 사이로 빠져버렸고"
                 )
         )
 
-        response.problems.add(
+        response.problemResponses.add(
                 Problem(
                         lyricSentenceEn = "Now I'm trying to get back",
                         lyricSentenceKo = "지금은 다시 돌아가려 애쓰고 있어요"
                 )
         )
 
-        response.problems.add(
+        response.problemResponses.add(
                 Problem(
                         lyricSentenceEn = "Before the cool done run out, I'll be givin' it my bestest",
                         lyricSentenceKo = "이 기분이 사라지기 전에 내 최고의 것을 드릴께요"

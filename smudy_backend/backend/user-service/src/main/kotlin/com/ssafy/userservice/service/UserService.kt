@@ -1,12 +1,11 @@
 package com.ssafy.userservice.service
 
+import com.ssafy.userservice.config.ObjectMapperConfig
 import com.ssafy.userservice.db.postgre.entity.*
 import com.ssafy.userservice.db.postgre.repository.UserRepository
 import com.ssafy.userservice.dto.request.*
 import com.ssafy.userservice.dto.response.*
 import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
-import com.ssafy.userservice.dto.response.ai.PronounceAnalyzeResponse
-import com.ssafy.userservice.dto.response.feign.ExpressResponse
 import com.ssafy.userservice.exception.exception.LearnReportNotSavedException
 import com.ssafy.userservice.exception.exception.UserNotFoundException
 import com.ssafy.userservice.service.feign.StudyServiceClient
@@ -22,6 +21,7 @@ class UserService(
         private val songService: SongService,
         private val learnReportService: LearnReportService,
         private val studyServiceClient: StudyServiceClient,
+        private val wrongService: WrongService,
         private val aiService: AiService,
 ) {
 
@@ -83,6 +83,7 @@ class UserService(
         val song = songService.findSongBySongId(request.songId)
         val answers = song.songLyrics
         val userAnswer = request.userWords.map { it.word }
+        val wrongs = mutableListOf<Wrong>()
 
         var score = 0
         var totalSize = 0
@@ -99,12 +100,21 @@ class UserService(
 
                         val isCorrect = userAnswer[index] == lyric.lyricBlankAnswer
                         if (isCorrect) score++
-
+                        else {
+                            wrongs.add(
+                                    Wrong(
+                                            userInternalId = userInternalId,
+                                            lyricSentenceEn = lyric.lyricSentenceEn,
+                                            lyricSentenceKo = lyric.lyricSentenceEn
+                                    )
+                            )
+                        }
                         isCorrect
                     }
                 )
             )
         }
+
 
         val userLearnReport = learnReportService.saveLearnReport(
                 LearnReport(
@@ -159,6 +169,8 @@ class UserService(
         val song = songService.findSongBySongId(request.songId)
         val response = SubmitPickResponse()
 
+        val wrongs = mutableListOf<Wrong>()
+
         problems.forEachIndexed { index, problem ->
             if (problem.sentenceEn == request.userPicks[index].userPick) {
                 response.correct.add(
@@ -169,13 +181,28 @@ class UserService(
                 )
                 response.score++
             } else {
-                response.wrong.add(WrongProblem(
-                        userLyricSentence = request.userPicks[index].userPick,
-                        lyricSentenceEn = problem.sentenceEn,
-                        lyricSentenceKo = problem.sentenceKo,
-                ))
+                response.wrong.add(
+                        WrongProblem(
+                            userLyricSentence = request.userPicks[index].userPick,
+                            lyricSentenceEn = problem.sentenceEn,
+                            lyricSentenceKo = problem.sentenceKo,
+                        )
+                )
             }
         }
+
+        response.wrong.map {
+            wrongs.add(
+                    Wrong(
+                            userInternalId = userInternalId,
+                            lyricSentenceEn = it.lyricSentenceEn,
+                            lyricSentenceKo = it.lyricSentenceKo,
+                    )
+            )
+        }
+
+        wrongService.saveAll(wrongs)
+
 
         val userLearnReport = learnReportService.saveLearnReport(
                 LearnReport(
@@ -221,6 +248,7 @@ class UserService(
 
         val userExpresses = request.userExpresses
         val song = songService.findSongBySongId(request.songId)
+        val wrongs = mutableListOf<Wrong>()
 
         val userLearnReport = learnReportService.saveLearnReport(
                 LearnReport(
@@ -248,6 +276,20 @@ class UserService(
                 )
         )
 
+        userExpresses.forEachIndexed { index, userExpress ->
+            if (userExpress.score < 70) {
+                wrongs.add(
+                        Wrong(
+                                userInternalId = userInternalId,
+                                lyricSentenceKo = userExpress.suggestLyricSentence,
+                                lyricSentenceEn = userExpress.suggestLyricSentence,
+                        )
+                )
+            }
+        }
+
+        wrongService.saveAll(wrongs)
+
         val isCorrect = addStreak(
                 average = userLearnReport.learnReportScore,
                 userInternalId = userInternalId,
@@ -263,6 +305,7 @@ class UserService(
         return "Express 제출 완료"
     }
 
+    @Transactional
     fun analyzeAndSavePronounce(
             userInternalId: UUID,
             request: SubmitPronounceRequest,
@@ -272,12 +315,14 @@ class UserService(
 
         val analyzeResponse = getPronounceAnalyze(ttsFile = ttsFile, userFile = userFile)
 
+        val mapper = ObjectMapperConfig().getObjectMapper()
+
         val learnReportPronounce = LearnReportPronounce(
                 learnReportId = -1,
                 learnReportPronounceUserEn = analyzeResponse.userFullText,
                 lyricSentenceEn = request.lyricSentenceEn,
                 lyricSentenceKo =  request.lyricSentenceKo,
-                lyricAiAnalyze = analyzeResponse
+                lyricAiAnalyze = mapper.writeValueAsString(analyzeResponse)
         )
 
         savePronounce(
@@ -285,6 +330,19 @@ class UserService(
                 songId = request.songId,
                 userInternalId = userInternalId
         )
+
+        val song = songService.findSongBySongId(request.songId)
+
+        addStreak(
+                average = 100,
+                userInternalId = userInternalId,
+                albumJacket = song.albumJacket
+        )
+
+        userRepository.findByUserInternalId(userInternalId)?.let {
+            it.userExpUp()
+        } ?: throw UserNotFoundException("Pronounce 채점 도중 유저를 찾지 못함")
+
 
         return SubmitPronounceResponse(
                 lyricSentenceEn = request.lyricSentenceEn,
@@ -297,10 +355,10 @@ class UserService(
     fun getPronounceAnalyze (
             userFile: MultipartFile,
             ttsFile: MultipartFile,
-    ) : LyricAiAnalyze {
+    ) : LyricAiAnalyze{
         return aiService.getPronounce(
                 ttsFile = ttsFile, userFile = userFile
-        ).result
+        )
     }
 
     @Transactional

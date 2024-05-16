@@ -87,6 +87,26 @@ class OpenAIService(
 
         return mapper.readValue(response, ChatCompletionResponse::class.java).choices[0].message.content
     }
+
+    fun translateLyricOnlyText(lyric: String): String {
+        val mapper = ObjectMapperConfig().getObjectMapper()
+
+        val request = mapOf(
+                "model" to "gpt-4",
+                "messages" to arrayOf(
+                        mapOf(
+                                "role" to "system",
+                                "content" to "You are skilled at maintaining the original's essence and ensuring that the translated Korean lyrics resonate deeply with the local audience.",
+                                "role" to "user",
+                                "content" to "Translate these English lyrics into Korean for me. Use casual language, not formal. $lyric"
+                        )
+                )
+        )
+
+        val response = openAIClient.generateText("Bearer $apiKey", request)
+
+        return mapper.readValue(response, ChatCompletionResponse::class.java).choices[0].message.content
+    }
     fun scoreLyric(lyricEn: String, userEn: String): Int {
         val response = aiService.getSimilarity(
                 SimilarityRequest(

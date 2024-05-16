@@ -1,9 +1,7 @@
 package com.ssafy.userservice.controller
 
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.ssafy.userservice.dto.request.*
 import com.ssafy.userservice.dto.response.*
-import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
 import com.ssafy.userservice.exception.exception.RequestNotNumberException
 import com.ssafy.userservice.service.*
 import com.ssafy.userservice.util.CommonResult
@@ -27,7 +25,6 @@ class UserController (
         private val studyListService: StudyListService,
         private val jwtService: JwtService,
         private val recommendService: RecommendService,
-        private val aiService: AiService,
 ){
     private val logger = KotlinLogging.logger{ }
 
@@ -117,14 +114,18 @@ class UserController (
         )
     }
 
-    @DeleteMapping("/studylist/delete")
+    @DeleteMapping("/studylist")
     fun removeStudyList(
             @RequestParam(value = "songId", required = true) songId: String
-    ) {
+    ) : ResponseEntity<CommonResult>{
         logger.info { "/delete/$songId" }
         val userInternalId = UUID.fromString(jwtService.getUserInternalId())
         studyListService.deleteUserStudyList(userInternalId, songId)
-
+        return ResponseEntity.ok(
+                responseService.getSuccessMessageResult(
+                        "스터디리스트 삭제 완료"
+                )
+        )
     }
 
     @GetMapping("/history")

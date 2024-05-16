@@ -28,8 +28,18 @@ class SecurityConfig(
             formLogin { disable() }
 
             authorizeRequests {
-                authorize("/api/study/**", authenticated)
-                authorize("/api/study/**/**", authenticated)
+                authorize("/api/study/feign/problems/**", permitAll)
+                authorize("/api/study/test", permitAll)
+
+                authorize("/api/study/translate", authenticated)
+                authorize("/api/study/express/check", authenticated)
+                authorize("/api/study/daily", authenticated)
+                authorize("/api/study/fill/**", authenticated)
+                authorize("/api/study/pick/**", authenticated)
+                authorize("/api/study/express/**", authenticated)
+                authorize("/api/study/pronounce/**", authenticated)
+
+//                authorize("/api/study/**/**", authenticated)
             }
 
             sessionManagement {

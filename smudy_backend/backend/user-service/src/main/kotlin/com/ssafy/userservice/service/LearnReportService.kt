@@ -1,8 +1,12 @@
 package com.ssafy.userservice.service
 
+import com.ssafy.userservice.config.ObjectMapperConfig
+import com.ssafy.userservice.db.mongodb.entity.Lyric
 import com.ssafy.userservice.db.postgre.entity.*
 import com.ssafy.userservice.db.postgre.repository.*
 import com.ssafy.userservice.dto.response.*
+import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
+import com.ssafy.userservice.dto.response.ai.PronounceAnalyzeResponse
 import com.ssafy.userservice.exception.exception.HistoryNotFoundException
 import com.ssafy.userservice.exception.exception.LearnReportNotFoundException
 import com.ssafy.userservice.service.feign.StudyServiceClient
@@ -12,6 +16,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.sql.Date
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.jvm.optionals.getOrNull
@@ -32,9 +37,8 @@ class LearnReportService (
         val streakImageUrl: String
 ) {
 
-
-
     val logger = KotlinLogging.logger {  }
+    val mapper = ObjectMapperConfig().getObjectMapper()
 
 
     @Transactional
@@ -100,6 +104,7 @@ class LearnReportService (
     fun getUserLearnReport(userInternalId: UUID, timestamp: Long) : HistoryResponse {
 
         val currentLocalDate = Date(timestamp).toLocalDate()
+        
         val formatterStart = DateTimeFormatter.ofPattern("yyyy-MM-01")
         val startLocalDate = LocalDate.parse(currentLocalDate.format(formatterStart))
 
@@ -107,6 +112,12 @@ class LearnReportService (
         val formatterEnd = DateTimeFormatter.ofPattern("yyyy-MM-$endDate")
         val endLocalDate = LocalDate.parse(currentLocalDate.format(formatterEnd))
         val oneDay = 86400000
+
+        logger.info { "start : $startLocalDate" }
+
+        logger.info { "end : $endLocalDate" }
+        logger.info { "ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ" }
+        
         logger.info { "start : ${Date(startLocalDate.toEpochDay() * oneDay)}" }
 
         logger.info { "end : ${Date(endLocalDate.toEpochDay() * oneDay)}" }
@@ -223,7 +234,7 @@ class LearnReportService (
         val problems = studyServiceClient.getProblemsByProblemBoxId(details.problemBoxId)
 
         val expresses = problems.mapIndexed { index, problem ->
-            UserExpress(
+            UserExpressHistory(
                     userLyricSentenceKo = details.learnReportExpressUserKo[index],
                     userLyricSentenceEn = details.learnReportExpressUserEn[index],
                     suggestLyricSentence = details.learnReportExpressSuggest[index],
@@ -241,11 +252,12 @@ class LearnReportService (
         val details = pronounceRepository.findById(userLeanHistoryId).getOrNull()
                 ?: throw LearnReportNotFoundException("Express에 해당하는 학습 기록 상세 ID가 존재하지 않음")
         logger.info { "box : ${details.learnReportId}" }
+
         return HistoryPronounceResponse(
                 userLyricEn = details.learnReportPronounceUserEn,
                 lyricSentenceEn = details.lyricSentenceEn,
                 lyricSentenceKo = details.lyricSentenceKo,
-                lyricAiAnalyze = details.lyricAiAnalyze,
+                lyricAiAnalyze = mapper.readValue(details.lyricAiAnalyze, LyricAiAnalyze::class.java),
         )
     }
 
