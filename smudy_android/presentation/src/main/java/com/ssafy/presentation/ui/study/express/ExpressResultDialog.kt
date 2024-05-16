@@ -21,6 +21,13 @@ class ExpressResultDialog(
     private var _binding: DialogExpressResultBinding? = null
     private val binding get() = _binding!!
 
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.apply {
+            // 화면 너비에 맞춰 다이얼로그의 너비 설정
+            setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,7 +60,7 @@ class ExpressResultDialog(
     private fun initEvent() {
         with(binding) {
             btnNext.setOnClickListener {
-                onDisMiss(tvScore.text.toString().toInt() - 1)
+                onDisMiss(tvProgress.text.toString().toInt())
                 dismiss()
             }
         }

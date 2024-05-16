@@ -62,7 +62,11 @@
         android:id="@+id/expressFragment"
         android:name="com.ssafy.presentation.ui.study.express.ExpressFragment"
         android:label="fragment_express"
-        tools:layout="@layout/fragment_express" />
+        tools:layout="@layout/fragment_express" >
+        <action
+            android:id="@+id/action_expressFragment_to_expressResultFragment"
+            app:destination="@id/expressResultFragment" />
+    </fragment>
     <navigation android:id="@+id/nav_pronounce"
         app:startDestination="@id/pronounceProblemFragment">
         <fragment
@@ -107,4 +111,13 @@
         android:name="com.ssafy.presentation.ui.study.shuffle.ShuffleFragment"
         android:label="fragment_shuffle"
         tools:layout="@layout/fragment_shuffle" />
+    <fragment
+        android:id="@+id/expressResultFragment"
+        android:name="com.ssafy.presentation.ui.study.express.ExpressResultFragment"
+        android:label="fragment_express_result"
+        tools:layout="@layout/fragment_express_result" >
+        <action
+            android:id="@+id/action_expressResultFragment_to_studyFragment"
+            app:destination="@id/studyFragment" />
+    </fragment>
 </navigation>

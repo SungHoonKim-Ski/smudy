@@ -11,4 +11,5 @@ interface MusicRepository {
     fun getMusicPagingDate(query: String): Flow<PagingData<Study>>
 
     suspend fun addStudyList(musicList:List<String>): Flow<ApiResult<Int>>
+    suspend fun deleteStudyList(songId:String):Flow<ApiResult<Boolean>>
 }

@@ -8,6 +8,7 @@
     tools:context=".ui.study.express.ExpressResultFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_express_result"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -51,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:padding="0dp"
+                android:minHeight="0dp"
                 android:backgroundTint="@color/smudy_mint"
                 android:text="완료" />
         </LinearLayout>

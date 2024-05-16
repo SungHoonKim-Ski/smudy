@@ -4,6 +4,7 @@ import com.ssafy.data.model.DefaultResponse
 import com.ssafy.data.model.music.express.ExpressAnswerRequest
 import com.ssafy.data.model.music.express.ExpressGradedResultResponse
 import com.ssafy.data.model.music.express.ExpressProblemResponse
+import com.ssafy.data.model.music.express.ExpressResultRequest
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -15,4 +16,7 @@ interface ExpressService {
 
     @POST("study/express/check")
     suspend fun checkExpressProblem(@Body expressAnswerRequest: ExpressAnswerRequest):Result<DefaultResponse<ExpressGradedResultResponse>>
+
+    @POST("user/express/submit")
+    suspend fun submitExpressProblem(@Body expressResultRequest: ExpressResultRequest):Result<DefaultResponse<Boolean>>
 }

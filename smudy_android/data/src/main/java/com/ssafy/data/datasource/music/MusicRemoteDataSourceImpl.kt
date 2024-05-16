@@ -17,4 +17,8 @@ class MusicRemoteDataSourceImpl @Inject constructor(
     override suspend fun addStudyList(studyList: AddStudyListRequest): Result<DefaultResponse<CountResponse>> {
         return musicService.addStudyList(studyList)
     }
+
+    override suspend fun deleteStudyList(songId: String): Result<DefaultResponse<Boolean>> {
+        return musicService.deleteStudyList(songId)
+    }
 }

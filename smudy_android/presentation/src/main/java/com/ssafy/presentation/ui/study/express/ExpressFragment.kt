@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseFragment
 import com.ssafy.presentation.databinding.FragmentExpressBinding
@@ -26,9 +27,10 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
         super.onAttach(context)
         backPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
+                showExitConfirmationDialog()
             }
         }
+        requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,13 +41,24 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
         }
         viewModel.setSongId(id!!)
     }
+    override fun onResume() {
+        super.onResume()
+        activity?.findViewById<BottomNavigationView>(R.id.bn_bar)?.visibility = View.GONE
+    }
 
+    override fun onStop() {
+        super.onStop()
+        activity?.findViewById<BottomNavigationView>(R.id.bn_bar)?.visibility = View.VISIBLE
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObserve()
         initEvent()
     }
-
+    override fun onDetach() {
+        super.onDetach()
+        backPressedCallback.remove()
+    }
     private fun initObserve() {
         with(binding) {
             viewLifecycleOwner.lifecycleScope.launch {
@@ -59,6 +72,7 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
                 viewModel.currentProblemIndex.collect {
                     tvProgress.text = ("${it + 1} ")
                     tvLyricKr.text = viewModel.getCurrentExpressProblem(it)
+                    etAnswerSentence.setText("")
                 }
             }
             viewLifecycleOwner.lifecycleScope.launch {
@@ -77,7 +91,11 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
                         }
 
                         "result_screen" -> {
-
+                            val bundle = Bundle().apply {
+                                putParcelableArrayList("result",viewModel.getExpressProblem())
+                                putParcelable("song",viewModel.getAlbumInfo())
+                            }
+                            findNavController().navigate(R.id.action_expressFragment_to_expressResultFragment,bundle)
                         }
                     }
                 }
@@ -96,5 +114,23 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
                 viewModel.checkExpressProblem(answer)
             }
         }
+    }
+
+    private fun showExitConfirmationDialog() {
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle("표현 문제 풀이를 종료 하시겠습니까?")
+            .setPositiveButton("종료") { dialog, _ ->
+                dialog.dismiss()
+                // Handle the positive button click, e.g., exit the fragment
+                findNavController().popBackStack()
+            }
+            .setNegativeButton("취소") { dialog, _ ->
+                dialog.dismiss()
+                // Handle the negative button click, e.g., do nothing
+            }.create()
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(resources.getColor(R.color.dark_red))
+        }
+        dialog.show()
     }
 }

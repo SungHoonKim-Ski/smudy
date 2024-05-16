@@ -4,8 +4,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.domain.model.ApiResult
+import com.ssafy.domain.model.study.express.ExpressResultDto
+import com.ssafy.domain.model.study.express.GradedExpressResultDto
 import com.ssafy.domain.usecase.study.express.CheckExpressProblemUseCase
 import com.ssafy.domain.usecase.study.express.GetExpressProblemInfoUseCase
+import com.ssafy.domain.usecase.study.express.SubmitExpressResultUseCase
 import com.ssafy.presentation.model.Music
 import com.ssafy.presentation.model.express.ExpressQuestion
 import com.ssafy.presentation.model.express.ExpressResult
@@ -21,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ExpressViewModel @Inject constructor(
     private val getExpressProblemInfoUseCase: GetExpressProblemInfoUseCase,
-    private val checkExpressProblemUseCase: CheckExpressProblemUseCase
+    private val checkExpressProblemUseCase: CheckExpressProblemUseCase,
+    private val submitExpressResultUseCase: SubmitExpressResultUseCase
 ) : ViewModel() {
 
     private lateinit var songId: String
@@ -92,9 +96,36 @@ class ExpressViewModel @Inject constructor(
     fun getAlbumInfo(): Music = _album.value
     fun getCurrentCount(): Int = currentProblemIndex.value
 
+    fun getExpressProblem(): ArrayList<ExpressResult> = arrayListOf<ExpressResult>().apply {
+        expressResults.map {
+            add(it)
+        }
+    }
+
     fun isComplete(count: Int) = viewModelScope.launch {
+        Log.e("TAG", "isComplete: $count ${expressProblems.size}")
         if (expressProblems.size == count) {
-            triggerNavigation(NAVIGATE_TO_STUDY)
+            val request = GradedExpressResultDto(
+                problemBoxId,
+                songId,
+                expressResults.map {
+                    ExpressResultDto(
+                        it.suggestedSentenceEn,
+                        it.userAnswerSentenceEn,
+                        it.userAnswerSentenceKo,
+                        it.score
+                    )
+                })
+            submitExpressResultUseCase(request).collect {
+                when (it) {
+                    is ApiResult.Success -> {
+                        triggerNavigation(NAVIGATE_TO_RESULT)
+                    }
+
+                    is ApiResult.Failure -> {}
+                    is ApiResult.Loading -> {}
+                }
+            }
         } else {
             _currentProblemIndex.emit(currentProblemIndex.value + 1)
         }
@@ -130,6 +161,6 @@ class ExpressViewModel @Inject constructor(
 
     companion object {
         private val SHOW_DIALOG = "show_dialog"
-        private val NAVIGATE_TO_STUDY = "result_screen"
+        private val NAVIGATE_TO_RESULT = "result_screen"
     }
 }
