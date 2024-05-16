@@ -17,10 +17,10 @@ data class LyricAiAnalyze(
         val userFullText: String,
 
         @get: JsonProperty("ref_pitch_data")
-        val ttsPitchData: PitchData,
+        val ttsPitchData: List<PitchData>,
 
         @get: JsonProperty("test_pitch_data")
-        val userPitchData: PitchData,
+        val userPitchData: List<PitchData>,
 
         @get: JsonProperty("ref_intensity_data")
         val ttsIntensityData: List<IntensityData>,
