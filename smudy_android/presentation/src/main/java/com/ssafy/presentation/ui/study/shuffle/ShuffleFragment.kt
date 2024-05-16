@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.bumptech.glide.Glide
 import com.google.android.flexbox.FlexDirection
@@ -39,6 +40,7 @@ class ShuffleFragment : BaseFragment<FragmentShuffleBinding>(
     private val shuffleViewModel: ShuffleViewModel by viewModels()
     private val selectedAdapter = ShuffleAdapter()
     private val candidAdapter = ShuffleAdapter()
+    private lateinit var songId: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,6 +51,8 @@ class ShuffleFragment : BaseFragment<FragmentShuffleBinding>(
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun initView() {
+        songId = requireArguments().getString("id")!!
+
         with(binding) {
 
             tvNumOfQuestions.text = "5"
@@ -129,14 +133,14 @@ class ShuffleFragment : BaseFragment<FragmentShuffleBinding>(
         }
 
         with(shuffleViewModel) {
-            getShuffle("1EzrEOXmMH3G43AXT1y7pA")
+            getShuffle(songId!!)
             with(binding) {
                 btnNxt.setOnClickListener {
                     Log.d(TAG, "initView: ${curIdx.value!! + 1}")
                     setCurIdx(curIdx.value!! + 1)
                 }
                 btnPrv.setOnClickListener { setCurIdx(curIdx.value!! - 1) }
-                btnConfirm.setOnClickListener { submitShuffle("1EzrEOXmMH3G43AXT1y7pA") }
+                btnConfirm.setOnClickListener { submitShuffle(songId!!) }
             }
         }
 

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -56,7 +57,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(
             cvProfile.setOnClickListener {
 //                findNavController().navigate(R.id.historyFragment)
 //                findNavController().navigate(R.id.fillFragment)
-                findNavController().navigate(R.id.shuffleFragment)
+//                findNavController().navigate(R.id.action_mainFragment_to_shuffleFragment, bundleOf("id" to "1EzrEOXmMH3G43AXT1y7pA"))
             }
 
             cvDailySentence.setOnClickListener{

@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.ssafy.domain.model.ApiResult
@@ -31,7 +32,7 @@ private const val TAG = "FillFragment"
 
 @AndroidEntryPoint
 class FillFragment(
-    private val songId: String = "1EzrEOXmMH3G43AXT1y7pA",
+//    private val songId: String = "1EzrEOXmMH3G43AXT1y7pA",
 
     ) : BaseFragment<FragmentFillBinding>(
     { FragmentFillBinding.bind(it) }, R.layout.fragment_fill
@@ -45,6 +46,8 @@ class FillFragment(
 
     private val blankLyricAdapter = BlankLyricAdapter()
 
+    private lateinit var songId: String
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,6 +57,7 @@ class FillFragment(
     }
 
     private fun initView() {
+        songId = requireArguments().getString("id")!!
 
         fillFragmentViewModel.setSongId(songId)
         fillFragmentViewModel.getSongWithBlank(songId)

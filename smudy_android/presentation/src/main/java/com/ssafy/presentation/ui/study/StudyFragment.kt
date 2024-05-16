@@ -62,7 +62,7 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>(
     }
 
     override fun pickStudy(id: Bundle) {
-        findNavController().navigate(R.id.action_studyFragment_to_pickFragment, id)
+        findNavController().navigate(R.id.action_studyFragment_to_shuffleFragment, id)
     }
 
     override fun expressStudy(id: Bundle) {
