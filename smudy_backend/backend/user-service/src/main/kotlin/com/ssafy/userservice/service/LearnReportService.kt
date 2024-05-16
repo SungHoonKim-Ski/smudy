@@ -226,7 +226,7 @@ class LearnReportService (
         val problems = studyServiceClient.getProblemsByProblemBoxId(details.problemBoxId)
 
         val expresses = problems.mapIndexed { index, problem ->
-            UserExpress(
+            UserExpressHistory(
                     userLyricSentenceKo = details.learnReportExpressUserKo[index],
                     userLyricSentenceEn = details.learnReportExpressUserEn[index],
                     suggestLyricSentence = details.learnReportExpressSuggest[index],
