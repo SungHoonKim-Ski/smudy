@@ -114,14 +114,18 @@ class UserController (
         )
     }
 
-    @DeleteMapping("/studylist/delete")
+    @DeleteMapping("/studylist")
     fun removeStudyList(
             @RequestParam(value = "songId", required = true) songId: String
-    ) {
+    ) : ResponseEntity<CommonResult>{
         logger.info { "/delete/$songId" }
         val userInternalId = UUID.fromString(jwtService.getUserInternalId())
         studyListService.deleteUserStudyList(userInternalId, songId)
-
+        return ResponseEntity.ok(
+                responseService.getSuccessMessageResult(
+                        "스터디리스트 삭제 완료"
+                )
+        )
     }
 
     @GetMapping("/history")
