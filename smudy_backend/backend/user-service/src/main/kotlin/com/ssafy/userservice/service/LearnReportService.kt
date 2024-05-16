@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.sql.Date
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.jvm.optionals.getOrNull
@@ -103,6 +104,7 @@ class LearnReportService (
     fun getUserLearnReport(userInternalId: UUID, timestamp: Long) : HistoryResponse {
 
         val currentLocalDate = Date(timestamp).toLocalDate()
+        
         val formatterStart = DateTimeFormatter.ofPattern("yyyy-MM-01")
         val startLocalDate = LocalDate.parse(currentLocalDate.format(formatterStart))
 
@@ -110,6 +112,12 @@ class LearnReportService (
         val formatterEnd = DateTimeFormatter.ofPattern("yyyy-MM-$endDate")
         val endLocalDate = LocalDate.parse(currentLocalDate.format(formatterEnd))
         val oneDay = 86400000
+
+        logger.info { "start : $startLocalDate" }
+
+        logger.info { "end : $endLocalDate" }
+        logger.info { "ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ" }
+        
         logger.info { "start : ${Date(startLocalDate.toEpochDay() * oneDay)}" }
 
         logger.info { "end : ${Date(endLocalDate.toEpochDay() * oneDay)}" }
@@ -226,7 +234,7 @@ class LearnReportService (
         val problems = studyServiceClient.getProblemsByProblemBoxId(details.problemBoxId)
 
         val expresses = problems.mapIndexed { index, problem ->
-            UserExpress(
+            UserExpressHistory(
                     userLyricSentenceKo = details.learnReportExpressUserKo[index],
                     userLyricSentenceEn = details.learnReportExpressUserEn[index],
                     suggestLyricSentence = details.learnReportExpressSuggest[index],

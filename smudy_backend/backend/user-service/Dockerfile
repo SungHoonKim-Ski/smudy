@@ -23,5 +23,10 @@ ARG EUREKA_URL
 ENV MONGO_PORT=${MONGO_PORT}
 ENV JASYPT_PASSWORD=${JASYPT_PASSWORD}
 ENV EUREKA_URL=${EUREKA_URL}
+ENV TZ=Asia/Seoul
+
+# 타임존 설정을 위해 tzdata 패키지 설치
+RUN apt-get update && apt-get install -y tzdata && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 COPY --from=build /home/gradle/src/build/libs/*.jar app.jar
 CMD ["java", "-jar", "-Dspring.profiles.active=prod", "app.jar"]
