@@ -6,6 +6,6 @@ import com.ssafy.userservice.dto.response.ai.PronounceAnalyzeResponse
 data class HistoryPronounceResponse (
         val lyricSentenceEn: String,
         val lyricSentenceKo: String,
-        val userLyricEn: String,
+        val userLyricSttEn: String,
         val lyricAiAnalyze: LyricAiAnalyze
 )

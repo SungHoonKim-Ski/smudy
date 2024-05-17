@@ -254,7 +254,7 @@ class LearnReportService (
         logger.info { "box : ${details.learnReportId}" }
 
         return HistoryPronounceResponse(
-                userLyricEn = details.learnReportPronounceUserEn,
+                userLyricSttEn = details.learnReportPronounceUserEn,
                 lyricSentenceEn = details.lyricSentenceEn,
                 lyricSentenceKo = details.lyricSentenceKo,
                 lyricAiAnalyze = mapper.readValue(details.lyricAiAnalyze, LyricAiAnalyze::class.java),
