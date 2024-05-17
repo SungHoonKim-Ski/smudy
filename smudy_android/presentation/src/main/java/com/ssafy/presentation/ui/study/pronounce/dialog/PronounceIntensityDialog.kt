@@ -19,15 +19,15 @@ import com.ssafy.presentation.model.pronounce.IntensityData
 import com.ssafy.presentation.model.pronounce.Timestamp
 
 class PronounceIntensityDialog(
-    private val ttsPitchData: IntensityData,
-    private val userPitchData: IntensityData,
+    private val ttsPitchData: List<IntensityData>,
+    private val userPitchData: List<IntensityData>,
     private val wordData: List<Timestamp>,
     private val context: Context
 ) : DialogFragment() {
     private var _binding: DialogPronounceIntensityBinding? = null
     private val binding get() = _binding!!
     private val ttsLineDataSet: LineDataSet by lazy {
-        makeLineDataSet(R.color.tts_graph,makeDataSet(ttsPitchData,wordData),"Smudy")
+        makeLineDataSet(R.color.tts_graph,makeDataSet(ttsPitchData),"Smudy")
     }
     private val userLineDataSet: LineDataSet by lazy {
         makeLineDataSet(R.color.user_graph,makeDataSet(userPitchData),"user")
@@ -92,17 +92,12 @@ class PronounceIntensityDialog(
         }
 
 
-    private fun makeDataSet(pitchData: IntensityData, timeStamp: List<Timestamp>) =
+    private fun makeDataSet(pitchDatas: List<IntensityData>) =
         ArrayList<Entry>().apply {
-            pitchData.values.forEachIndexed { index, data ->
-                add(Entry(pitchData.times[index].toFloat(), data.toFloat()))
-            }
-        }
-
-    private fun makeDataSet(pitchData: IntensityData) =
-        ArrayList<Entry>().apply {
-            pitchData.times.forEachIndexed { index, data ->
-                add(Entry(data.toFloat(), pitchData.values[index].toFloat()))
+            pitchDatas.map {pitchData ->
+                pitchData.values.forEachIndexed { index, data ->
+                    add(Entry(pitchData.times[index].toFloat(), data.toFloat()))
+                }
             }
         }
 }

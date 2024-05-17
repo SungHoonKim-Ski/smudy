@@ -117,6 +117,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/item_padding"
                 android:layout_marginBottom="@dimen/margin_regular"
+                android:background="@color/calendar_day_background"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="15"
                 tools:itemCount="90"

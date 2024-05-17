@@ -4,9 +4,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.domain.model.ApiResult
+import com.ssafy.domain.model.user.UserInfo
 import com.ssafy.domain.usecase.study.pronounce.GetPronounceProblemUseCase
 import com.ssafy.domain.usecase.study.pronounce.GetTranslateLyricUseCase
 import com.ssafy.domain.usecase.study.pronounce.GradePronounceProblemUseCase
+import com.ssafy.domain.usecase.user.GetUserInfoUseCase
 import com.ssafy.presentation.model.PronounceProblem
 import com.ssafy.presentation.model.pronounce.FormantsAvg
 import com.ssafy.presentation.model.pronounce.GradedPronounce
@@ -28,12 +30,13 @@ import javax.inject.Inject
 class PronounceProblemViewModel @Inject constructor(
     private val getPronounceProblemUseCase: GetPronounceProblemUseCase,
     private val getTranslateLyricUseCase: GetTranslateLyricUseCase,
-    private val gradePronounceProblemUseCase: GradePronounceProblemUseCase
+    private val gradePronounceProblemUseCase: GradePronounceProblemUseCase,
+    private val getUserInfoUseCase: GetUserInfoUseCase
 ) : ViewModel() {
     private val _pronounceProblem =
         MutableStateFlow(PronounceProblem("", "", "", "", emptyList()))
     val pronounceProblem = _pronounceProblem.asStateFlow()
-    private var _songId:String = ""
+    private var _songId: String = ""
 
     private var _translatedLyric = emptyList<String>()
     val translateLyric get() = _translatedLyric
@@ -46,9 +49,13 @@ class PronounceProblemViewModel @Inject constructor(
 
     lateinit var pronounceResult: GradedPronounce
 
+    private val _userInfo = MutableStateFlow(UserInfo("", "", 0, emptyList()))
+    val userInfo = _userInfo.asStateFlow()
+
     private suspend fun triggerNavigation(shouldNavigate: Boolean) {
-            _navigationTrigger.emit(shouldNavigate)  // 이벤트 발행
+        _navigationTrigger.emit(shouldNavigate)  // 이벤트 발행
     }
+
     fun getPronounceProblem(id: String) {
         viewModelScope.launch {
             getPronounceProblemUseCase(id).collect {
@@ -75,6 +82,21 @@ class PronounceProblemViewModel @Inject constructor(
         }
     }
 
+    init {
+        viewModelScope.launch {
+            getUserInfoUseCase().collect {
+                when (it) {
+                    is ApiResult.Success -> {
+                        _userInfo.emit(UserInfo(it.data.name, it.data.img, 0, emptyList()))
+                    }
+
+                    is ApiResult.Failure -> {}
+                    is ApiResult.Loading -> {}
+                }
+            }
+        }
+    }
+
     fun getTranslateLyric(lyricPosition: Int) {
         viewModelScope.launch {
             val lyric = _pronounceProblem.value.lyrics[lyricPosition]
@@ -82,7 +104,7 @@ class PronounceProblemViewModel @Inject constructor(
                 when (it) {
                     is ApiResult.Success -> {
                         triggerNavigation(true)
-                        _translatedLyric=listOf(lyric, it.data)
+                        _translatedLyric = listOf(lyric, it.data)
                     }
 
                     is ApiResult.Failure -> {
@@ -107,22 +129,56 @@ class PronounceProblemViewModel @Inject constructor(
                 when (it) {
                     is ApiResult.Success -> {
                         pronounceResult =
-                            GradedPronounce(
-                                it.data.lyricSentenceEn,
-                                it.data.lyricSentenceKo,
-                                it.data.userLyricSttEn,
-                                it.data.userLyricSttKo,
-                                LyricAiAnalyze(
-                                    FormantsAvg(it.data.lyricAiAnalyze.refFormantsAvg.f1,it.data.lyricAiAnalyze.refFormantsAvg.f2),
-                                    IntensityData(it.data.lyricAiAnalyze.refIntensityData.times,it.data.lyricAiAnalyze.refIntensityData.values),
-                                    PitchData(it.data.lyricAiAnalyze.refPitchData.times,it.data.lyricAiAnalyze.refPitchData.values),
-                                    it.data.lyricAiAnalyze.refTimestamps.map {timeStamp ->
-                                                                     Timestamp(timeStamp.time,timeStamp.duration,timeStamp.word)
-                                    },
-                                    FormantsAvg(it.data.lyricAiAnalyze.testFormantsAvg.f1,it.data.lyricAiAnalyze.testFormantsAvg.f2),
-                                    IntensityData(it.data.lyricAiAnalyze.testIntensityData.times,it.data.lyricAiAnalyze.testIntensityData.values),
-                                    PitchData(it.data.lyricAiAnalyze.testPitchData.times,it.data.lyricAiAnalyze.testPitchData.values))
-                            )
+                            with(it.data){
+                                GradedPronounce(
+                                    lyricSentenceEn,
+                                    lyricSentenceKo,
+                                    userLyricSttEn,
+                                    with(lyricAiAnalyze){
+                                        LyricAiAnalyze(
+                                            FormantsAvg(
+                                                refFormantsAvg.f1,
+                                                refFormantsAvg.f2
+                                            ),
+                                            refIntensityData.map {data ->
+                                                IntensityData(
+                                                    data.times,
+                                                    data.values
+                                                )
+                                            },
+                                            refPitchData.map { data ->
+                                                PitchData(
+                                                    data.times,
+                                                    data.values
+                                                )
+                                            },
+                                            refTimestamps.map { timeStamp ->
+                                                Timestamp(
+                                                    timeStamp.word,
+                                                    timeStamp.startTime,
+                                                    timeStamp.endTime
+                                                )
+                                            },
+                                            FormantsAvg(
+                                                testFormantsAvg.f1,
+                                                lyricAiAnalyze.testFormantsAvg.f2
+                                            ),
+                                            testIntensityData.map {data ->
+                                                IntensityData(
+                                                    data.times,
+                                                    data.values
+                                                )
+                                            },
+                                            testPitchData.map {data ->
+                                                PitchData(
+                                                    data.times,
+                                                    data.values
+                                                )
+                                            }
+                                        )
+                                    }
+                                )
+                            }
 
                         triggerNavigation(true)
                     }
@@ -134,7 +190,7 @@ class PronounceProblemViewModel @Inject constructor(
         }
     }
 
-    fun setSongId(id:String){
+    fun setSongId(id: String) {
         _songId = id
     }
 }

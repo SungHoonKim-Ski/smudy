@@ -133,7 +133,7 @@
                 android:paddingVertical="20dp"
                 android:gravity="center"
                 android:textAppearance="@style/Noto_Sans.TEXT.L.11"
-                android:text="Smudy"
+                android:text="mudy"
                 android:drawableTop="@drawable/ic_app_character"/>
         <TextView
             android:id="@+id/tv_user_pronounce"

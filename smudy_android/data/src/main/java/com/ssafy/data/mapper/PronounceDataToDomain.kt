@@ -25,19 +25,18 @@ fun GradedPronounceResponse.toGradePronounce(): GradedPronounce =
         lyricSentenceEn,
         lyricSentenceKo,
         userLyricSttEn,
-        userLyricSttKo,
         lyricAiAnalyze.toLyricAiAnalyze()
         )
 
 fun LyricAiAnalyzeResponse.toLyricAiAnalyze(): LyricAiAnalyze =
     LyricAiAnalyze(
         FormantsAvg(refFormantsAvg.f1, refFormantsAvg.f2),
-        IntensityData(refIntensityData.times, refIntensityData.values),
-        PitchData(refPitchData.times, refPitchData.values),
+        refIntensityData.map { IntensityData(it.times,it.values) },
+        refPitchData.map { PitchData(it.times,it.values) },
         refTimestamps.map {
-            Timestamp((it.startTime + it.endTime) / 2, it.endTime - it.startTime, it.word)
+            Timestamp(it.word,it.startTime,it.endTime)
         },
         FormantsAvg(testFormantsAvg.f1, testFormantsAvg.f2),
-        IntensityData(testIntensityData.times.map { data -> data - testIntensityData.times[0] },testIntensityData.values),
-        PitchData(testPitchData.times.map { it - testPitchData.times[0] },testPitchData.values)
+        testIntensityData.map { IntensityData(it.times,it.values) },
+        testPitchData.map { PitchData(it.times,it.values) }
     )

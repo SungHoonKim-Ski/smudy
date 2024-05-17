@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Timestamp(
-    val time: Double,
-    val duration:Double,
-    val word: String
+    val word: String,
+    val startTime:Double,
+    val endTime:Double
 ): Parcelable

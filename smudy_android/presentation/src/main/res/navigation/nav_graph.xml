@@ -113,6 +113,7 @@
                 android:id="@+id/action_pronounceResultFragment_to_pronouncePracticeFragment"
                 app:destination="@id/pronouncePracticeFragment" />
         </fragment>
+        <action android:id="@+id/action_global_pronounceResultFragment" app:destination="@id/pronounceResultFragment"/>
     </navigation>
     <fragment
         android:id="@+id/fillResultFragment"

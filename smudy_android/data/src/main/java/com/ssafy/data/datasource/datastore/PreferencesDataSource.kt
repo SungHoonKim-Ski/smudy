@@ -39,8 +39,28 @@ class PreferencesDataSource @Inject constructor(
         }
     }
 
+    suspend fun setUserInfo(name:String,image:String){
+        dataStore.edit {
+            it[USER_NAME] = name
+            it[USER_IMAGE] = image
+        }
+    }
+
+    suspend fun getUserName():String?{
+        return dataStore.data.map {
+            it[USER_NAME]
+        }.firstOrNull()
+    }
+
+    suspend fun getUserImage():String?{
+        return dataStore.data.map {
+            it[USER_IMAGE]
+        }.firstOrNull()
+    }
     companion object {
         val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token")
         val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
+        val USER_NAME = stringPreferencesKey("user_name")
+        val USER_IMAGE = stringPreferencesKey("user_image")
     }
 }

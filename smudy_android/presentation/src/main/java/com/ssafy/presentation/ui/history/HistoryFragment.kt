@@ -32,6 +32,7 @@ import com.ssafy.presentation.base.BaseFragment
 import com.ssafy.presentation.base.BaseHolder
 import com.ssafy.presentation.base.displayText
 import com.ssafy.presentation.databinding.FragmentHistoryBinding
+import com.ssafy.presentation.model.Music
 import com.ssafy.presentation.ui.history.adapter.HistoryAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -139,12 +140,19 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(
                     when (it) {
                         "EXPRESS" -> {
                             val bundle = Bundle().apply {
-                                putParcelableArrayList("result",historyViewModel.getExpressHistoryResult())
-                                putParcelable("song",historyViewModel.getSelectedMusicInfo())
+                                putParcelableArrayList(
+                                    "result",
+                                    historyViewModel.getExpressHistoryResult()
+                                )
+                                putParcelable("song", historyViewModel.getSelectedMusicInfo())
                                 putBoolean("IsHistory", true)
                             }
-                            findNavController().navigate(R.id.action_historyFragment_to_expressResultFragment,bundle)
+                            findNavController().navigate(
+                                R.id.action_historyFragment_to_expressResultFragment,
+                                bundle
+                            )
                         }
+
                         "FILL" -> {
                             findNavController().navigate(
                                 HistoryFragmentDirections.actionHistoryFragmentToFillResultFragment(
@@ -161,7 +169,14 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(
                             )
                         }
 
-                        "PRONOUNCE" -> {}
+                        "PRONOUNCE" -> {
+                            val bundle = Bundle().apply {
+                                putParcelable("pronounceResult", historyViewModel.getPronounceHistoryResult())
+                                putParcelable("song", historyViewModel.getSelectedMusicInfo())
+                                putBoolean("IsHistory",true)
+                            }
+                            findNavController().navigate(R.id.action_global_pronounceResultFragment, bundle)
+                        }
                     }
                 }
             }
@@ -268,13 +283,18 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(
             "EXPRESS" -> {
                 historyViewModel.getExpressHistory(id, title, jacket, artist)
             }
+
             "FILL" -> {
                 historyViewModel.getFillHistory(id, title, jacket, artist)
             }
+
             "PICK" -> {
                 historyViewModel.getPickHistory(id, title, jacket, artist)
             }
-            "PRONOUNCE" -> {}
+
+            "PRONOUNCE" -> {
+                historyViewModel.getPronounceHistory(id, title, jacket, artist)
+            }
         }
     }
 }

@@ -2,12 +2,14 @@ package com.ssafy.data.repository
 
 import com.ssafy.data.datasource.user.remote.history.StudyHistoryRemoteDataSource
 import com.ssafy.data.mapper.toExpressGradedResult
+import com.ssafy.data.mapper.toGradePronounce
 import com.ssafy.data.model.music.express.ExpressAnswerRequest
 import com.ssafy.domain.model.ApiError
 import com.ssafy.domain.model.ApiResult
 import com.ssafy.domain.model.ShuffleSubmitResult
 import com.ssafy.domain.model.SubmitFillBlankData
 import com.ssafy.domain.model.study.express.ExpressGradedResult
+import com.ssafy.domain.model.study.pronounce.GradedPronounce
 import com.ssafy.domain.repository.StudyHistoryRepository
 import com.ssafy.util.NetworkException
 import kotlinx.coroutines.flow.Flow
@@ -35,6 +37,18 @@ class StudyHistoryRepositoryImpl @Inject constructor(
             val data = response.getOrNull()
             if (data != null) {
                 emit(ApiResult.Success(data.data!!.userExpresses.map { it.toExpressGradedResult() }))
+            } else {
+                val exception = response.exceptionOrNull() as NetworkException
+                emit(ApiResult.Failure(ApiError(exception.code, exception.message)))
+            }
+        }.onStart { emit(ApiResult.Loading()) }
+
+    override suspend fun getPronounceHistory(learnReportId: String): Flow<ApiResult<GradedPronounce>> =
+        flow {
+            val response = studyHistoryRemoteDataSource.getPronounceHistory(learnReportId)
+            val data = response.getOrNull()
+            if (data != null) {
+                emit(ApiResult.Success(data.data!!.toGradePronounce()))
             } else {
                 val exception = response.exceptionOrNull() as NetworkException
                 emit(ApiResult.Failure(ApiError(exception.code, exception.message)))

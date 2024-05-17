@@ -88,7 +88,7 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
                 stopRecording()
                 changeVisibility()
             }
-            btnResetRecord.setOnClickListener {
+            ivUserProfile.setOnClickListener {
                 startPlaying()
             }
             lvTtsSmudy.setOnClickListener {
@@ -172,10 +172,22 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
         }
     }
 
+    private fun setUserView(name: String, image: String) {
+        with(binding) {
+            tvUserName.text = name
+            Glide.with(_activity).load(image).into(ivUserProfile)
+        }
+    }
+
     private fun initObserve() {
         lifecycleScope.launch {
             parentViewModel.pronounceProblem.collectLatest {
                 setMusicView(it)
+            }
+        }
+        lifecycleScope.launch {
+            parentViewModel.userInfo.collect {
+                setUserView(it.name, it.img)
             }
         }
         viewLifecycleOwner.lifecycleScope.launch {

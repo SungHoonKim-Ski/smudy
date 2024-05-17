@@ -23,11 +23,13 @@ class PronounceResultFragment : BaseFragment<FragmentPronounceResultBinding>(
 ) {
     private lateinit var pronounceResult: GradedPronounce
     private lateinit var music: Music
+    private var isHistory:Boolean = false
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val argument1 = arguments?.getParcelable("pronounceResult",GradedPronounce::class.java)
         val argument2 = arguments?.getParcelable("song",Music::class.java)
+        isHistory = arguments?.getBoolean("IsHistory")!!
         if (argument1 == null || argument2 == null) {
             findNavController().popBackStack()
         }
@@ -37,7 +39,6 @@ class PronounceResultFragment : BaseFragment<FragmentPronounceResultBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.e("TAG", "onViewCreated: $pronounceResult")
         initView()
         initEvent()
     }
@@ -68,9 +69,9 @@ class PronounceResultFragment : BaseFragment<FragmentPronounceResultBinding>(
             cvPitchResult.setOnClickListener {
                 pronounceResult.lyricAiAnalyze.apply {
                     PronouncePitchDialog(
-                        this.refPitchData,
-                        this.testPitchData,
-                        this.refTimestamps,
+                        refPitchData,
+                        testPitchData,
+                        refTimestamps,
                         _activity
                     ).show(parentFragmentManager, "PitchResult")
                 }
@@ -78,9 +79,9 @@ class PronounceResultFragment : BaseFragment<FragmentPronounceResultBinding>(
             cvIntensityResult.setOnClickListener {
                 pronounceResult.lyricAiAnalyze.apply {
                     PronounceIntensityDialog(
-                        this.refIntensityData,
-                        this.testIntensityData,
-                        this.refTimestamps,
+                        refIntensityData,
+                        testIntensityData,
+                        refTimestamps,
                         _activity
                     ).show(parentFragmentManager, "IntensityResult")
                 }
@@ -88,15 +89,19 @@ class PronounceResultFragment : BaseFragment<FragmentPronounceResultBinding>(
             cvFormantResult.setOnClickListener {
                 pronounceResult.lyricAiAnalyze.apply {
                     PronounceFormantDialog(
-                        this.refFormantsAvg,
-                        this.testFormantsAvg,
+                        refFormantsAvg,
+                        testFormantsAvg,
                         _activity
                     ).show(parentFragmentManager, "PronounceFormant")
                 }
             }
             btnNavigatePractice.setOnClickListener { findNavController().popBackStack() }
             btnComplete.setOnClickListener {
-                findNavController().popBackStack(R.id.pronounceProblemFragment, false)
+                if (isHistory){
+                    findNavController().popBackStack()
+                }else {
+                    findNavController().popBackStack(R.id.pronounceProblemFragment, false)
+                }
             }
         }
     }

@@ -25,14 +25,17 @@ class LoginViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
 
+    private val _dataState = MutableStateFlow<ApiResult<Boolean>>(ApiResult.Loading())
+    val dataState = _dataState.asStateFlow()
     init {
         viewModelScope.launch {
             autoLoginUserUseCase().collect{
-                if (it is ApiResult.Success) _loginSuccess.emit(true)
+                _dataState.emit(it)
             }
         }
     }
-    fun login(id: String, name: String?, image: String?) {
+
+    fun login(id: String, name: String, image: String) {
         viewModelScope.launch {
             loginUserUseCase(id).collect {
                 when (it) {

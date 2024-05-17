@@ -58,6 +58,9 @@ dataStore = "1.0.0"
 calendar = "2.5.0"
 core = "1.13.1"
 
+# Splash
+splash = "1.0.0"
+
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -120,6 +123,9 @@ androidx-core = { group = "androidx.core", name = "core", version.ref = "core" }
 mpandroidchart = {group="com.github.PhilJay", name="MPAndroidChart", version.ref="mpandroid"}
 flexbox = {group = "com.google.android.flexbox", name = "flexbox", version = "3.0.0"}
 
+# Splash
+splash ={group="androidx.core", name="core-splashscreen", version.ref="splash"}
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -149,4 +155,4 @@ hilt = ["hilt-android", "hilt-compiler", "hilt-navigation", "dagger-compiler"]
 
 navigation = ["navigation-fragment", "navigation-ui"]
 
-presentationBundle = ["glide", "viewpager", "paging", "circleImageView", "calendarView", "mpandroidchart","lottie"]
+presentationBundle = ["glide", "viewpager", "paging", "circleImageView", "calendarView", "mpandroidchart","lottie","splash"]

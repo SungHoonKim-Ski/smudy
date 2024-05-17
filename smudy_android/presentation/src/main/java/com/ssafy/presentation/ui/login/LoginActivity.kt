@@ -3,6 +3,8 @@ package com.ssafy.presentation.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.ViewTreeObserver
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -11,6 +13,7 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.user.UserApiClient
+import com.ssafy.domain.model.ApiResult
 import com.ssafy.presentation.base.BaseActivity
 import com.ssafy.presentation.databinding.ActivityLoginBinding
 import com.ssafy.presentation.ui.MainActivity
@@ -28,7 +31,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(
         if (error != null) {
             Log.e("TAG", "카카오계정으로 로그인 실패", error)
         } else if (token != null) {
-            Log.i("TAG", "카카오계정으로 로그인 성공 ${token.accessToken}")
             navigateToMain()
         }
     }
@@ -39,6 +41,29 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(
             kakaoLogin()
         }
         initCollect()
+        val content = findViewById<View>(android.R.id.content)
+        content.viewTreeObserver.addOnPreDrawListener(
+            object : ViewTreeObserver.OnPreDrawListener{
+                override fun onPreDraw(): Boolean {
+                    return when(viewModel.dataState.value){
+                        is ApiResult.Success->{
+                            content.viewTreeObserver.removeOnPreDrawListener(this)
+                            navigateToMain()
+                            true
+                        }
+
+                        is ApiResult.Failure ->{
+                            content.viewTreeObserver.removeOnPreDrawListener(this)
+                            true
+                        }
+
+                        is ApiResult.Loading ->{
+                            false
+                        }
+                    }
+                }
+            }
+        )
     }
 
     private fun kakaoLogin() {
@@ -56,15 +81,14 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(
                     // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인 시도
                     UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
                 } else if (token != null) {
-                    Log.i("TAG", "카카오톡으로 로그인 성공 ${token.accessToken}")
                     UserApiClient.instance.me { user, error ->
                         if (error != null) {
                             Log.e("TAG", "사용자 정보 요청 실패", error)
                         } else if (user != null) {
                             viewModel.login(
                                 user.id.toString(),
-                                user.kakaoAccount?.profile?.nickname,
-                                user.kakaoAccount?.profile?.profileImageUrl
+                                user.kakaoAccount?.profile?.nickname ?:"",
+                                user.kakaoAccount?.profile?.profileImageUrl ?:""
                             )
                         }
                     }

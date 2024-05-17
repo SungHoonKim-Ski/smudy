@@ -5,6 +5,7 @@ import com.ssafy.data.mapper.toNonDefault
 import com.ssafy.data.model.DefaultResponse
 import com.ssafy.data.model.music.express.ExpressHistoryResponse
 import com.ssafy.data.model.music.fill.SubmitFillBlankResponse
+import com.ssafy.data.model.music.pronounce.GradedPronounceResponse
 import com.ssafy.data.model.music.shuffle.ShuffleSubmitResponse
 import javax.inject.Inject
 
@@ -19,4 +20,7 @@ class StudyHistoryRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun getExpressHistory(learnReportId: String): Result<DefaultResponse<ExpressHistoryResponse>> =
         historyService.getExpressHistory(learnReportId)
+
+    override suspend fun getPronounceHistory(learnReportId: String): Result<DefaultResponse<GradedPronounceResponse>> =
+        historyService.getPronounceHistory(learnReportId)
 }
