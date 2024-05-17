@@ -96,9 +96,8 @@ class UserService(
                     originWord = lyric.lyricBlankAnswer,
                     userWord = userAnswer[index],
                     isCorrect = lyric.lyricBlankAnswer.let {
-                        totalSize++
-
                         val isCorrect = userAnswer[index] == lyric.lyricBlankAnswer
+                        if (lyric.lyricBlankAnswer.isNotBlank()) totalSize++
                         if (isCorrect) score++
                         else {
                             wrongs.add(
@@ -390,7 +389,7 @@ class UserService(
     }
 
     fun addStreak(total: Int, score: Int, userInternalId: UUID, albumJacket: String) : Boolean {
-        if (isCorrect(total, score)) {
+//        if (isCorrect(total, score)) {
             learnReportService.insertOrUpdateUserStreak(
                     Streak(
                             userInternalId = userInternalId,
@@ -399,12 +398,12 @@ class UserService(
                     )
             )
             return true
-        }
-        return false
+//        }
+//        return false
     }
 
     fun addStreak(average: Int, userInternalId: UUID, albumJacket: String) : Boolean {
-        if (isCorrect(average)) {
+//        if (isCorrect(average)) {
             learnReportService.insertOrUpdateUserStreak(
                     Streak(
                             userInternalId = userInternalId,
@@ -413,8 +412,8 @@ class UserService(
                     )
             )
             return true
-        }
-        return false
+//        }
+//        return false
     }
 
     fun isCorrect(total: Int, score: Int): Boolean {
