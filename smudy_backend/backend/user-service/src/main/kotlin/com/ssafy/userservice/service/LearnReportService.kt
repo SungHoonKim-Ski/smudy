@@ -48,7 +48,7 @@ class LearnReportService (
         val ninetyDaysAgo = LocalDate.now().minusDays(90).atStartOfDay(zoneId).toInstant().toEpochMilli()
 
         val userStreaks = streakRepository
-                .findByUserInternalIdAndStreakDateGreaterThanEqual(
+                .findByUserInternalIdAndStreakDateGreaterThan(
                         userInternalId
                         , Date(ninetyDaysAgo)
                 )

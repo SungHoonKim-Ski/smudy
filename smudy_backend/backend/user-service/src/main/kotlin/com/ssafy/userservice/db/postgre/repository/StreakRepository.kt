@@ -9,7 +9,7 @@ import java.util.*
 @Repository
 interface StreakRepository : JpaRepository<Streak, Int> {
 
-    fun findByUserInternalIdAndStreakDateGreaterThanEqual(
+    fun findByUserInternalIdAndStreakDateGreaterThan(
             userInternalId: UUID, streakDate: Date
     ): List<Streak>
 
