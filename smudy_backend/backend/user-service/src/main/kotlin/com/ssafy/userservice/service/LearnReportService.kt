@@ -44,7 +44,7 @@ class LearnReportService (
 
         val zoneId = ZoneId.of("Asia/Seoul")
 
-        val allDates = (0..90).map { LocalDate.now().minusDays(it.toLong()) }
+        val allDates = (0 until 90).map { LocalDate.now().minusDays(it.toLong()) }
         val ninetyDaysAgo = LocalDate.now().minusDays(90).atStartOfDay(zoneId).toInstant().toEpochMilli()
 
         val userStreaks = streakRepository
