@@ -1,12 +1,10 @@
 package com.ssafy.userservice.service
 
 import com.ssafy.userservice.config.ObjectMapperConfig
-import com.ssafy.userservice.db.mongodb.entity.Lyric
 import com.ssafy.userservice.db.postgre.entity.*
 import com.ssafy.userservice.db.postgre.repository.*
 import com.ssafy.userservice.dto.response.*
 import com.ssafy.userservice.dto.response.ai.LyricAiAnalyze
-import com.ssafy.userservice.dto.response.ai.PronounceAnalyzeResponse
 import com.ssafy.userservice.exception.exception.HistoryNotFoundException
 import com.ssafy.userservice.exception.exception.LearnReportNotFoundException
 import com.ssafy.userservice.service.feign.StudyServiceClient
@@ -44,11 +42,13 @@ class LearnReportService (
     @Transactional
     fun getUserStreak(userInternalId: UUID) : StreakResponse {
 
+        val zoneId = ZoneId.of("Asia/Seoul")
+
         val allDates = (0..90).map { LocalDate.now().minusDays(it.toLong()) }
-        val ninetyDaysAgo = LocalDate.now().minusDays(90).toEpochDay()
+        val ninetyDaysAgo = LocalDate.now().minusDays(90).atStartOfDay(zoneId).toInstant().toEpochMilli()
 
         val userStreaks = streakRepository
-                .findByUserInternalIdAndStreakDateLessThanEqual(
+                .findByUserInternalIdAndStreakDateGreaterThanEqual(
                         userInternalId
                         , Date(ninetyDaysAgo)
                 )

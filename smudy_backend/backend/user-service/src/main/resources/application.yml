@@ -62,7 +62,7 @@ jwt:
   secret: ENC(+ebEWdCqIhlFeh2InAoDO8eKE9YTAk9L9vTOk5p9unmreZG3u1P2Lya2PTS9jfEtTUx2rziDI/3UuesNgNJA0QFgb5uJV2XiIo1FRaDv/IGhWHPij+AgXUXkYebPwzT1vvu7ndrwzh4=)
 
 image:
-  streak: ENC(NMGpSv9IzxhnmHY9vjfgHpmhBXwAcmc7xPRnSZFTIWKsULWP65pDXrfT0NySjbh/gqremDt9B6UDmYPN4ss7ceITUa6OzuqZyYFFfrIFgWo=)
+  streak: ENC(WhaAwig8ROK2/gowJlgwIIY8wgo0M/DeINI4P/rn0i4pyrzuzYPHVMzQ0ZpQsT4zX00mGBmVBSg8H74Pi0ScAUASSA0bwt/RH3Wv/ojN9gM=)
 
 ai:
   server: ENC(YlSysAx3i37cDCxSAM/vqOxsanvggguMHgmCPTYn2ozGx4vta2FN1Q==)
