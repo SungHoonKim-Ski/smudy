@@ -10,7 +10,7 @@ class Wrong(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "wrong_id")
-        var wrongId: Long,
+        var wrongId: Long = -1,
 
 //        @ManyToOne
         @JoinColumn(name = "user_internal_id")
