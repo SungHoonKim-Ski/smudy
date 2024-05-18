@@ -61,6 +61,9 @@ class PronounceResultFragment : BaseFragment<FragmentPronounceResultBinding>(
             tvAlbumTitle.text = music.title
             tvAlbumSinger.text = music.artist
             Glide.with(_activity).load(music.jacket).into(ivAlbumJacket)
+            if (isHistory){
+                btnNavigatePractice.visibility = View.GONE
+            }
         }
     }
 

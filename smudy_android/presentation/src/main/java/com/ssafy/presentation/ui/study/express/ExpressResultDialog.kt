@@ -44,15 +44,17 @@ class ExpressResultDialog(
     }
 
     private fun initView() {
+        isCancelable = false
         with(binding) {
+            btnNext.text = if (count==4) "완료" else "다음"
             tvRecommendedEnglish.text = expressResult.suggestedSentenceEn
             tvRecommendedKorean.text = expressResult.suggestedSentenceKo
             tvAnswerEnglish.text = expressResult.userAnswerSentenceEn
             tvAnswerKorean.text = expressResult.userAnswerSentenceKo
             tvAlbumTitle.text = music.title
             tvAlbumSinger.text = music.artist
-            tvProgress.text = (count + 1).toString()
-            tvScore.text = expressResult.score.toString()
+            tvProgress.text = "${count + 1}"
+            tvScore.text = "${expressResult.score} 점"
             Glide.with(context).load(music.jacket).into(ivAlbumJacket)
         }
     }

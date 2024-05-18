@@ -3,7 +3,9 @@ package com.ssafy.presentation.ui.study.express
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -121,6 +123,17 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
                 showLoading()
                 val answer = etAnswerSentence.text.toString()
                 viewModel.checkExpressProblem(answer)
+                etAnswerSentence.clearFocus()
+            }
+            etAnswerSentence.setOnEditorActionListener { v, actionId, event ->
+                Log.e("TAG", "initEvent: $actionId")
+                if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
+                    hideKeyboard()
+                    etAnswerSentence.clearFocus()
+                    true
+                } else {
+                    false
+                }
             }
         }
     }
