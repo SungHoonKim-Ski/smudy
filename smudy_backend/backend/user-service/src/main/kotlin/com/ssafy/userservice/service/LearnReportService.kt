@@ -273,7 +273,7 @@ class LearnReportService (
         return true
     }
 
-    fun getUserTop4History(userInternalId: UUID) : List<LearnReport> {
+    fun getUserTop4History(userInternalId: UUID) : List<String> {
         return learnReportRepository.findTop4ByUserInternalId(userInternalId)
     }
 

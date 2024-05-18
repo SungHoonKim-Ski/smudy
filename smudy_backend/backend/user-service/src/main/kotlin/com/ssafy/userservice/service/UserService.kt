@@ -36,9 +36,7 @@ class UserService(
         logger.info { "user : $user" }
         logger.info { "UUID : $userInternalId" }
 
-        val userLeanReportSongIds = learnReportService
-                .getUserTop4History(user.userInternalId)
-                .map { learnReport -> learnReport.songId }
+        val userLeanReportSongIds = learnReportService.getUserTop4History(user.userInternalId)
 
         logger.info { "userLeanReportSongIds : $userLeanReportSongIds" }
 
