@@ -196,6 +196,10 @@ class FillFragment(
                         if (it is ApiResult.Success) {
                             val data = (songResult.value as ApiResult.Success).data
 
+                            val blankNum = it.data.result.count {
+                                res-> res.originWord.isBlank()
+                            }
+
                             findNavController().navigate(
                                 FillFragmentDirections.actionFillFragmentToFillResultFragment(
                                     ParcelableSubmitResult(
@@ -204,7 +208,7 @@ class FillFragment(
                                         data.albumJacket,
                                         ParcelableSubmitFillBlankData(
                                             it.data.totalSize,
-                                            it.data.score,
+                                            it.data.score - blankNum,
                                             it.data.result.map { res ->
                                                 ParcelableSubmitBlankResult(
                                                     res.lyricBlank,

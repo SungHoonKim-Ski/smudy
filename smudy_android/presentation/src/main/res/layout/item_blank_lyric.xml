@@ -19,17 +19,5 @@
         android:includeFontPadding="false"
         android:visibility="visible"/>
 
-    <EditText
-        android:id="@+id/et_lyric"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:text="test"
-        android:textAppearance="@style/Noto_Sans.TEXT.B.16"
-        android:textColor="@color/light_gray"
-        android:background="@android:color/transparent"
-        android:gravity="center"
-        android:layout_marginVertical="@dimen/margin_small"
-        android:visibility="gone"
-        />
 
 </LinearLayout>

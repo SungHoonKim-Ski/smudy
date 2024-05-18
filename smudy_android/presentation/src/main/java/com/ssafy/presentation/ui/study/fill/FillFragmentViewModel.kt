@@ -66,14 +66,7 @@ class FillFragmentViewModel @Inject constructor(
         this.songId = songId
     }
 
-    fun submitAnswer(){
-        viewModelScope.launch {
-            submitFillBlankUseCase(songId, _blankQuestionList.map{ it.inputAnswer }).collect{
-                _submitResult.emit(it)
-            }
-        }
 
-    }
 
     fun getQuestionInput(idx: Int) = _blankQuestionList[idx].inputAnswer
 
@@ -131,6 +124,15 @@ class FillFragmentViewModel @Inject constructor(
                 _songResult.emit(it)
             }
         }
+    }
+
+    fun submitAnswer(){
+        viewModelScope.launch {
+            submitFillBlankUseCase(songId, _blankQuestionList.map{ it.inputAnswer }).collect{
+                _submitResult.emit(it)
+            }
+        }
+
     }
 
 }

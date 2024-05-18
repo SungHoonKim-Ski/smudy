@@ -31,31 +31,6 @@ class BlankLyricAdapter : BaseAdapter<BlankQuestion>() {
         private val adapter: BlankLyricAdapter
     ) : BaseHolder<BlankQuestion>(binding) {
 
-        //        private fun getSpannable(
-//            context: Context,
-//            origin: String,
-//            start: Int,
-//            end: Int,
-//            @ColorRes colorRes: Int,
-//            tmpTarget: EditText
-//        ) = SpannableString(origin).apply {
-//            val inputMethodManager =
-//                context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//            setSpan(object : ClickableSpan() {
-//                override fun updateDrawState(textPaint: TextPaint) {
-//                    textPaint.color = context.getColor(colorRes)
-//                    textPaint.isUnderlineText = true
-//                }
-//
-//                override fun onClick(widget: View) {
-//                    tmpTarget.requestFocus()
-//                    inputMethodManager.showSoftInput(
-//                        tmpTarget,
-//                        InputMethodManager.SHOW_IMPLICIT
-//                    )
-//                }
-//            }, start, end + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-//        }
         override fun bindInfo(data: BlankQuestion) {
 
 //            if(data.lyricBlankAnswer.isBlank()){
@@ -76,8 +51,15 @@ class BlankLyricAdapter : BaseAdapter<BlankQuestion>() {
 
 
                 val colorRes =
-                    if (layoutPosition == adapter.curPosition) R.color.black else R.color.light_gray
+                    if (layoutPosition == adapter.curPosition) R.color.white else R.color.black
+
+                val backgroundColorRes =
+                    if (layoutPosition == adapter.curPosition) R.color.fill_selected else R.color.white
+
                 tvLyricHeader.setTextColor(root.context.getColor(colorRes))
+
+
+                root.setBackgroundColor(root.context.getColor(backgroundColorRes))
                 val content = data.toQuestion()
 
                 if (data.blankStart != -1) {
@@ -92,7 +74,6 @@ class BlankLyricAdapter : BaseAdapter<BlankQuestion>() {
                         tvLyricHeader.text = spannable
                     } catch (e: Exception) {
                         Log.d(TAG, "bindInfo: $e")
-                        Log.d(TAG, "exc: ${etLyric.text}")
                     }
                 }else if(data.lyricBlank.isNotEmpty()) {
                     tvLyricHeader.text = data.lyricBlank

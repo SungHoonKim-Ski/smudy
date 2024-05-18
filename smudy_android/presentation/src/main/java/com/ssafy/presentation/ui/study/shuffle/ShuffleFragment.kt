@@ -139,8 +139,8 @@ class ShuffleFragment : BaseFragment<FragmentShuffleBinding>(
                     Log.d(TAG, "initView: ${curIdx.value!! + 1}")
                     setCurIdx(curIdx.value!! + 1)
                 }
-                btnPrv.setOnClickListener { setCurIdx(curIdx.value!! - 1) }
-                btnConfirm.setOnClickListener { submitShuffle(songId!!) }
+//                btnPrv.setOnClickListener { setCurIdx(curIdx.value!! - 1) }
+                btnConfirm.setOnClickListener { submitShuffle(songId) }
             }
         }
 
@@ -204,16 +204,18 @@ class ShuffleFragment : BaseFragment<FragmentShuffleBinding>(
                     binding.tvLyricKr.text = koreanList[it]
                     selectedAdapter.submitList(selectedList[it])
                     if (it >= 4) {
-                        binding.btnNxt.isEnabled = false
-                        binding.btnConfirm.isEnabled = true
+//                        binding.btnNxt.isEnabled = false
+                        binding.btnNxt.visibility = View.GONE
+                        binding.btnConfirm.visibility = View.VISIBLE
                     } else {
-                        binding.btnConfirm.isEnabled = false
-                        if (it <= 0) {
-                            binding.btnPrv.isEnabled = false
-                        } else {
-                            binding.btnNxt.isEnabled = true
-                            binding.btnPrv.isEnabled = true
-                        }
+                        binding.btnNxt.visibility = View.VISIBLE
+                        binding.btnConfirm.visibility = View.GONE
+//                        if (it <= 0) {
+//                            binding.btnPrv.isEnabled = false
+//                        } else {
+//                            binding.btnNxt.isEnabled = true
+//                            binding.btnPrv.isEnabled = true
+//                        }
                     }
                 }
 

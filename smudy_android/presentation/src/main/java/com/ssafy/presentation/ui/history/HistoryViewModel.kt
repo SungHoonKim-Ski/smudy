@@ -135,10 +135,13 @@ class HistoryViewModel @Inject constructor(
             getFillStudyHistoryUseCase(learnReportId.toString()).collect {
                 when (it) {
                     is ApiResult.Success -> {
+                        val blankNum = it.data.result.count{
+                            res-> res.originWord.isBlank()
+                        }
                         _parcelableSubmitResult = ParcelableSubmitResult(title, artist, jacket,
                             ParcelableSubmitFillBlankData(
                                 it.data.totalSize,
-                                it.data.score,
+                                it.data.score - blankNum,
                                 it.data.result.map { res ->
                                     ParcelableSubmitBlankResult(
                                         res.lyricBlank,

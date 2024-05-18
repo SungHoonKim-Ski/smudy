@@ -26,6 +26,8 @@
     <color name="dark_red">#FFDB2B42</color>
     <color name="result_blue">#FF0066FF</color>
 
+    <color name="fill_selected">#5736454F</color>
+
     <color name="correct_answer_box_yellow">#FFFFFDF6</color>
     <color name="incorrect_answer_box_red">#FFFFF6F6</color>
 
