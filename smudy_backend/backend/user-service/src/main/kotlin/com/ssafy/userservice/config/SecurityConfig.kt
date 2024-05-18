@@ -32,9 +32,6 @@ class SecurityConfig(
                 authorize("/api/user/recommend", authenticated)
 
                 authorize("/api/user/feign/**", permitAll)
-
-                authorize("/v3/api-docs/**", permitAll)
-                authorize("/swagger-ui/**",  permitAll)
             }
 
             sessionManagement {

@@ -60,8 +60,6 @@ dependencies {
 	implementation("org.springframework.ai:spring-ai-pgvector-store-spring-boot-starter")
 	implementation("org.springframework.ai:spring-ai-openai-spring-boot-starter")
 
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
-
 	// https://mvnrepository.com/artifact/junit/junit
 	testImplementation("junit:junit:4.13.1")
 
