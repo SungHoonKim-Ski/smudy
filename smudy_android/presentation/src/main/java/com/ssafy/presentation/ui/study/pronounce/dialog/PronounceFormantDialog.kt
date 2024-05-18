@@ -13,6 +13,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.ssafy.presentation.R
+import com.ssafy.presentation.databinding.DialogPronounceFormantBinding
 import com.ssafy.presentation.databinding.DialogPronouncePitchBinding
 import com.ssafy.presentation.model.pronounce.FormantsAvg
 
@@ -21,7 +22,7 @@ class PronounceFormantDialog(
     private val userFormantData: FormantsAvg,
     private val context: Context
 ) : DialogFragment() {
-    private var _binding: DialogPronouncePitchBinding? = null
+    private var _binding: DialogPronounceFormantBinding? = null
     private val binding get() = _binding!!
     private val ttsLineDataSet: LineDataSet by lazy {
         makeLineDataSet(R.color.tts_graph, makeDataSet(ttsFormantData), "Smudy")
@@ -43,7 +44,7 @@ class PronounceFormantDialog(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DialogPronouncePitchBinding.inflate(inflater, container, false)
+        _binding = DialogPronounceFormantBinding.inflate(inflater, container, false)
         return binding.root
     }
 

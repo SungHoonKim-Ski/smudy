@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/pronounce_result_menu_intensity"
+        android:background="@color/pronounce_result_menu_formant"
         android:orientation="vertical">
 
         <ImageView
@@ -22,21 +22,21 @@
             android:layout_height="120dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:src="@drawable/ic_pronounce_result_intensity" />
+            android:src="@drawable/ic_pronounce_result_formant" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingVertical="0dp"
-            android:text="Intensity"
+            android:text="Formant"
             android:textAppearance="@style/Jalnan.TEXT.R.20" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Intensity는 소리의 세기를 나타내며, 데시벨(dB)에 따라 결정됩니다. 강세가 있는 음절은 일반적으로 더 큰 Intensity로 발음되며 문장 내에서 중요한 음절을 나타냅니다. 또한 Intensity의 올바른 조절은 발음의 명료성과 이해도를 높입니다."
+            android:text="영어 발음에서 Formant는 모음의 고유한 공명 주파수를 나타냅니다. 주로 F1과 F2로 구성하며 모음의 특성을 결정짓는 중요한 인자입니다. F1은 모음의 개방도(입의 벌어짐)를 나타내며 높을수록 더 개방된 발음입니다. F2는 입의 앞쪽이나 뒤쪽에서 발음되는 위치를 나타내며 높을수록 앞 모음입니다."
             android:textAppearance="@style/Noto_Sans.TEXT.R.11" />
 
         <TextView
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingTop="0dp"
-            android:text="소리의 세기는 개인에 따라 차이가 있으니 세기의 정도 보다는 원어민과 학습자님 각각의 Intensity 변화를 비교하며 연습해보세요!"
+            android:text="원어민과 학습자님의 평균 포만트를 비교하며 연습해보세요! "
             android:textAppearance="@style/Noto_Sans.TEXT.B.11" />
     </LinearLayout>
 

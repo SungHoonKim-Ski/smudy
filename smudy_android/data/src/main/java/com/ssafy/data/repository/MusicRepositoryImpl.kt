@@ -34,9 +34,7 @@ class MusicRepositoryImpl @Inject constructor(
             val data = response.getOrNull()
             if (data != null) {
                 emit(
-                    ApiResult.Success(data.data!!.songNames.map {
-                        it.songName
-                    })
+                    ApiResult.Success(data.data!!.songNames.toSet().toList().map { it.songName })
                 )
             } else {
                 val exception = response.exceptionOrNull()

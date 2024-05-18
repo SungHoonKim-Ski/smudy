@@ -54,6 +54,9 @@
         <action
             android:id="@+id/action_historyFragment_to_expressResultFragment"
             app:destination="@id/expressResultFragment" />
+        <action
+            android:id="@+id/action_historyFragment_to_pronounceResultFragment"
+            app:destination="@id/pronounceResultFragment" />
     </fragment>
     <fragment
         android:id="@+id/musicSearchFragment"
@@ -104,17 +107,16 @@
                 android:id="@+id/action_pronouncePracticeFragment_to_pronounceResultFragment"
                 app:destination="@id/pronounceResultFragment" />
         </fragment>
-        <fragment
-            android:id="@+id/pronounceResultFragment"
-            android:name="com.ssafy.presentation.ui.study.pronounce.PronounceResultFragment"
-            android:label="fragment_pronounce_result"
-            tools:layout="@layout/fragment_pronounce_result" >
-            <action
-                android:id="@+id/action_pronounceResultFragment_to_pronouncePracticeFragment"
-                app:destination="@id/pronouncePracticeFragment" />
-        </fragment>
-        <action android:id="@+id/action_global_pronounceResultFragment" app:destination="@id/pronounceResultFragment"/>
     </navigation>
+    <fragment
+        android:id="@+id/pronounceResultFragment"
+        android:name="com.ssafy.presentation.ui.study.pronounce.PronounceResultFragment"
+        android:label="fragment_pronounce_result"
+        tools:layout="@layout/fragment_pronounce_result" >
+        <action
+            android:id="@+id/action_pronounceResultFragment_to_pronouncePracticeFragment"
+            app:destination="@id/pronouncePracticeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/fillResultFragment"
         android:name="com.ssafy.presentation.ui.study.fill.FillResultFragment"

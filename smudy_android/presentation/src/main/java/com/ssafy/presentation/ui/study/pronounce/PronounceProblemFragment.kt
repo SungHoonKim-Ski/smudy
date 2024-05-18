@@ -80,6 +80,11 @@ class PronounceProblemFragment : BaseFragment<FragmentPronounceProblemBinding>(
                 }
             )
         }
+        with(binding){
+            btnComplete.setOnClickListener {
+                findNavController().popBackStack()
+            }
+        }
     }
 
     override fun onDestroyView() {

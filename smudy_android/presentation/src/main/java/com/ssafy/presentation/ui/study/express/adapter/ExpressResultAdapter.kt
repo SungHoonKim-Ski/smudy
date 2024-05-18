@@ -18,7 +18,7 @@ class ExpressResultAdapter : BaseAdapter<ExpressResult>() {
                 tvAnswerEnglish.text = data.userAnswerSentenceEn
                 tvAnswerKorean.text = data.userAnswerSentenceKo
                 tvReportTitle.text = "#${layoutPosition + 1}: "
-                tvReportScore.text = data.score.toString()
+                tvReportScore.text = "${data.score} 점"
             }
 
         }
