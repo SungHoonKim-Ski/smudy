@@ -24,7 +24,7 @@ class SongService(
                     songId = song.spotifyId,
                     songArtist = song.songArtist,
                     songDuration = song.songDuration,
-                    songName = song.albumName,
+                    songName = song.songName,
                     albumJacket = song.albumJacket,
                     lyricEnd = song.songDuration,
                     lyricsBlank = song.songLyrics.map { lyric ->
@@ -45,7 +45,7 @@ class SongService(
         return songRepository.findBySpotifyId(songId)?.let { song ->
             SongSimple(
                     songArtist = song.songArtist,
-                    songName = song.albumName,
+                    songName = song.songName,
                     albumJacket = song.albumJacket,
                     spotifyId = song.spotifyId
             )
@@ -57,7 +57,7 @@ class SongService(
         return songRepository.findBySpotifyId(songId)?.let { song ->
             SongSimple(
                     songArtist = song.songArtist,
-                    songName = song.albumName,
+                    songName = song.songName,
                     albumJacket = song.albumJacket,
                     spotifyId = song.spotifyId
             )
@@ -70,7 +70,7 @@ class SongService(
             PronounceResponse(
                     songId = song.spotifyId,
                     songArtist = song.songArtist,
-                    songName = song.albumName,
+                    songName = song.songName,
                     albumJacket = song.albumJacket,
                     lyrics = song.songLyrics.map { Lyric(it.lyricSentenceEn) }
             )
