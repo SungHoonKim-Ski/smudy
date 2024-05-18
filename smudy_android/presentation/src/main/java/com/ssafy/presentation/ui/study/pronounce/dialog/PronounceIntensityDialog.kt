@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -34,6 +35,10 @@ class PronounceIntensityDialog(
         makeLineDataSet(R.color.user_graph,makeDataSet(userIntensityData),"user")
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.RoundedDialog)
+    }
     override fun onStart() {
         super.onStart()
         dialog?.window?.apply {
@@ -115,7 +120,11 @@ class PronounceIntensityDialog(
             xAxis.setDrawAxisLine(false)
 
             lcPitchChart.isDragEnabled = true
+            lcPitchChart.zoom(3f, 1f, 0f, 0f, YAxis.AxisDependency.LEFT)
+            lcPitchChart.setPinchZoom(false)
+            lcPitchChart.isScaleYEnabled = false
             lcPitchChart.description.isEnabled = false
+            lcPitchChart.setScaleEnabled(true)
             lcPitchChart.data = LineData(ttsLineDataSet, userLineDataSet)
             lcPitchChart.invalidate()
         }

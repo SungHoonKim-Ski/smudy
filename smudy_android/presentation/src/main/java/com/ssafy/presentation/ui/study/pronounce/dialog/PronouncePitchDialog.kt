@@ -12,6 +12,7 @@ import androidx.fragment.app.DialogFragment
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -36,6 +37,10 @@ class PronouncePitchDialog(
         makeLineDataSet(R.color.user_graph, makeDataSet(userPitchData), "user")
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.RoundedDialog)
+    }
     override fun onStart() {
         super.onStart()
         dialog?.window?.apply {
@@ -80,7 +85,7 @@ class PronouncePitchDialog(
             xAxis.position = XAxis.XAxisPosition.BOTTOM
 
             // X축 레이블을 강제로 설정
-            xAxis.granularity = 0.00000001f // 최소 간격을 1로 설정
+            xAxis.granularity = 1f // 최소 간격을 1로 설정
             xAxis.isGranularityEnabled = true // 간격을 강제 적용
 
             xAxis.apply {
@@ -118,7 +123,11 @@ class PronouncePitchDialog(
             xAxis.setDrawAxisLine(false)
 
             lcPitchChart.isDragEnabled = true
+            lcPitchChart.zoom(3f, 1f, 0f, 0f, YAxis.AxisDependency.LEFT)
+            lcPitchChart.setPinchZoom(false)
+            lcPitchChart.isScaleYEnabled = false
             lcPitchChart.description.isEnabled = false
+            lcPitchChart.setScaleEnabled(true)
             lcPitchChart.data = LineData(ttsLineDataSet, userLineDataSet)
             lcPitchChart.invalidate()
         }

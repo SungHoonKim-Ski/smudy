@@ -20,4 +20,11 @@
     <style name="CustomItemActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@android:color/transparent</item>
     </style>
+
+    <style name="Theme.SplashScreen.Smudy" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- 스플래시 화면 배경색 -->
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <!-- 스플래시 이후의 기본 테마 -->
+        <item name="postSplashScreenTheme">@style/Theme.Smudy</item>
+    </style>
 </resources>

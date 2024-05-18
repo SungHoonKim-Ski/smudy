@@ -15,6 +15,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+            android:layout_marginTop="@dimen/text_gap"
+            android:layout_marginEnd="@dimen/fragment_padding"
             android:src="@drawable/ic_dialog_close" />
 
         <ImageView
@@ -36,6 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_marginHorizontal="@dimen/text_gap"
             android:text="Intensity는 소리의 세기를 나타내며, 데시벨(dB)에 따라 결정됩니다. 강세가 있는 음절은 일반적으로 더 큰 Intensity로 발음되며 문장 내에서 중요한 음절을 나타냅니다. 또한 Intensity의 올바른 조절은 발음의 명료성과 이해도를 높입니다."
             android:textAppearance="@style/Noto_Sans.TEXT.R.11" />
 
@@ -44,6 +47,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingTop="0dp"
+            android:layout_marginHorizontal="@dimen/text_gap"
             android:text="소리의 세기는 개인에 따라 차이가 있으니 세기의 정도 보다는 원어민과 학습자님 각각의 Intensity 변화를 비교하며 연습해보세요!"
             android:textAppearance="@style/Noto_Sans.TEXT.B.11" />
     </LinearLayout>
@@ -51,5 +55,6 @@
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lc_pitch_chart"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="300dp"
+        android:layout_marginBottom="@dimen/fragment_padding"/>
 </LinearLayout>

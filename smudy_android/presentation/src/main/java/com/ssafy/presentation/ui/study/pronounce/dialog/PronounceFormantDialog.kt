@@ -31,6 +31,10 @@ class PronounceFormantDialog(
         makeLineDataSet(R.color.user_graph, makeDataSet(userFormantData), "user")
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.RoundedDialog)
+    }
     override fun onStart() {
         super.onStart()
         dialog?.window?.apply {

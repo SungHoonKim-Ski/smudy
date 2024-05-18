@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -122,8 +123,12 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
             btnConfirm.setOnClickListener {
                 showLoading()
                 val answer = etAnswerSentence.text.toString()
-                viewModel.checkExpressProblem(answer)
-                etAnswerSentence.clearFocus()
+                if (answer.isNotBlank()){
+                    viewModel.checkExpressProblem(answer)
+                    etAnswerSentence.clearFocus()
+                } else {
+                    Toast.makeText(_activity,"답변을 입력해주세요.",Toast.LENGTH_SHORT).show()
+                }
             }
             etAnswerSentence.setOnEditorActionListener { v, actionId, event ->
                 Log.e("TAG", "initEvent: $actionId")
@@ -140,7 +145,7 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
 
     private fun showExitConfirmationDialog() {
         val dialog = AlertDialog.Builder(requireContext())
-            .setTitle("표현 문제 풀이를 종료 하시겠습니까?")
+            .setTitle("표현 문제 풀이를 중단 하시겠습니까?")
             .setPositiveButton("종료") { dialog, _ ->
                 dialog.dismiss()
                 // Handle the positive button click, e.g., exit the fragment
