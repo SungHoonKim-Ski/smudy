@@ -26,30 +26,6 @@ class UserService(
 ) {
 
     private val logger = KotlinLogging.logger{ }
-    @Transactional
-    fun signup(signUpRequest: SignUpRequest) : String{
-
-        userRepository.findByUserSnsId(signUpRequest.userSnsId) ?: return ""
-
-        val saveUser = userRepository
-                .save(
-                    User(
-                            userId = -1,
-                            userExp = 0,
-                            userName = signUpRequest.userSnsName,
-                            userImage = signUpRequest.userImage,
-                            userInternalId = UUID.randomUUID(),
-                            userSnsId = signUpRequest.userSnsId,
-                            createdAt = Date()
-                    )
-                )
-
-        saveUser.userId
-
-        if (saveUser.userId == -1) return ""
-
-        return saveUser.userInternalId.toString()
-    }
 
     @Transactional
     fun getUserInfo(userInternalId: UUID) : InfoResponse {

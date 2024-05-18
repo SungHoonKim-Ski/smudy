@@ -38,8 +38,4 @@ class FeignController (
         return songService.getPronounceQuiz(songId)
     }
 
-    @PostMapping("/signup")
-    fun signup(@RequestBody request: SignUpRequest) : String {
-        return userService.signup(request)
-    }
 }
