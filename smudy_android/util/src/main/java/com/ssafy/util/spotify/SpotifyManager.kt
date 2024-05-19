@@ -17,6 +17,16 @@ private const val TAG = "SpotifyManager"
 
 class SpotifyManager(private val context: Context) {
 
+    interface AppRemoteCallbackListener{
+        fun onAppRemoteInitialized()
+    }
+
+    private lateinit var appRemoteListener: AppRemoteCallbackListener
+
+    fun setAppRemoteCallbackListener(listener: AppRemoteCallbackListener){
+        appRemoteListener = listener
+    }
+
     private lateinit var builder: AuthorizationRequest.Builder
     private lateinit var spotifyAppRemote: SpotifyAppRemote
     private val clientID = "b1d80c49997b4f65899ab92be706e24e"
@@ -58,6 +68,8 @@ class SpotifyManager(private val context: Context) {
         }
     }
 
+
+
     private fun apiConnect() {
         val connectionParams = ConnectionParams.Builder(clientID)
             .setRedirectUri(redirectUri)
@@ -67,6 +79,7 @@ class SpotifyManager(private val context: Context) {
         SpotifyAppRemote.connect(context, connectionParams, object : Connector.ConnectionListener {
             override fun onConnected(appRemote: SpotifyAppRemote) {
                 spotifyAppRemote = appRemote
+                appRemoteListener.onAppRemoteInitialized()
 //                connected()
             }
 

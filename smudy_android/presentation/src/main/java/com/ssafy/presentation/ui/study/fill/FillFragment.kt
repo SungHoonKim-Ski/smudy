@@ -1,9 +1,11 @@
 package com.ssafy.presentation.ui.study.fill
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -48,9 +50,29 @@ class FillFragment(
 
     private lateinit var songId: String
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showExitConfirmationDialog("빈칸 넣기를 종료 하시겠습니까?")
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        backPressedCallback.remove()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        spotifyManager.setAppRemoteCallbackListener(object: SpotifyManager.AppRemoteCallbackListener{
+            override fun onAppRemoteInitialized() {
+                hideLoading()
+            }
+        })
+        showLoading()
         spotifyManager.spotifyAuthenticate(requireActivity())
         registerObserve()
         initView()
@@ -247,7 +269,6 @@ class FillFragment(
     }
 
     override fun onPause() {
-        Log.d(TAG, "onPause: pause")
         stopPlayer()
         super.onPause()
     }

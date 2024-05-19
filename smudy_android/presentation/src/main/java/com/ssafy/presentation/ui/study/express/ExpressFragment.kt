@@ -21,12 +21,11 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
     { FragmentExpressBinding.bind(it) }, R.layout.fragment_express
 ) {
     private val viewModel: ExpressViewModel by viewModels()
-    private lateinit var backPressedCallback: OnBackPressedCallback
     override fun onAttach(context: Context) {
         super.onAttach(context)
         backPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                showExitConfirmationDialog()
+                showExitConfirmationDialog("표현 문제 풀이를 종료 하시겠습니까?")
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
@@ -125,22 +124,4 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
         }
     }
 
-    private fun showExitConfirmationDialog() {
-        val dialog = AlertDialog.Builder(requireContext())
-            .setTitle("표현 문제 풀이를 종료 하시겠습니까?")
-            .setPositiveButton("종료") { dialog, _ ->
-                dialog.dismiss()
-                // Handle the positive button click, e.g., exit the fragment
-                findNavController().popBackStack()
-            }
-            .setNegativeButton("취소") { dialog, _ ->
-                dialog.dismiss()
-                // Handle the negative button click, e.g., do nothing
-            }.create()
-        dialog.setOnShowListener {
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                .setTextColor(resources.getColor(R.color.dark_red))
-        }
-        dialog.show()
-    }
 }

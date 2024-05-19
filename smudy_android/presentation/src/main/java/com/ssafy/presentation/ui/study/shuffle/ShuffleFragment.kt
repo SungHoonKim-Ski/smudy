@@ -1,12 +1,14 @@
 package com.ssafy.presentation.ui.study.shuffle
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -41,6 +43,21 @@ class ShuffleFragment : BaseFragment<FragmentShuffleBinding>(
     private val selectedAdapter = ShuffleAdapter()
     private val candidAdapter = ShuffleAdapter()
     private lateinit var songId: String
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showExitConfirmationDialog("문장 순서 맞추기를 종료 하시겠습니까?")
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        backPressedCallback.remove()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

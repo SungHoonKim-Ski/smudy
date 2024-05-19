@@ -9,11 +9,7 @@
         android:id="@+id/mainFragment"
         android:name="com.ssafy.presentation.ui.main.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" >
-        <action
-            android:id="@+id/action_mainFragment_to_shuffleFragment"
-            app:destination="@id/shuffleFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_main" />
     <fragment
         android:id="@+id/studyFragment"
         android:name="com.ssafy.presentation.ui.study.StudyFragment"
