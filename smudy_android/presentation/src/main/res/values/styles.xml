@@ -191,11 +191,9 @@
         <item name="android:textAppearance">@style/Jalnan.TEXT.R.16</item>
         <item name="android:textColor">@color/white</item>
     </style>
-
-    <style name="Theme.SplashScreen.Smudy" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- 스플래시 화면 배경색 -->
-        <item name="windowSplashScreenBackground">@color/white</item>
-        <!-- 스플래시 이후의 기본 테마 -->
-        <item name="postSplashScreenTheme">@style/Theme.Smudy</item>
+    <style name="RoundedDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@drawable/dialog_shape_radius</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 </resources>

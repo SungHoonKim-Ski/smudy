@@ -39,9 +39,12 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
     private lateinit var tts: TextToSpeech
     private val parentViewModel: PronounceProblemViewModel by hiltNavGraphViewModels(R.id.nav_pronounce)
     private var recorder: MediaRecorder? = null
-    private var player: MediaPlayer? = null
+    private var ttsPlayer: MediaPlayer? = null
+    private var userPlayer: MediaPlayer? = null
     private lateinit var file: File
     private lateinit var ttsFile: File
+    private var isTtsPlaying = false
+    private var isUserPlaying = false
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -89,14 +92,34 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
                 changeVisibility()
             }
             ivUserProfile.setOnClickListener {
-                startPlaying()
+                if (::file.isInitialized) {
+                    isUserPlaying = if (isUserPlaying) {
+                        stopPlaying()
+                        false
+                    } else {
+                        startPlaying()
+                        true
+                    }
+                }
             }
             lvTtsSmudy.setOnClickListener {
-                startTtsPlaying()
+                isTtsPlaying = if (isTtsPlaying) {
+                    stopTtsPlaying()
+                    false
+                } else {
+                    startTtsPlaying()
+                    true
+                }
             }
             btnGradePronounce.setOnClickListener {
                 showLoading()
                 parentViewModel.gradePronounceProblem(file, ttsFile)
+            }
+            btnResetRecord.setOnClickListener {
+                if (::file.isInitialized) {
+                    startTtsPlaying()
+                    startPlaying()
+                }
             }
         }
     }
@@ -127,40 +150,44 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
     }
 
     private fun startPlaying() {
-        player = MediaPlayer()
+        userPlayer = MediaPlayer()
             .apply {
                 setDataSource(file.absolutePath)
                 prepare()
             }
-        player?.setOnCompletionListener {
+        userPlayer?.setOnCompletionListener {
             stopPlaying()
+            isUserPlaying = false
         }
-        player?.start()
+        userPlayer?.start()
         binding.dvRecordDrawing.startVisualizing(true)
     }
 
     private fun stopPlaying() {
-        player?.release()
-        player = null
+        userPlayer?.stop()
         binding.dvRecordDrawing.stopVisualizing()
+        userPlayer?.release()
+        userPlayer = null
     }
 
     private fun startTtsPlaying() {
-        player = MediaPlayer()
+        ttsPlayer = MediaPlayer()
             .apply {
                 setDataSource(ttsFile.absolutePath)
                 prepare()
             }
-        player?.setOnCompletionListener {
+        ttsPlayer?.setOnCompletionListener {
             stopTtsPlaying()
+            isTtsPlaying = false
         }
-        player?.start()
+        ttsPlayer?.start()
         binding.dvTtsDrawing.startVisualizing(true)
     }
 
     private fun stopTtsPlaying() {
-        player?.release()
-        player = null
+        ttsPlayer?.stop()
+        ttsPlayer?.release()
+        ttsPlayer = null
         binding.dvTtsDrawing.stopVisualizing()
     }
 

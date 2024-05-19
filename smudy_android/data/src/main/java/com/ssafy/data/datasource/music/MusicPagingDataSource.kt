@@ -29,9 +29,9 @@ class MusicPagingDataSource(
             val musicList =
                 if (response.isSuccessful) {
                     if (response.body()?.data is MusicListResponse){
-                        (response.body()?.data as MusicListResponse).toStudy()
+                        (response.body()?.data as MusicListResponse).toStudy().distinctBy { Pair(it.songName,it.songArtist) }
                     } else {
-                        (response.body()?.data as StudyListResponse).toStudy()
+                        (response.body()?.data as StudyListResponse).toStudy().distinctBy { Pair(it.songName,it.songArtist) }
                     }
                 } else emptyList()
             if (musicList.isNotEmpty()) {

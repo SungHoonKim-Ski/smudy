@@ -2,12 +2,14 @@ package com.ssafy.presentation.ui.study.fill
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseFragment
 import com.ssafy.presentation.databinding.FragmentFillResultBinding
+import com.ssafy.presentation.ui.MainActivityViewModel
 import com.ssafy.presentation.ui.study.adapter.BlankResultAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,6 +19,8 @@ class FillResultFragment(
     { FragmentFillResultBinding.bind(it) }, R.layout.fragment_fill_result
 ) {
 
+    private val mainActivityViewModel: MainActivityViewModel by activityViewModels()
+
     private val resultAdapter = BlankResultAdapter()
     private val args: FillResultFragmentArgs by navArgs()
 
@@ -24,6 +28,16 @@ class FillResultFragment(
         super.onViewCreated(view, savedInstanceState)
         initView()
         initEvent()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mainActivityViewModel.setIsNavigationBarVisible(false)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mainActivityViewModel.setIsNavigationBarVisible(true)
     }
 
     private fun initView(){

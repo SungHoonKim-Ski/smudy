@@ -33,10 +33,7 @@ import javax.inject.Inject
 private const val TAG = "FillFragment"
 
 @AndroidEntryPoint
-class FillFragment(
-//    private val songId: String = "1EzrEOXmMH3G43AXT1y7pA",
-
-    ) : BaseFragment<FragmentFillBinding>(
+class FillFragment: BaseFragment<FragmentFillBinding>(
     { FragmentFillBinding.bind(it) }, R.layout.fragment_fill
 ) {
 
@@ -76,6 +73,16 @@ class FillFragment(
         spotifyManager.spotifyAuthenticate(requireActivity())
         registerObserve()
         initView()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mainActivityViewModel.setIsNavigationBarVisible(false)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mainActivityViewModel.setIsNavigationBarVisible(true)
     }
 
     private fun initView() {

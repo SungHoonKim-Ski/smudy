@@ -19,4 +19,11 @@ class MainActivityViewModel @Inject constructor(): ViewModel(
     fun setResult(requestCode: Int, resultCode: Int, data: Intent?){
         _spotifyActivityResult.postValue(Triple(requestCode, resultCode, data))
     }
+
+    private val _isNavigationBarVisible = MutableLiveData(true)
+    val isNavigationBarVisible: LiveData<Boolean> get() = _isNavigationBarVisible
+
+    fun setIsNavigationBarVisible(isNavigationBarVisible: Boolean) {
+        _isNavigationBarVisible.postValue(isNavigationBarVisible)
+    }
 }

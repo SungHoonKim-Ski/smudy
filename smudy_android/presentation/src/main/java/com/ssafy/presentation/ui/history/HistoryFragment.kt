@@ -175,7 +175,7 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(
                                 putParcelable("song", historyViewModel.getSelectedMusicInfo())
                                 putBoolean("IsHistory",true)
                             }
-                            findNavController().navigate(R.id.action_global_pronounceResultFragment, bundle)
+                            findNavController().navigate(R.id.action_historyFragment_to_pronounceResultFragment, bundle)
                         }
                     }
                 }

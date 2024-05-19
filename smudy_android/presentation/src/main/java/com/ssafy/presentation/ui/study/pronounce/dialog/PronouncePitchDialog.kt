@@ -12,6 +12,7 @@ import androidx.fragment.app.DialogFragment
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -36,6 +37,10 @@ class PronouncePitchDialog(
         makeLineDataSet(R.color.user_graph, makeDataSet(userPitchData), "user")
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.RoundedDialog)
+    }
     override fun onStart() {
         super.onStart()
         dialog?.window?.apply {
@@ -80,50 +85,49 @@ class PronouncePitchDialog(
             xAxis.position = XAxis.XAxisPosition.BOTTOM
 
             // X축 레이블을 강제로 설정
-            xAxis.granularity = 0.00000001f // 최소 간격을 1로 설정
+            xAxis.granularity = 1f // 최소 간격을 1로 설정
             xAxis.isGranularityEnabled = true // 간격을 강제 적용
-
-            // X축 레이블 포맷터 설정
-            xAxis.valueFormatter = object : ValueFormatter() {
-                override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-                    return ""
-                }
-            }
 
             xAxis.apply {
                 wordData.map {
-                    Log.e("TAG", "initView: ${it.word}")
                     addLimitLine(
                         LimitLine(it.startTime.toFloat(),"").apply {
                             lineWidth = 1f
-                            enableDashedLine(10f,1f,0f)
+                            enableDashedLine(10f,10f,0f)
+                            lineColor = ContextCompat.getColor(context, R.color.calender_selected_gray)
                         }
                     )
                     addLimitLine(
-                        LimitLine(it.startTime.toFloat(),it.word).apply {
-                            lineWidth = -1f
-                            labelPosition = LimitLine.LimitLabelPosition.RIGHT_BOTTOM
+                        LimitLine(((it.endTime + it.startTime)/2).toFloat(),it.word).apply {
+                            lineColor = Color.TRANSPARENT
+                            lineWidth = 0f
+                            labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
                             textSize = 13f
-                            enableDashedLine(10f,1f,0f)
                         }
                     )
                     addLimitLine(
-                        LimitLine(it.startTime.toFloat(),"").apply {
+                        LimitLine(it.endTime.toFloat(),"").apply {
                             lineWidth = 1f
-                            enableDashedLine(10f,1f,0f)
+                            enableDashedLine(10f,10f,0f)
+                            lineColor = ContextCompat.getColor(context, R.color.calender_selected_gray)
                         }
                     )
                 }
             }
             xAxis.setLabelCount(wordData.size, true) // 레이블 수를 강제 설정
+            val maxUserTime = wordData.last().endTime.toFloat()
+            xAxis.axisMaximum = maxUserTime + 0.1f
 
             xAxis.setDrawGridLines(false) // 격자선을 그리지 않음
             xAxis.setDrawLabels(false)
-            xAxis.textSize = 12f
-            xAxis.textColor = Color.BLACK
+            xAxis.setDrawAxisLine(false)
 
             lcPitchChart.isDragEnabled = true
+            lcPitchChart.zoom(3f, 1f, 0f, 0f, YAxis.AxisDependency.LEFT)
+            lcPitchChart.setPinchZoom(false)
+            lcPitchChart.isScaleYEnabled = false
             lcPitchChart.description.isEnabled = false
+            lcPitchChart.setScaleEnabled(true)
             lcPitchChart.data = LineData(ttsLineDataSet, userLineDataSet)
             lcPitchChart.invalidate()
         }
