@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -26,6 +27,7 @@ import com.ssafy.presentation.base.BaseHolder
 import com.ssafy.presentation.databinding.FragmentShuffleBinding
 import com.ssafy.presentation.model.ParcelableShuffleSubmitResult
 import com.ssafy.presentation.model.toParcelable
+import com.ssafy.presentation.ui.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -37,6 +39,7 @@ class ShuffleFragment : BaseFragment<FragmentShuffleBinding>(
     { FragmentShuffleBinding.bind(it) }, R.layout.fragment_shuffle
 ) {
 
+    private val mainActivityViewModel: MainActivityViewModel by activityViewModels()
     private val shuffleViewModel: ShuffleViewModel by viewModels()
     private val selectedAdapter = ShuffleAdapter()
     private val candidAdapter = ShuffleAdapter()
@@ -46,7 +49,16 @@ class ShuffleFragment : BaseFragment<FragmentShuffleBinding>(
         super.onViewCreated(view, savedInstanceState)
         registerObserve()
         initView()
+    }
 
+    override fun onStart() {
+        super.onStart()
+        mainActivityViewModel.setIsNavigationBarVisible(false)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mainActivityViewModel.setIsNavigationBarVisible(true)
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
