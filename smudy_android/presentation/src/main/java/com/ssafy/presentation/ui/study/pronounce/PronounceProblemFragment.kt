@@ -1,7 +1,9 @@
 package com.ssafy.presentation.ui.study.pronounce
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -24,6 +26,16 @@ class PronounceProblemFragment : BaseFragment<FragmentPronounceProblemBinding>(
     private val viewModel: PronounceProblemViewModel by hiltNavGraphViewModels(R.id.nav_pronounce)
     private val adapter by lazy { PronounceLyricAdapter() }
     private lateinit var id: String
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        backPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showExitConfirmationDialog("발음 연습을 종료하시겠습니까?")
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         id = arguments?.getString("id", "")!!
@@ -55,9 +67,13 @@ class PronounceProblemFragment : BaseFragment<FragmentPronounceProblemBinding>(
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.navigationTrigger.collect {
                 if (it) {
-                    hideLoading()
                     findNavController().navigate(R.id.action_pronounceProblemFragment_to_pronouncePracticeFragment)
                 }
+            }
+        }
+        lifecycleScope.launch {
+            viewModel.isLoading.collect{
+                if (it) showLoading() else hideLoading()
             }
         }
     }
@@ -74,7 +90,6 @@ class PronounceProblemFragment : BaseFragment<FragmentPronounceProblemBinding>(
             setOnItemClickListener(
                 object : BaseHolder.ItemClickListener {
                     override fun onClick(position: Int) {
-                        showLoading()
                         viewModel.getTranslateLyric(position)
                     }
                 }

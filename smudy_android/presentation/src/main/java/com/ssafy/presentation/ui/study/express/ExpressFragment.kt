@@ -3,7 +3,10 @@ package com.ssafy.presentation.ui.study.express
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -25,7 +28,7 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
         super.onAttach(context)
         backPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                showExitConfirmationDialog("표현 문제 풀이를 종료 하시겠습니까?")
+                showExitConfirmationDialog("표현 문제 풀이를 종료하시겠습니까?")
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
@@ -63,6 +66,11 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
 
     private fun initObserve() {
         with(binding) {
+            lifecycleScope.launch {
+                viewModel.isLoading.collect{
+                    if (it) showLoading() else hideLoading()
+                }
+            }
             viewLifecycleOwner.lifecycleScope.launch {
                 viewModel.album.collect {
                     loBasic.tvAlbumSinger.text = it.artist
@@ -79,7 +87,6 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
             }
             viewLifecycleOwner.lifecycleScope.launch {
                 viewModel.navigationTrigger.collect {
-                    hideLoading()
                     when (it) {
                         "show_dialog" -> {
                             ExpressResultDialog(
@@ -117,11 +124,24 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
     private fun initEvent() {
         with(binding) {
             btnConfirm.setOnClickListener {
-                showLoading()
                 val answer = etAnswerSentence.text.toString()
-                viewModel.checkExpressProblem(answer)
+                if (answer.isNotBlank()){
+                    viewModel.checkExpressProblem(answer)
+                    etAnswerSentence.clearFocus()
+                } else {
+                    Toast.makeText(_activity,"답변을 입력해주세요.",Toast.LENGTH_SHORT).show()
+                }
+            }
+            etAnswerSentence.setOnEditorActionListener { v, actionId, event ->
+                Log.e("TAG", "initEvent: $actionId")
+                if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
+                    hideKeyboard()
+                    etAnswerSentence.clearFocus()
+                    true
+                } else {
+                    false
+                }
             }
         }
     }
-
 }

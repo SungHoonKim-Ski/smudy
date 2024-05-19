@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.study.pronounce.PronouncePracticeFragment">
     <TextView
@@ -47,12 +48,24 @@
                 android:layout_height="60dp"
                 android:src="@drawable/ic_app_character_width"
                 android:contentDescription="TODO" />
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textAppearance="@style/Noto_Sans.TEXT.L.11"
-                android:text="mudy" />
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAppearance="@style/Noto_Sans.TEXT.L.11"
+                    android:text="mudy" />
+                <ImageView
+                    android:id="@+id/iv_tts_sound_playing"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_volume_mute" />
+            </LinearLayout>
         </LinearLayout>
         <HorizontalScrollView
             android:layout_width="match_parent"
@@ -62,7 +75,8 @@
             <com.ssafy.presentation.ui.study.pronounce.DrawingView
                 android:id="@+id/dv_tts_drawing"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                app:amplitudeColor="@color/tts_graph"/>
         </HorizontalScrollView>
     </LinearLayout>
 
@@ -82,12 +96,26 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:contentDescription="TODO" />
-            <TextView
-                android:id="@+id/tv_user_name"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textAppearance="@style/Noto_Sans.TEXT.L.11" />
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAppearance="@style/Noto_Sans.TEXT.L.11"
+                    tools:text="안성준"/>
+                <ImageView
+                    android:id="@+id/iv_user_sound_playing"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:scaleType="centerInside"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_volume_mute" />
+            </LinearLayout>
         </LinearLayout>
         <HorizontalScrollView
             android:layout_width="match_parent"

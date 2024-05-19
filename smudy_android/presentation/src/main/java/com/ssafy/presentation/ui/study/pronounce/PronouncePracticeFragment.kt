@@ -112,7 +112,6 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
                 }
             }
             btnGradePronounce.setOnClickListener {
-                showLoading()
                 parentViewModel.gradePronounceProblem(file, ttsFile)
             }
             btnResetRecord.setOnClickListener {
@@ -150,6 +149,7 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
     }
 
     private fun startPlaying() {
+        binding.ivUserSoundPlaying.setImageResource(R.drawable.ic_volume_up)
         userPlayer = MediaPlayer()
             .apply {
                 setDataSource(file.absolutePath)
@@ -164,6 +164,7 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
     }
 
     private fun stopPlaying() {
+        binding.ivUserSoundPlaying.setImageResource(R.drawable.ic_volume_mute)
         userPlayer?.stop()
         binding.dvRecordDrawing.stopVisualizing()
         userPlayer?.release()
@@ -171,6 +172,7 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
     }
 
     private fun startTtsPlaying() {
+        binding.ivTtsSoundPlaying.setImageResource(R.drawable.ic_volume_up)
         ttsPlayer = MediaPlayer()
             .apply {
                 setDataSource(ttsFile.absolutePath)
@@ -185,6 +187,7 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
     }
 
     private fun stopTtsPlaying() {
+        binding.ivTtsSoundPlaying.setImageResource(R.drawable.ic_volume_mute)
         ttsPlayer?.stop()
         ttsPlayer?.release()
         ttsPlayer = null
@@ -208,6 +211,11 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
 
     private fun initObserve() {
         lifecycleScope.launch {
+            parentViewModel.isLoading.collect{
+                if (it){ showLoading() }else { hideLoading() }
+            }
+        }
+        lifecycleScope.launch {
             parentViewModel.pronounceProblem.collectLatest {
                 setMusicView(it)
             }
@@ -220,7 +228,6 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
         viewLifecycleOwner.lifecycleScope.launch {
             parentViewModel.navigationTrigger.collect {
                 if (it) {
-                    hideLoading()
                     val bundle = Bundle().apply {
                         putParcelable("pronounceResult", parentViewModel.pronounceResult)
                         putParcelable(

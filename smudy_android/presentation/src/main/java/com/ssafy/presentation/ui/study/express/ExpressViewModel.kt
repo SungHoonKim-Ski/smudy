@@ -39,6 +39,8 @@ class ExpressViewModel @Inject constructor(
     private val _currentProblemIndex = MutableStateFlow(-1)
     val currentProblemIndex = _currentProblemIndex.asStateFlow()
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
     // 채점 결과 저장 list
     // 앨범 정보 dto flow
     private val _album = MutableStateFlow(Music("", "", ""))
@@ -133,6 +135,7 @@ class ExpressViewModel @Inject constructor(
 
     fun checkExpressProblem(answer: String) {
         viewModelScope.launch {
+            _isLoading.emit(true)
             checkExpressProblemUseCase(
                 expressProblems[_currentProblemIndex.value].lyricSentenceEn,
                 expressProblems[_currentProblemIndex.value].lyricSentenceKo,
@@ -149,11 +152,12 @@ class ExpressViewModel @Inject constructor(
                                 it.data.score
                             )
                         )
+                        _isLoading.emit(false)
                         triggerNavigation(SHOW_DIALOG)
                     }
 
-                    is ApiResult.Failure -> {}
-                    is ApiResult.Loading -> {}
+                    is ApiResult.Failure -> { _isLoading.emit(false) }
+                    is ApiResult.Loading -> { _isLoading.emit(true) }
                 }
             }
         }

@@ -40,6 +40,8 @@ class PronounceProblemViewModel @Inject constructor(
 
     private var _translatedLyric = emptyList<String>()
     val translateLyric get() = _translatedLyric
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
 
     private val _navigationTrigger = MutableSharedFlow<Boolean>(
         replay = 0,
@@ -99,19 +101,23 @@ class PronounceProblemViewModel @Inject constructor(
 
     fun getTranslateLyric(lyricPosition: Int) {
         viewModelScope.launch {
+            _isLoading.emit(true)
             val lyric = _pronounceProblem.value.lyrics[lyricPosition]
             getTranslateLyricUseCase(lyric).collect {
                 when (it) {
                     is ApiResult.Success -> {
-                        triggerNavigation(true)
                         _translatedLyric = listOf(lyric, it.data)
+                        _isLoading.emit(false)
+                        triggerNavigation(true)
                     }
 
                     is ApiResult.Failure -> {
-
+                        _isLoading.emit(false)
                     }
 
-                    is ApiResult.Loading -> {}
+                    is ApiResult.Loading -> {
+                        _isLoading.emit(true)
+                    }
                 }
             }
         }
@@ -179,12 +185,14 @@ class PronounceProblemViewModel @Inject constructor(
                                     }
                                 )
                             }
-
+                        _isLoading.emit(false)
                         triggerNavigation(true)
                     }
 
-                    is ApiResult.Failure -> {}
-                    is ApiResult.Loading -> {}
+                    is ApiResult.Failure -> { _isLoading.emit(false) }
+                    is ApiResult.Loading -> {
+                        _isLoading.emit(true)
+                    }
                 }
             }
         }

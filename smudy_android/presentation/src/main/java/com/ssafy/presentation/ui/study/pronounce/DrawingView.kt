@@ -18,7 +18,19 @@ class DrawingView(context: Context, attr: AttributeSet? = null) : View(context, 
         strokeWidth = LINE_WIDTH
         strokeCap = Paint.Cap.ROUND
     }
-
+    init {
+        context.theme.obtainStyledAttributes(
+            attr,
+            R.styleable.DrawingView,
+            0, 0
+        ).apply {
+            try {
+                amplitudePaint.color = getColor(R.styleable.DrawingView_amplitudeColor, context.getColor(R.color.user_graph))
+            } finally {
+                recycle()
+            }
+        }
+    }
     private var drawingWidth: Int = 0
     private var drawingHeight: Int = 0
     private var drawingAmplitudes = mutableListOf<Int>()
