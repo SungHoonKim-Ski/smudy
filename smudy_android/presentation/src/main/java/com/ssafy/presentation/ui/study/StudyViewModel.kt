@@ -11,6 +11,9 @@ import com.ssafy.domain.usecase.music.GetStudyListUseCase
 import com.ssafy.presentation.model.Study
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -21,6 +24,9 @@ class StudyViewModel @Inject constructor(
     private val getStudyListUseCase: GetStudyListUseCase,
     private val deleteStudyListUseCase: DeleteStudyListUseCase
 ) : ViewModel() {
+
+    private val _refreshEvent= MutableSharedFlow<Boolean>(0,1)
+    val refreshEvent = _refreshEvent.asSharedFlow()
 
     fun getStudyList(): Flow<PagingData<Study>> {
         return getStudyListUseCase().map { pagingData ->
@@ -35,7 +41,7 @@ class StudyViewModel @Inject constructor(
             deleteStudyListUseCase(songId).collect{
                 when(it){
                     is ApiResult.Success->{
-                        getStudyList()
+                        _refreshEvent.emit(true)
                     }
                     is ApiResult.Failure->{}
                     is ApiResult.Loading->{}

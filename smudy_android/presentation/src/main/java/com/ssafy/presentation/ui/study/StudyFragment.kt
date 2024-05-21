@@ -40,6 +40,13 @@ class StudyFragment : BaseFragment<FragmentStudyBinding>(
                 }
             }
         }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.refreshEvent.collect{
+                if (it) {
+                    studyRecyclerAdapter.refresh()
+                }
+            }
+        }
     }
 
     private fun initView() {
