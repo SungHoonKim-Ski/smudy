@@ -4,8 +4,6 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
-import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import com.ssafy.presentation.R
@@ -20,7 +18,7 @@ class LoadingDialog(context: Context) : Dialog(context) {
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.MATCH_PARENT
         )
-        window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
     }
 
     fun showLoadingDialog() {

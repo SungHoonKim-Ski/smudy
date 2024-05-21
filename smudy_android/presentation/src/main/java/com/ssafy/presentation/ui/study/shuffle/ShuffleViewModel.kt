@@ -7,14 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.domain.model.ApiResult
 import com.ssafy.domain.model.ShuffleQuestion
-import com.ssafy.domain.model.ShuffleQuestionProblem
 import com.ssafy.domain.model.ShuffleSubmitResult
 import com.ssafy.domain.usecase.study.GetShuffleUseCase
 import com.ssafy.domain.usecase.study.SubmitShuffleUseCase
 import com.ssafy.presentation.model.ShuffleWord
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject

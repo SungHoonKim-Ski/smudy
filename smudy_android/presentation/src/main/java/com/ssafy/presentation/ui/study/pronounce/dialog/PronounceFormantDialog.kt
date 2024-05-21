@@ -14,7 +14,6 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.ssafy.presentation.R
 import com.ssafy.presentation.databinding.DialogPronounceFormantBinding
-import com.ssafy.presentation.databinding.DialogPronouncePitchBinding
 import com.ssafy.presentation.model.pronounce.FormantsAvg
 
 class PronounceFormantDialog(

@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ssafy.domain.model.ShuffleQuestionProblem
-import com.ssafy.domain.model.ShuffleSubmitResult
 import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseAdapter
 import com.ssafy.presentation.base.BaseHolder

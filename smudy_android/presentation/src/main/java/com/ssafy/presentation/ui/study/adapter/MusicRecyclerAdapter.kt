@@ -3,12 +3,10 @@ package com.ssafy.presentation.ui.study.adapter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.ssafy.presentation.databinding.ItemMusicListButtonHorizontalBinding
 import com.ssafy.presentation.databinding.ItemSearchMusicResultBinding
 import com.ssafy.presentation.model.Study
 
@@ -17,8 +15,7 @@ class MusicRecyclerAdapter(private val onClick: (String, Boolean) -> (Unit)) :
     inner class PagingViewHolder(private val binding: ItemSearchMusicResultBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(musicInfo: Study, position: Int) = with(binding) {
-            Log.e("TAG", "bind: $musicInfo")
+        fun bind(musicInfo: Study) = with(binding) {
             tvAlbumTitle.text = musicInfo.title
             tvAlbumSinger.text = musicInfo.singer
             Glide.with(root).load(musicInfo.thumbnail).into(ivAlbumJacket)
@@ -51,7 +48,7 @@ class MusicRecyclerAdapter(private val onClick: (String, Boolean) -> (Unit)) :
 
     override fun onBindViewHolder(holder: MusicRecyclerAdapter.PagingViewHolder, position: Int) {
         getItem(position)?.let {
-            holder.bind(it, position)
+            holder.bind(it)
         }
     }
 

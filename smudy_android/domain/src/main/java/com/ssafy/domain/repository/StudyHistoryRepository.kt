@@ -6,7 +6,6 @@ import com.ssafy.domain.model.SubmitFillBlankData
 import com.ssafy.domain.model.study.express.ExpressGradedResult
 import com.ssafy.domain.model.study.pronounce.GradedPronounce
 import kotlinx.coroutines.flow.Flow
-import java.io.File
 
 interface StudyHistoryRepository {
     suspend fun getPickHistory(learnReportId: String): Flow<ApiResult<ShuffleSubmitResult>>

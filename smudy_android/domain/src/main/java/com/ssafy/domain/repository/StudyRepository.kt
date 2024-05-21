@@ -1,7 +1,6 @@
 package com.ssafy.domain.repository
 
 import com.ssafy.domain.model.ApiResult
-import com.ssafy.domain.model.InputAnswer
 import com.ssafy.domain.model.Lyric
 import com.ssafy.domain.model.SongWithBlank
 import com.ssafy.domain.model.SubmitFillBlankData

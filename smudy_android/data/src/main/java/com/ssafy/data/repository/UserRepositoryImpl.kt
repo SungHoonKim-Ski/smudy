@@ -1,9 +1,6 @@
 package com.ssafy.data.repository
 
 import com.ssafy.data.datasource.user.remote.UserInfoRemoteDataSource
-import com.ssafy.data.model.MappingDto
-import com.ssafy.data.model.user.StreakDto
-import com.ssafy.domain.model.ApiError
 import com.ssafy.domain.model.ApiResult
 import com.ssafy.domain.model.Lyric
 import com.ssafy.domain.model.user.Song
@@ -11,10 +8,7 @@ import com.ssafy.domain.model.user.Streak
 import com.ssafy.domain.model.user.StudyReport
 import com.ssafy.domain.model.user.UserInfo
 import com.ssafy.domain.repository.UserRepository
-import com.ssafy.util.NetworkException
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.onStart
 import javax.inject.Inject
 
 @Suppress("UNCHECKED_CAST")

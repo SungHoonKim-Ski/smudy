@@ -1,6 +1,5 @@
 package com.ssafy.presentation.ui.main
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,13 +13,10 @@ import com.ssafy.domain.usecase.user.GetMainPageLyricUseCase
 import com.ssafy.domain.usecase.user.GetRecommendedSongsUseCase
 import com.ssafy.domain.usecase.user.GetStreakUseCase
 import com.ssafy.domain.usecase.user.GetUserInfoUseCase
-import com.ssafy.presentation.model.Profile
-import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

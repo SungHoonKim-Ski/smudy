@@ -6,7 +6,6 @@ import com.ssafy.data.model.user.RecommendedSongsResponse
 import com.ssafy.data.model.user.StreakResponse
 import com.ssafy.data.model.user.UserInfoDto
 import com.ssafy.data.model.user.WrongLyricDto
-import com.ssafy.domain.model.user.Song
 import retrofit2.http.GET
 import retrofit2.http.Query
 

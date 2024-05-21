@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.domain.model.ApiResult
-import com.ssafy.domain.model.LyricBlank
 import com.ssafy.domain.model.SongWithBlank
 import com.ssafy.domain.model.SubmitFillBlankData
 import com.ssafy.domain.usecase.music.SubmitFillBlankUseCase

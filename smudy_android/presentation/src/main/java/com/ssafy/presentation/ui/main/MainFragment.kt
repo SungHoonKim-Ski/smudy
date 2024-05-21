@@ -4,14 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.kakao.sdk.user.model.User
 import com.ssafy.domain.model.ApiResult
 import com.ssafy.domain.model.user.UserInfo
 import com.ssafy.presentation.R
@@ -20,7 +17,6 @@ import com.ssafy.presentation.databinding.FragmentMainBinding
 import com.ssafy.presentation.ui.main.adapter.MainMusicAdapter
 import com.ssafy.presentation.ui.main.adapter.MainStreakAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 private const val TAG = "MainFragment"

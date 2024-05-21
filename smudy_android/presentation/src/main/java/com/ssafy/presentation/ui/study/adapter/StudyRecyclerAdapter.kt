@@ -1,7 +1,6 @@
 package com.ssafy.presentation.ui.study.adapter
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -16,7 +15,7 @@ class StudyRecyclerAdapter(private val studyTypeClickListener: StudyTypeClickLis
     PagingDataAdapter<Study, StudyRecyclerAdapter.PagingViewHolder>(diffCallback) {
     inner class PagingViewHolder(private val binding: ItemMusicListButtonHorizontalBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(musicInfo: Study, position: Int) = with(binding) {
+        fun bind(musicInfo: Study) = with(binding) {
             tvAlbumTitle.text = musicInfo.title
             tvAlbumSinger.text = musicInfo.singer
             Glide.with(root).load(musicInfo.thumbnail).into(ivAlbumJacket)
@@ -64,7 +63,7 @@ class StudyRecyclerAdapter(private val studyTypeClickListener: StudyTypeClickLis
 
     override fun onBindViewHolder(holder: StudyRecyclerAdapter.PagingViewHolder, position: Int) {
         getItem(position)?.let {
-            holder.bind(it, position)
+            holder.bind(it)
         }
     }
 

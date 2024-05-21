@@ -3,9 +3,7 @@ package com.ssafy.presentation.ui.history
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.view.children
 import androidx.core.view.updateLayoutParams
@@ -22,28 +20,21 @@ import com.kizitonwose.calendar.core.atStartOfMonth
 import com.kizitonwose.calendar.core.daysOfWeek
 import com.kizitonwose.calendar.core.nextMonth
 import com.kizitonwose.calendar.core.previousMonth
-import com.kizitonwose.calendar.core.yearMonth
 import com.kizitonwose.calendar.view.MonthDayBinder
 import com.kizitonwose.calendar.view.MonthHeaderFooterBinder
 import com.kizitonwose.calendar.view.MonthScrollListener
 import com.ssafy.domain.model.ApiResult
 import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseFragment
-import com.ssafy.presentation.base.BaseHolder
 import com.ssafy.presentation.base.displayText
 import com.ssafy.presentation.databinding.FragmentHistoryBinding
-import com.ssafy.presentation.model.Music
 import com.ssafy.presentation.ui.history.adapter.HistoryAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.selects.select
-import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.YearMonth
 import java.time.ZoneId
-import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 private const val TAG = "HistoryFragment"

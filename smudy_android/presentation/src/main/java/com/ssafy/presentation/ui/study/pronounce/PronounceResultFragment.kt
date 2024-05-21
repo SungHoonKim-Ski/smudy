@@ -2,7 +2,6 @@ package com.ssafy.presentation.ui.study.pronounce
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.navigation.fragment.findNavController

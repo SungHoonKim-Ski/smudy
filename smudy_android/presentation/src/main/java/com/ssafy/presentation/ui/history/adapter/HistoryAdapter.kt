@@ -2,7 +2,6 @@ package com.ssafy.presentation.ui.history.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.ssafy.domain.model.user.StudyReport
@@ -10,7 +9,6 @@ import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseAdapter
 import com.ssafy.presentation.base.BaseHolder
 import com.ssafy.presentation.databinding.ItemHistoryBinding
-import okhttp3.internal.wait
 
 
 val historyColorMap = mapOf(

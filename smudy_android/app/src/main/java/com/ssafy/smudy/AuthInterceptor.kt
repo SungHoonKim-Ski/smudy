@@ -1,6 +1,5 @@
 package com.ssafy.smudy
 
-import android.util.Log
 import com.ssafy.data.datasource.datastore.PreferencesDataSource
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor

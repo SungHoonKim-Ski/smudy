@@ -1,7 +1,6 @@
 package com.ssafy.presentation.model
 
 import android.os.Parcelable
-import com.ssafy.domain.model.ShuffleSubmitResult
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

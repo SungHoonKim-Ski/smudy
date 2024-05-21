@@ -1,6 +1,5 @@
 package com.ssafy.presentation.ui.study.pronounce
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.domain.model.ApiResult

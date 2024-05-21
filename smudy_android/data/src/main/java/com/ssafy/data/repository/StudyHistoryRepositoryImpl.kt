@@ -3,7 +3,6 @@ package com.ssafy.data.repository
 import com.ssafy.data.datasource.user.remote.history.StudyHistoryRemoteDataSource
 import com.ssafy.data.mapper.toExpressGradedResult
 import com.ssafy.data.mapper.toGradePronounce
-import com.ssafy.data.model.music.express.ExpressAnswerRequest
 import com.ssafy.domain.model.ApiError
 import com.ssafy.domain.model.ApiResult
 import com.ssafy.domain.model.ShuffleSubmitResult

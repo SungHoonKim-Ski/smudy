@@ -3,7 +3,6 @@ package com.ssafy.presentation.ui.study.express
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -13,7 +12,6 @@ import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseFragment
 import com.ssafy.presentation.databinding.FragmentExpressResultBinding
 import com.ssafy.presentation.model.Music
-import com.ssafy.presentation.model.express.ExpressResult
 import com.ssafy.presentation.ui.study.express.adapter.ExpressResultAdapter
 
 class ExpressResultFragment : BaseFragment<FragmentExpressResultBinding>(

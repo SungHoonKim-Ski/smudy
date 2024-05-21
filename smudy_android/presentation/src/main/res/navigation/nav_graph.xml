@@ -24,9 +24,6 @@
             android:id="@+id/action_studyFragment_to_fillFragment"
             app:destination="@id/fillFragment" />
         <action
-            android:id="@+id/action_studyFragment_to_pickFragment"
-            app:destination="@id/pickFragment" />
-        <action
             android:id="@+id/action_studyFragment_to_expressFragment"
             app:destination="@id/expressFragment" />
         <action
@@ -72,11 +69,6 @@
             android:name="Id"
             app:argType="string" />
     </fragment>
-    <fragment
-        android:id="@+id/pickFragment"
-        android:name="com.ssafy.presentation.ui.study.pick.PickFragment"
-        android:label="fragment_pick"
-        tools:layout="@layout/fragment_pick" />
     <fragment
         android:id="@+id/expressFragment"
         android:name="com.ssafy.presentation.ui.study.express.ExpressFragment"

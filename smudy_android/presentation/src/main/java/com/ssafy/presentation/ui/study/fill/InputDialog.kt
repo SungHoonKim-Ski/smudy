@@ -9,7 +9,6 @@ import android.text.Spannable
 import android.text.Spanned
 import android.text.TextWatcher
 import android.text.style.UnderlineSpan
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -17,12 +16,10 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.RequiresApi
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import com.ssafy.presentation.databinding.DialogInputBinding
 import com.ssafy.presentation.model.BlankQuestion
 import com.ssafy.presentation.model.toQuestion
-import com.ssafy.presentation.ui.history.dpToPx
 
 private const val TAG = "InputDialog"
 

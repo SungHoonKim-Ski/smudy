@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.paging.log
 import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseActivity
 import com.ssafy.presentation.databinding.ActivityMainBinding

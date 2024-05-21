@@ -4,7 +4,6 @@ import com.ssafy.data.api.UserService
 import com.ssafy.data.mapper.toNonDefault
 import com.ssafy.data.model.user.HistoryResponse
 import com.ssafy.data.model.user.RecommendedSongsResponse
-import com.ssafy.data.model.user.StreakDto
 import com.ssafy.data.model.user.StreakResponse
 import com.ssafy.data.model.user.UserInfoDto
 import com.ssafy.data.model.user.WrongLyricDto

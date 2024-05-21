@@ -1,8 +1,6 @@
 package com.ssafy.smudy.module
 
 import android.content.Context
-import com.ssafy.presentation.base.Test2
-//import com.ssafy.util.TestM
 import com.ssafy.util.spotify.SpotifyManager
 import dagger.Module
 import dagger.Provides
@@ -21,13 +19,5 @@ object UtilModule {
         @ApplicationContext
         context: Context
     ) = SpotifyManager(context)
-
-//    @Provides
-//    @Singleton
-//    fun provideTest(
-//        @ApplicationContext context: Context
-//    ): Test2{
-//        return Test2(context)
-//    }
 
 }
