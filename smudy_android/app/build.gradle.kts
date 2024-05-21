@@ -5,10 +5,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.kapt)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.daggerHilt)
-
-//    alias(libs.plugins.googleservice)
 }
 
 fun getProperty(propertyKey: String): String = gradleLocalProperties(rootDir, providers).getProperty(propertyKey)
@@ -77,9 +74,7 @@ dependencies {
 
     // Hilt
     implementation(libs.bundles.hilt)
-//    ksp(libs.hilt.compiler)
     kapt(libs.hilt.compiler)
-//    ksp(libs.dagger.compiler)
 
     implementation(libs.kakao)
 

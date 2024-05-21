@@ -139,17 +139,12 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(
                 navigationTrigger.collectLatest {
                     when (it) {
                         "EXPRESS" -> {
-                            val bundle = Bundle().apply {
-                                putParcelableArrayList(
-                                    "result",
-                                    historyViewModel.getExpressHistoryResult()
-                                )
-                                putParcelable("song", historyViewModel.getSelectedMusicInfo())
-                                putBoolean("IsHistory", true)
-                            }
                             findNavController().navigate(
-                                R.id.action_historyFragment_to_expressResultFragment,
-                                bundle
+                                HistoryFragmentDirections.actionHistoryFragmentToExpressResultFragment(
+                                    historyViewModel.getSelectedMusicInfo(),
+                                    historyViewModel.getExpressHistoryResult().toTypedArray(),
+                                    true
+                                )
                             )
                         }
 
@@ -170,12 +165,13 @@ class HistoryFragment : BaseFragment<FragmentHistoryBinding>(
                         }
 
                         "PRONOUNCE" -> {
-                            val bundle = Bundle().apply {
-                                putParcelable("pronounceResult", historyViewModel.getPronounceHistoryResult())
-                                putParcelable("song", historyViewModel.getSelectedMusicInfo())
-                                putBoolean("IsHistory",true)
-                            }
-                            findNavController().navigate(R.id.action_historyFragment_to_pronounceResultFragment, bundle)
+                            findNavController().navigate(
+                                HistoryFragmentDirections.actionHistoryFragmentToPronounceResultFragment(
+                                    historyViewModel.getPronounceHistoryResult(),
+                                    historyViewModel.getSelectedMusicInfo(),
+                                    true
+                                )
+                            )
                         }
                     }
                 }

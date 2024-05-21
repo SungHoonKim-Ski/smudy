@@ -98,11 +98,7 @@ class ExpressViewModel @Inject constructor(
     fun getAlbumInfo(): Music = _album.value
     fun getCurrentCount(): Int = currentProblemIndex.value
 
-    fun getExpressProblem(): ArrayList<ExpressResult> = arrayListOf<ExpressResult>().apply {
-        expressResults.map {
-            add(it)
-        }
-    }
+    fun getExpressProblem(): List<ExpressResult> = expressResults.toList()
 
     fun isComplete(count: Int) = viewModelScope.launch {
         Log.e("TAG", "isComplete: $count ${expressProblems.size}")

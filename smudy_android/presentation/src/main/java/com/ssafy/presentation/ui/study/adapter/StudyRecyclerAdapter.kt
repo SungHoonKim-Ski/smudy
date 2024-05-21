@@ -28,25 +28,25 @@ class StudyRecyclerAdapter(private val studyTypeClickListener: StudyTypeClickLis
             val idBundle = Bundle()
             idBundle.putString("id", musicInfo.id)
             btnFillStudy.setOnClickListener {
-                studyTypeClickListener.fillStudy(idBundle)
+                studyTypeClickListener.fillStudy(musicInfo.id)
             }
             btnPickStudy.setOnClickListener {
-                studyTypeClickListener.pickStudy(idBundle)
+                studyTypeClickListener.pickStudy(musicInfo.id)
             }
             btnExpressStudy.setOnClickListener {
-                studyTypeClickListener.expressStudy(idBundle)
+                studyTypeClickListener.expressStudy(musicInfo.id)
             }
             btnPronounceStudy.setOnClickListener {
-                studyTypeClickListener.pronounceStudy(idBundle)
+                studyTypeClickListener.pronounceStudy(musicInfo.id)
             }
         }
     }
 
     interface StudyTypeClickListener {
-        fun fillStudy(id: Bundle)
-        fun pickStudy(id: Bundle)
-        fun expressStudy(id: Bundle)
-        fun pronounceStudy(id: Bundle)
+        fun fillStudy(id: String)
+        fun pickStudy(id: String)
+        fun expressStudy(id: String)
+        fun pronounceStudy(id: String)
     }
 
     companion object {

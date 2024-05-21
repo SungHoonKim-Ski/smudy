@@ -4,10 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
@@ -31,7 +28,6 @@ import com.ssafy.presentation.model.ParcelableShuffleSubmitResult
 import com.ssafy.presentation.model.toParcelable
 import com.ssafy.presentation.ui.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 private const val TAG = "ShuffleFragment"
@@ -45,6 +41,7 @@ class ShuffleFragment : BaseFragment<FragmentShuffleBinding>(
     private val shuffleViewModel: ShuffleViewModel by viewModels()
     private val selectedAdapter = ShuffleAdapter()
     private val candidAdapter = ShuffleAdapter()
+    private val arguments: ShuffleFragmentArgs by navArgs()
     private lateinit var songId: String
 
     override fun onAttach(context: Context) {
@@ -80,7 +77,7 @@ class ShuffleFragment : BaseFragment<FragmentShuffleBinding>(
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun initView() {
-        songId = requireArguments().getString("id")!!
+        songId = arguments.Id
 
         with(binding) {
 
@@ -162,13 +159,12 @@ class ShuffleFragment : BaseFragment<FragmentShuffleBinding>(
         }
 
         with(shuffleViewModel) {
-            getShuffle(songId!!)
+            getShuffle(songId)
             with(binding) {
                 btnNxt.setOnClickListener {
                     Log.d(TAG, "initView: ${curIdx.value!! + 1}")
                     setCurIdx(curIdx.value!! + 1)
                 }
-//                btnPrv.setOnClickListener { setCurIdx(curIdx.value!! - 1) }
                 btnConfirm.setOnClickListener { submitShuffle(songId) }
             }
         }
@@ -224,7 +220,6 @@ class ShuffleFragment : BaseFragment<FragmentShuffleBinding>(
             }
 
             curIdx.observe(viewLifecycleOwner) {
-                Log.d(TAG, "registerObserve: $it")
                 if (it > -1) {
                     binding.tvProgress.text = "${it + 1} /"
                     candidAdapter.submitList(
@@ -233,18 +228,11 @@ class ShuffleFragment : BaseFragment<FragmentShuffleBinding>(
                     binding.tvLyricKr.text = koreanList[it]
                     selectedAdapter.submitList(selectedList[it])
                     if (it >= 4) {
-//                        binding.btnNxt.isEnabled = false
                         binding.btnNxt.visibility = View.GONE
                         binding.btnConfirm.visibility = View.VISIBLE
                     } else {
                         binding.btnNxt.visibility = View.VISIBLE
                         binding.btnConfirm.visibility = View.GONE
-//                        if (it <= 0) {
-//                            binding.btnPrv.isEnabled = false
-//                        } else {
-//                            binding.btnNxt.isEnabled = true
-//                            binding.btnPrv.isEnabled = true
-//                        }
                     }
                 }
 

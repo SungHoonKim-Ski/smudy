@@ -44,7 +44,7 @@ class FillFragment: BaseFragment<FragmentFillBinding>(
     private val fillFragmentViewModel: FillFragmentViewModel by viewModels()
 
     private val blankLyricAdapter = BlankLyricAdapter()
-
+    private val arguments:FillFragmentArgs by navArgs()
     private lateinit var songId: String
 
     override fun onAttach(context: Context) {
@@ -86,7 +86,7 @@ class FillFragment: BaseFragment<FragmentFillBinding>(
     }
 
     private fun initView() {
-        songId = requireArguments().getString("id")!!
+        songId = arguments.Id
 
         fillFragmentViewModel.setSongId(songId)
         fillFragmentViewModel.getSongWithBlank(songId)

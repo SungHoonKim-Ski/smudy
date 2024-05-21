@@ -68,6 +68,9 @@
         <action
             android:id="@+id/action_fillFragment_to_fillResultFragment"
             app:destination="@id/fillResultFragment" />
+        <argument
+            android:name="Id"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/pickFragment"
@@ -82,6 +85,9 @@
         <action
             android:id="@+id/action_expressFragment_to_expressResultFragment"
             app:destination="@id/expressResultFragment" />
+        <argument
+            android:name="Id"
+            app:argType="string" />
     </fragment>
     <navigation android:id="@+id/nav_pronounce"
         app:startDestination="@id/pronounceProblemFragment">
@@ -103,6 +109,9 @@
                 android:id="@+id/action_pronouncePracticeFragment_to_pronounceResultFragment"
                 app:destination="@id/pronounceResultFragment" />
         </fragment>
+        <argument
+            android:name="Id"
+            app:argType="string" />
     </navigation>
     <fragment
         android:id="@+id/pronounceResultFragment"
@@ -112,6 +121,16 @@
         <action
             android:id="@+id/action_pronounceResultFragment_to_pronouncePracticeFragment"
             app:destination="@id/pronouncePracticeFragment" />
+        <argument
+            android:name="PronounceResult"
+            app:argType="com.ssafy.presentation.model.pronounce.GradedPronounce" />
+        <argument
+            android:name="IsHistory"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="Music"
+            app:argType="com.ssafy.presentation.model.Music" />
     </fragment>
     <fragment
         android:id="@+id/fillResultFragment"
@@ -140,6 +159,9 @@
         <action
             android:id="@+id/action_shuffleFragment_to_shuffleResultFragment"
             app:destination="@id/shuffleResultFragment" />
+        <argument
+            android:name="Id"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/shuffleResultFragment"
@@ -165,5 +187,15 @@
         <action
             android:id="@+id/action_expressResultFragment_to_studyFragment"
             app:destination="@id/studyFragment" />
+        <argument
+            android:name="IsHistory"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="Music"
+            app:argType="com.ssafy.presentation.model.Music" />
+        <argument
+            android:name="ExpressResultArray"
+            app:argType="com.ssafy.presentation.model.express.ExpressResult[]" />
     </fragment>
 </navigation>

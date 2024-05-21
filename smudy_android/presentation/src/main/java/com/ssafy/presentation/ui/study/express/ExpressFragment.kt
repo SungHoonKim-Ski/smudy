@@ -11,6 +11,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ssafy.presentation.R
@@ -24,6 +25,7 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
     { FragmentExpressBinding.bind(it) }, R.layout.fragment_express
 ) {
     private val viewModel: ExpressViewModel by viewModels()
+    private val args:ExpressFragmentArgs by navArgs()
     override fun onAttach(context: Context) {
         super.onAttach(context)
         backPressedCallback = object : OnBackPressedCallback(true) {
@@ -36,11 +38,8 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val id = arguments?.getString("id")
-        if (id.isNullOrEmpty()) {
-            findNavController().popBackStack()
-        }
-        viewModel.setSongId(id!!)
+        val id = args.Id
+        viewModel.setSongId(id)
     }
 
     override fun onResume() {
@@ -101,15 +100,7 @@ class ExpressFragment : BaseFragment<FragmentExpressBinding>(
                         }
 
                         "result_screen" -> {
-                            val bundle = Bundle().apply {
-                                putParcelableArrayList("result", viewModel.getExpressProblem())
-                                putParcelable("song", viewModel.getAlbumInfo())
-                                putBoolean("IsHistory", false)
-                            }
-                            findNavController().navigate(
-                                R.id.action_expressFragment_to_expressResultFragment,
-                                bundle
-                            )
+                            findNavController().navigate(ExpressFragmentDirections.actionExpressFragmentToExpressResultFragment(viewModel.getAlbumInfo(),viewModel.getExpressProblem().toTypedArray()))
                         }
                     }
                 }

@@ -17,8 +17,6 @@ ksp = "1.9.10-1.0.13"
 mpandroid="3.1.0"
 # Coroutine
 coroutine = "1.7.3"
-# GoogleServices
-googleService = "4.6.0"
 
 # Hilt
 hilt = "2.48"
@@ -132,11 +130,9 @@ jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "k
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 daggerHilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "parcelize" }
 safeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
 
-#googleservice = {id ="com.google.gms.google-services" , version.ref = "googleService" }
 kapt = { id = "org.jetbrains.kotlin.kapt", version = "1.8.0" }
 
 

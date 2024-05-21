@@ -9,8 +9,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.ssafy.presentation.NavPronounceArgs
 import com.ssafy.presentation.R
 import com.ssafy.presentation.base.BaseFragment
 import com.ssafy.presentation.base.BaseHolder
@@ -25,6 +27,7 @@ class PronounceProblemFragment : BaseFragment<FragmentPronounceProblemBinding>(
 ) {
     private val viewModel: PronounceProblemViewModel by hiltNavGraphViewModels(R.id.nav_pronounce)
     private val adapter by lazy { PronounceLyricAdapter() }
+    private val args:NavPronounceArgs by navArgs()
     private lateinit var id: String
 
     override fun onAttach(context: Context) {
@@ -38,10 +41,7 @@ class PronounceProblemFragment : BaseFragment<FragmentPronounceProblemBinding>(
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        id = arguments?.getString("id", "")!!
-        if (id == "") {
-            findNavController().popBackStack()
-        }
+        id = args.Id
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

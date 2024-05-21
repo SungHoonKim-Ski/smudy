@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ssafy.presentation.R
@@ -21,20 +22,14 @@ import com.ssafy.presentation.ui.study.pronounce.dialog.PronouncePitchDialog
 class PronounceResultFragment : BaseFragment<FragmentPronounceResultBinding>(
     { FragmentPronounceResultBinding.bind(it) }, R.layout.fragment_pronounce_result
 ) {
+    private val args:PronounceResultFragmentArgs by navArgs()
     private lateinit var pronounceResult: GradedPronounce
     private lateinit var music: Music
-    private var isHistory:Boolean = false
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val argument1 = arguments?.getParcelable("pronounceResult",GradedPronounce::class.java)
-        val argument2 = arguments?.getParcelable("song",Music::class.java)
-        isHistory = arguments?.getBoolean("IsHistory")!!
-        if (argument1 == null || argument2 == null) {
-            findNavController().popBackStack()
-        }
-        pronounceResult = argument1!!
-        music = argument2!!
+        pronounceResult = args.PronounceResult
+        music = args.Music
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,7 +56,7 @@ class PronounceResultFragment : BaseFragment<FragmentPronounceResultBinding>(
             tvAlbumTitle.text = music.title
             tvAlbumSinger.text = music.artist
             Glide.with(_activity).load(music.jacket).into(ivAlbumJacket)
-            if (isHistory){
+            if (args.IsHistory){
                 btnNavigatePractice.visibility = View.GONE
             }
         }
@@ -100,7 +95,7 @@ class PronounceResultFragment : BaseFragment<FragmentPronounceResultBinding>(
             }
             btnNavigatePractice.setOnClickListener { findNavController().popBackStack() }
             btnComplete.setOnClickListener {
-                if (isHistory){
+                if (args.IsHistory){
                     findNavController().popBackStack()
                 }else {
                     findNavController().popBackStack(R.id.pronounceProblemFragment, false)

@@ -69,7 +69,7 @@ class HistoryViewModel @Inject constructor(
 
     private lateinit var _parcelableShuffleSubmitResult: ParcelableShuffleSubmitResult
     private lateinit var _parcelableSubmitResult: ParcelableSubmitResult
-    private lateinit var _expressHistoryResult: ArrayList<ExpressResult>
+    private lateinit var _expressHistoryResult: List<ExpressResult>
     private lateinit var _pronounceHistoryResult: GradedPronounce
     private lateinit var _selectedMusicInfo: Music
 
@@ -135,8 +135,8 @@ class HistoryViewModel @Inject constructor(
             getFillStudyHistoryUseCase(learnReportId.toString()).collect {
                 when (it) {
                     is ApiResult.Success -> {
-                        val blankNum = it.data.result.count{
-                            res-> res.originWord.isBlank()
+                        val blankNum = it.data.result.count { res ->
+                            res.originWord.isBlank()
                         }
                         _parcelableSubmitResult = ParcelableSubmitResult(title, artist, jacket,
                             ParcelableSubmitFillBlankData(
@@ -171,19 +171,16 @@ class HistoryViewModel @Inject constructor(
                 when (it) {
                     is ApiResult.Success -> {
                         _selectedMusicInfo = Music(title, artist, jacket)
-                        _expressHistoryResult = arrayListOf<ExpressResult>().apply {
+                        _expressHistoryResult =
                             it.data.map { data ->
-                                add(
-                                    ExpressResult(
-                                        data.suggestLyricSentence,
-                                        data.lyricSentenceKo,
-                                        data.userLyricSentenceEn,
-                                        data.userLyricSentenceKo,
-                                        data.score
-                                    )
+                                ExpressResult(
+                                    data.suggestLyricSentence,
+                                    data.lyricSentenceKo,
+                                    data.userLyricSentenceEn,
+                                    data.userLyricSentenceKo,
+                                    data.score
                                 )
                             }
-                        }
                         triggerNavigation("EXPRESS")
                     }
 
@@ -215,7 +212,11 @@ class HistoryViewModel @Inject constructor(
                                             PitchData(data.times, data.values)
                                         },
                                         refTimestamps.map { timeStamp ->
-                                            Timestamp(timeStamp.word,timeStamp.startTime,timeStamp.endTime)
+                                            Timestamp(
+                                                timeStamp.word,
+                                                timeStamp.startTime,
+                                                timeStamp.endTime
+                                            )
                                         },
                                         FormantsAvg(
                                             testFormantsAvg.f1,

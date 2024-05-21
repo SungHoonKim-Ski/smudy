@@ -3,7 +3,6 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.daggerHilt)
     alias(libs.plugins.kapt)
     alias(libs.plugins.parcelize)
@@ -61,9 +60,7 @@ dependencies {
     implementation(project(":util"))
 
     implementation(libs.bundles.androidx)
-    implementation(libs.hilt.android)
     implementation(libs.androidx.annotation)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.flexbox)
 
     kapt(libs.hilt.compiler)

@@ -228,21 +228,12 @@ class PronouncePracticeFragment : BaseFragment<FragmentPronouncePracticeBinding>
         viewLifecycleOwner.lifecycleScope.launch {
             parentViewModel.navigationTrigger.collect {
                 if (it) {
-                    val bundle = Bundle().apply {
-                        putParcelable("pronounceResult", parentViewModel.pronounceResult)
-                        putParcelable(
-                            "song",
-                            Music(
-                                parentViewModel.pronounceProblem.value.songName,
-                                parentViewModel.pronounceProblem.value.songArtist,
-                                parentViewModel.pronounceProblem.value.albumJacket
-                            )
-                        )
-                    }
-                    findNavController().navigate(
-                        R.id.action_pronouncePracticeFragment_to_pronounceResultFragment,
-                        bundle
-                    )
+                    findNavController().navigate(PronouncePracticeFragmentDirections.actionPronouncePracticeFragmentToPronounceResultFragment(
+                        parentViewModel.pronounceResult,Music(
+                            parentViewModel.pronounceProblem.value.songName,
+                            parentViewModel.pronounceProblem.value.songArtist,
+                            parentViewModel.pronounceProblem.value.albumJacket
+                        )))
                 }
             }
         }

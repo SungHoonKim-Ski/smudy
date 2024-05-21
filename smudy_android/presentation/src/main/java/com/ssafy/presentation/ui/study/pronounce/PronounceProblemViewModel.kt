@@ -63,7 +63,6 @@ class PronounceProblemViewModel @Inject constructor(
             getPronounceProblemUseCase(id).collect {
                 when (it) {
                     is ApiResult.Success -> {
-                        Log.e("TAG", "getPronounceProblem: ${it.data.songId}")
                         it.data.apply {
                             _pronounceProblem.emit(
                                 PronounceProblem(
