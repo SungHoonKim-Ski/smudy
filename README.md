@@ -91,11 +91,13 @@
 #### 선택한 노래의 가사 전체를 볼 수 있고 연습하고 있는 가사 하나를 선택해서 연습할 수 있습니다. 또한, 영어 발음을 들을 수 있고, 사용자가 녹음을 진행하고 다시 들을 수도 있습니다.
 
 <img src="./readme_img/pronounce_study_result_page.jpg" width="270" height="500">
+
+#### 발음 연습의 결과를 확인할 수 있는 페이지로 사용자가 녹음한 음성을 통해 ai가 어떻게 문장을 인식했는지 확인할 수 있고, pitch, intensity, formant를 확인할 수 있는 페이지로 넘어가는 버튼이 있습니다.
 <img src="./readme_img/pronounce_pitch_result_page.jpg" width="270" height="500">
 <img src="./readme_img/pronounce_intensity_result_page.jpg" width="270" height="500">
 <img src="./readme_img/pronounce_formant_result_page.jpg" width="270" height="500">
 
-#### 발음 연습의 결과를 확인할 수 있는 페이지로 분석한 결과를 그래프 형태로 확인할 수 있습니다.
+#### 사용자가 녹음한 음성을 분석한 결과들을 그래프를 통해 보여주는 페이지입니다.
 ### HISTORY
 <img src="./readme_img/history_page.jpg" width="270" height="500">
 
