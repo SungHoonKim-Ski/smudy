@@ -1,0 +1,40 @@
+# 기본 이미지로 OpenJDK 17 버전 사용
+FROM openjdk:17-jdk-buster
+
+# 작업 디렉토리 설정
+WORKDIR /app
+
+# 필요한 패키지 설치 (Curl, Unzip)
+RUN apt-get update && apt-get install -y \
+    curl \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Gradle Wrapper와 관련 파일들을 올바른 경로에서 복사
+COPY gradlew /app/
+COPY gradle/wrapper/gradle-wrapper.jar /app/
+COPY gradle/wrapper/gradle-wrapper.properties /app/
+COPY gradle /app/gradle
+
+# 권한 설정 (Gradle Wrapper 실행 권한 부여)
+RUN chmod +x ./gradlew
+
+# 프로젝트의 빌드 설정 파일과 소스 코드 복사
+COPY build.gradle.kts /app/
+COPY settings.gradle.kts /app/
+COPY src /app/src
+
+# Gradle Wrapper를 사용하여 프로젝트 빌드 (테스트 제외)
+RUN ./gradlew build -x test --no-daemon
+
+# 빌드 결과로 생성된 JAR 파일을 app 디렉토리로 이동
+RUN mv build/libs/smudy.jar app.jar
+
+# 불필요한 파일 정리
+RUN rm -rf ./src ./gradle ./gradlew ./gradle-wrapper.jar ./gradle-wrapper.properties ./build.gradle.kts ./settings.gradle.kts
+
+# 애플리케이션 실행
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+
+# 컨테이너 실행 시 노출할 포트 지정
+EXPOSE 9090

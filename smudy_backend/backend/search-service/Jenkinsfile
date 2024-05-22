@@ -1,0 +1,51 @@
+pipeline {
+    agent any
+
+    environment {
+        SEARCH_IMAGE_NAME = "${env.SEARCH_IMAGE_NAME}"
+        EUREKA_URL = "${EUREKA_URL}"
+        CONTAINER_NAME = 'Search'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh 'echo "Starting Build Search Service Docker Image"'
+                    dir('smudy_backend/backend/search-service') {
+                            withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
+                                searchImage = docker.build("${SEARCH_IMAGE_NAME}:${env.BUILD_NUMBER}",
+                                "--build-arg JASYPT_PASSWORD=${env.JASYPT_PASSWORD} " +
+                                "--build-arg EUREKA_URL=${env.EUREKA_URL} .")
+
+                                // Docker 빌드 결과 출력
+                                if (searchImage != 0) {
+                                    echo "Docker build succeeded: ${SEARCH_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                                    docker.withRegistry('https://registry.hub.docker.com', 'docker') {
+                                        searchImage.push()
+                                    }
+                                } else {
+                                    error "Docker build failed"
+                                }
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    sh 'docker rm -f Search || true'
+                    sh "docker run -d --name ${CONTAINER_NAME} --network smudy ${SEARCH_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                }
+            }
+        }
+    }
+}

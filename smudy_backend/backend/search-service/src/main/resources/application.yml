@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: search-service
+  elasticsearch:
+    host: ENC(HYVuZhvNLWUgCqyhpnUHxiqc1MUof9LLppeQ0qq1GWc=)
+    username: ENC(KeOTITX4sKXdVbbBx2BOeg==)
+    password: ENC(vqsLu1q/v3qxoJw3/qM4nMyaTUPIWGKZ)
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true #To beautify or pretty print the SQL
+        show_sql: true #show sql
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: ENC(U1prS9CmmDnKNHS7OJdYtw==)
+    password: ENC(G/jBy28DXfR039pmAt8RLn6V6vmQWVhJ)
+    driver-class-name: org.postgresql.Driver
+
+  ai:
+    vectorstore:
+      pgvector:
+      index-type: HNSW
+      distance-type: COSINE_DISTANCE
+      dimension: 1536
+
+    openai:
+      api-key: sk-proj-0rB49TSpPmvh6kpyAfOqT3BlbkFJY9xQabVcDik5sYK8xdlO
+      base-url: https://api.openai.com
+      embedding:
+        options:
+          model: text-embedding-3-small
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 1
+    lease-expiration-duration-in-seconds: 2

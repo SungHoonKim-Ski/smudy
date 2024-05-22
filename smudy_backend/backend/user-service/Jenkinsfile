@@ -1,0 +1,55 @@
+pipeline {
+    agent any
+
+    environment {
+        USER_IMAGE_NAME = "${env.USER_IMAGE_NAME}"
+        JASYPT_PASSWORD = "${env.JASYPT_PASSWORD}"
+        MONGO_PORT = "${env.MONGO_PORT}"
+        EUREKA_URL = "${env.EUREKA_URL}"
+        CONTAINER_NAME = 'User'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh 'echo "Starting Build User Service Docker Image"'
+                    dir('smudy_backend/backend/user-service') {
+                            withDockerRegistry(credentialsId: 'docker', url: 'https://registry.hub.docker.com') {
+                                userImage = docker.build("${USER_IMAGE_NAME}:${env.BUILD_NUMBER}", 
+                                "--build-arg JASYPT_PASSWORD=${env.JASYPT_PASSWORD} " +
+                                "--build-arg EUREKA_URL=${env.EUREKA_URL} " +
+                                "--build-arg MONGO_PORT=${env.MONGO_PORT} .")
+
+
+                                // Docker 빌드 결과 출력
+                                if (userImage != 0) {
+                                    echo "Docker build succeeded: ${USER_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                                    docker.withRegistry('https://registry.hub.docker.com', 'docker') {
+                                        userImage.push()
+                                    }
+                                } else {
+                                    error "Docker build failed"
+                                }
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    sh 'docker rm -f User || true'
+                    sh "docker run -d --name ${CONTAINER_NAME} --network smudy ${USER_IMAGE_NAME}:${env.BUILD_NUMBER}"
+                }
+            }
+        }
+    }
+}

@@ -11,21 +11,21 @@ class SearchResponseService {
 
     // 단일건 결과를 처리하는 메소드
     fun <T> getSuccessSingleResult(data: T, message: String): SingleResult<T> {
-        return SingleResult(data, CommonResponseCode.SUCCESS.code, message)
+        return SingleResult(CommonResponseCode.SUCCESS.code, message, data)
     }
 
     fun <T> getSingleResult(data: T, message: String, code: Int): SingleResult<T> {
-        return SingleResult(data, code, message)
+        return SingleResult(code, message, data)
     }
 
     // 다중건 결과를 처리하는 메소드
     fun <T> getSuccessListResult(list: List<T>): ListResult<T> {
-        return ListResult(list, CommonResponseCode.SUCCESS.code, "SUCCESS")
+        return ListResult(CommonResponseCode.SUCCESS.code, "SUCCESS", list)
     }
 
     // 다중건 결과를 처리하는 메소드 + msg 세팅
     fun <T> getSuccessListResult(list: List<T>, message: String): ListResult<T> {
-        return ListResult(list, CommonResponseCode.SUCCESS.code, message)
+        return ListResult(CommonResponseCode.SUCCESS.code, message, list)
     }
 
     // 성공 결과만 처리하는 메소드
