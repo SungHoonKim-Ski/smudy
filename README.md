@@ -71,19 +71,26 @@
 <img src="./readme_img/fill_study_page.jpg" width="270" height="500">
 <img src="./readme_img/fill_study_result_page.jpg" width="270" height="500">
 
-#### 노래를 들으며 공부를 진행할 수 있는데 한 문장에 한 개의 빈칸이 있고, 노래를 들으며 빈칸을 채울 수 있습니다. 또한, 빈칸을 채운 단어의 채점 결과를 확인할 수 있습니다.
+#### 가사 한 문장에 한 개의 빈칸이 있고, 노래를 들으며 해당 빈칸을 채우며 문제 풀이를 진행합니다. 또한, 빈칸에 제출한 단어의 채점 결과를 확인할 수 있습니다.
 ### PICK 유형
 <img src="./readme_img/pick_study_page.jpg" width="270" height="500">
 <img src="./readme_img/pick_study_result_page.jpg" width="270" height="500">
 
-#### 선택한 노래 가사 중 5문제가 출제되고, 해당 가사가 단어 단위로 섞이며 한국어로 번역된 문장을 보며 섞인 단어의 순서를 맞춥니다. 또한, 이렇게 푼 문제의 풀이 결과를 확인할 수 있습니다.
+#### 선택한 노래의 가사 중 5문제가 출제되고, 해당 가사가 단어 단위로 섞이며 한국어로 번역된 문장을 보며 섞인 단어의 순서를 맞춥니다. 또한, 이렇게 푼 문제의 풀이 결과를 확인할 수 있습니다.
 ### EXPRESS 유형
+<img src="./readme_img/express_study_solving_page.jpg" width="270" height="500">
+<img src="./readme_img/express_study_solving_one_result_page.jpg" width="270" height="500">
+<img src="./readme_img/express_study_solving_full_result_page.jpg" width="270" height="500">
 
+#### 선택한 노래의 가사 중 5문제가 출제되고, 가사가 한국어로 번역되어 보여지고 영어로 표현해보는 유형입니다. 또한, 한 문제마다 채점 결과가 보여지고 마지막에 문제풀이 결과 전체를 확인할 수 있습니다.
 ### PRONOUNCE 유형
 <img src="./readme_img/pronounce_study_page.jpg" width="270" height="500">
+<img src="./readme_img/pronounce_study_solving_standard_page.jpg" width="270" height="500">
+<img src="./readme_img/pronounce_study_solving_user_record_page.jpg" width="270" height="500">
 
-#### 선택한 노래의 가사 전체를 볼 수 있고 연습하고 있는 가사 하나를 선택해서 연습할 수 있습니다.
+#### 선택한 노래의 가사 전체를 볼 수 있고 연습하고 있는 가사 하나를 선택해서 연습할 수 있습니다. 또한, 영어 발음을 들을 수 있고, 사용자가 녹음을 진행하고 다시 들을 수도 있습니다.
 
+<img src="./readme_img/pronounce_study_result_page.jpg" width="270" height="500">
 <img src="./readme_img/pronounce_pitch_result_page.jpg" width="270" height="500">
 <img src="./readme_img/pronounce_intensity_result_page.jpg" width="270" height="500">
 <img src="./readme_img/pronounce_formant_result_page.jpg" width="270" height="500">
