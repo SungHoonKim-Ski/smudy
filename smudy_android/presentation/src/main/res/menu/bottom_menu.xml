@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mainFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_bottom_home_normal"
+        android:title="" />
+
+    <item
+        android:id="@+id/studyFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_bottom_library_music_normal"
+        android:title="" />
+
+    <item
+        android:id="@+id/historyFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_bottom_calendar_month"
+        android:title="" />
+</menu>

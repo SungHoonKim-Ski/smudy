@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.study.shuffle.ShuffleResultFragment"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/fragment_padding">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/report"
+        android:textAppearance="@style/Jalnan.TEXT.R.20"
+        android:layout_gravity="center" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/correct_answer"
+                android:textAppearance="@style/Dangrek.TEXT.R.16"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_correct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/item_shuffle_result"
+                tools:itemCount="3"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/incorrect_answer"
+                android:textAppearance="@style/Dangrek.TEXT.R.16" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_incorrect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/music_player_background"
+        android:orientation="horizontal"
+        android:padding="@dimen/item_padding"
+        android:layout_marginTop="@dimen/margin_regular">
+
+        <include
+            android:id="@+id/lo_basic"
+            layout="@layout/layout_music_basic"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/icon_size_regular">
+
+            <TextView
+                android:id="@+id/tv_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/progress_init"
+                android:textAppearance="@style/Jalnan.TEXT.R.16" />
+
+            <TextView
+                android:id="@+id/tv_num_of_questions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAppearance="@style/Jalnan.TEXT.R.16"
+                tools:text="20" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/sl_mint_color"
+            android:text="@string/confirm"
+            android:textAppearance="@style/Nanum_Square.TEXT.EB.12"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+</LinearLayout>

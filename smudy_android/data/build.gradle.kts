@@ -5,7 +5,8 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.daggerHilt)
-    alias(libs.plugins.ksp)
+//    alias(libs.plugins.ksp)
+    alias(libs.plugins.kapt)
 }
 
 fun getBaseUrl(propertyKey: String): String  = gradleLocalProperties(rootDir, providers).getProperty(propertyKey)
@@ -46,14 +47,17 @@ android {
 dependencies {
 
     implementation(project(mapOf("path" to ":domain")))
+    implementation(project(":util"))
 
     implementation(libs.bundles.androidx)
-    testImplementation(libs.bundles.testing)
 
     implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
 
     implementation(libs.bundles.retrofit)
+    implementation(libs.dataStore)
+
+    implementation(libs.paging)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

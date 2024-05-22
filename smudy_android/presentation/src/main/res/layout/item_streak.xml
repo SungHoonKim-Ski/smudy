@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="@dimen/streak_padding">
+    <ImageView
+        android:id="@+id/iv_album_jacket"
+        android:layout_width="@dimen/streak_size"
+        android:layout_height="@dimen/streak_size"
+        tools:src="@color/black"
+        android:contentDescription="@string/todo" />
+</LinearLayout>

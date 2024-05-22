@@ -5,5 +5,33 @@
     <color name="red">#FFFF0000</color>
 
     <color name="smudy_mint">#FF75E3D1</color>
+    <color name="gray">#FFF3F3F3</color>
+    <color name="charcoal">#5536454F</color>
+    <color name="navy_blue">#E6000080</color>
+    <color name="light_pink">#B3FFB6C1</color>
+    <color name="dark_purple">#FF5C007A</color>
+    <color name="box_blue">#FFEBFAFF</color>
+    <color name="progress_background">#2300B2FF</color>
+    <color name="sentence_box">#FFFFD972</color>
+    <color name="calender_selected_gray">#3436454F</color>
+    <color name="calendar_day_background">#77D5D4DF</color>
+    <color name="calendar_unselected_month_gray">#FFF2F3F7</color>
+    <color name="calendar_unselected_month_text">#FFA8A8A8</color>
+    <color name="card_background">#1F9C9BD8</color>
+    <color name="light_gray">#4D36454F</color>
+    <color name="music_player_background">#1F9C9BD8</color>
+    <color name="light_black">#3D000000</color>
+    <color name="tts_graph">#FF3936BE</color>
+    <color name="user_graph">#FFF47500</color>
+    <color name="dark_red">#FFDB2B42</color>
+    <color name="result_blue">#FF0066FF</color>
 
+    <color name="fill_selected">#5736454F</color>
+
+    <color name="correct_answer_box_yellow">#FFFFFDF6</color>
+    <color name="incorrect_answer_box_red">#FFFFF6F6</color>
+
+    <color name="pronounce_result_menu_pitch">#80FFE194</color>
+    <color name="pronounce_result_menu_intensity">#80FFC6C6</color>
+    <color name="pronounce_result_menu_formant">#80B8E4A0</color>
 </resources>

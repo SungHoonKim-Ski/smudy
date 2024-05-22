@@ -2,10 +2,29 @@
 
     <style name="Base.Theme.Smudy" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/smudy_mint</item>
+        <item name="android:colorBackground">@color/white</item>
+<!--        <item name="android:statusBarColor">@android:color/transparent</item>-->
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="Theme.Smudy" parent="Base.Theme.Smudy">
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="Widget.Material3.BottomNavigationView.Color" parent="Base.Widget.Material3.BottomNavigationView">
+        <item name="backgroundTint">@color/white</item>
+        <item name="itemIconTint">@color/sl_nav_item_color</item>
+        <item name="itemActiveIndicatorStyle">@style/CustomItemActiveIndicator</item>
+    </style>
+
+    <style name="CustomItemActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@android:color/transparent</item>
+    </style>
+
+    <style name="Theme.SplashScreen.Smudy" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- 스플래시 화면 배경색 -->
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <!-- 스플래시 이후의 기본 테마 -->
+        <item name="postSplashScreenTheme">@style/Theme.Smudy</item>
+    </style>
 </resources>

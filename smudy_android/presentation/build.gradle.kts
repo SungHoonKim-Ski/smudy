@@ -1,10 +1,13 @@
 import java.util.Properties
-
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    alias(libs.plugins.ksp)
     alias(libs.plugins.daggerHilt)
+    alias(libs.plugins.kapt)
+    alias(libs.plugins.parcelize)
+    alias(libs.plugins.safeArgs)
+
 }
 
 android {
@@ -22,6 +25,10 @@ android {
         if (localPropertiesFile.exists()) {
             localProperties.load(localPropertiesFile.inputStream())
         }
+        manifestPlaceholders["NATIVE_APP_KEY"] = localProperties["NATIVE_APP_KEY"] as String
+
+        manifestPlaceholders["redirectSchemeName"] = "http://localhost:8888"
+        manifestPlaceholders["redirectHostName"] = "callback"
 
     }
 
@@ -44,22 +51,26 @@ android {
 
     buildFeatures{
         viewBinding = true
-        dataBinding = true
         buildConfig = true
     }
 }
 
 dependencies {
     implementation(project(mapOf("path" to ":domain")))
+    implementation(project(":util"))
 
     implementation(libs.bundles.androidx)
-    implementation(libs.hilt.android)
     implementation(libs.androidx.annotation)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-    ksp(libs.hilt.compiler)
+    implementation(libs.flexbox)
+
+    kapt(libs.hilt.compiler)
+    implementation(libs.bundles.hilt)
 
     implementation(libs.bundles.presentationBundle)
 
+    implementation(libs.kakao)
+    // Navigation
+    implementation(libs.bundles.navigation)
     testImplementation(libs.bundles.testing)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

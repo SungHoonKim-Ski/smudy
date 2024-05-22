@@ -8,4 +8,42 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="report">Report</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home">홈 화면 입니다.</string>
+
+    <string name="recently_study_music">최근 학습한 음악</string>
+    <string name="todo">TODO</string>
+    <string name="music_recommend">이런 곡도 학습해봐요!</string>
+    <string name="today_sentence">오늘의 문장</string>
+    <string name="repeat_wrong_sentence">틀린 표현 복습</string>
+
+    <string name="login_btn_img_description">카카오 로그인 버튼 이미지</string>
+    <string name="login_img_app_logo">로그인 화면 앱 로고</string>
+    <string name="study_fragment_title">나의 플레이리스트</string>
+    <string name="study_fragment_music_add">+ 곡추가</string>
+    <string name="all_album_jacket_img_description">앨범 재킷 사진</string>
+    <string name="item_visible_btn_img_description">공부 유형 버튼</string>
+    <string name="all_study_type_fill">FILL</string>
+    <string name="all_study_type_pick">PICK</string>
+    <string name="all_study_type_express">EXPRESS</string>
+    <string name="all_study_type_pronounce">PRONOUNCE</string>
+    <string name="blank_title">FILL! 노래를 들으며 빈칸을 채워보세요</string>
+    <string name="study_pronounce_title">PRONOUNCE! 문장을 선택해 발음 연습을 해보세요.</string>
+    <string name="study_express_title">EXPRESS! 한국어 해석을 영어로 표현 하세요.</string>
+    <string name="pronounce_record_stop_img_description">녹음 중지 버튼</string>
+    <string name="pronounce_record_start_img_description">녹음 시작 버튼</string>
+    <string name="pronounce_btn_start">같이 듣기</string>
+    <string name="pronounce_btn_analyze">분석하기</string>
+    <string name="progress_init">0 / </string>
+    <string name="progress_total"> / 5</string>
+    <string name="submit">제출하기</string>
+    <string name="confirm">완료</string>
+    <string name="btn_next">다음</string>
+    <string name="next">다음</string>
+    <string name="shuffle_title">PICK! 한국어 해석에 맞게 조합해보세요</string>
+    <string name="correct_answer">Correct Answer</string>
+    <string name="incorrect_answer">Incorrect Answer</string>
+
 </resources>

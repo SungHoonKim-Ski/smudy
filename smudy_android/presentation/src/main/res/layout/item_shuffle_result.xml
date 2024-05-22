@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="@dimen/streak_size"
+    android:layout_marginBottom="@dimen/margin_small"
+    android:layout_marginHorizontal="@dimen/margin_small">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_small">
+
+        <TextView
+            android:id="@+id/tv_lyric_en"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/Noto_Sans.TEXT.R.12"
+            android:includeFontPadding="false"
+            tools:text="1. Now in the morning I sleep alone"
+            android:layout_marginBottom="@dimen/text_gap"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_nick_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="닉네임: "/>
+
+            <TextView
+                android:id="@+id/tv_lyric_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Noto_Sans.TEXT.R.12"
+                android:includeFontPadding="false"
+                tools:text="Now in the morning I sleep alone"
+                android:textColor="@color/red"
+                android:layout_marginBottom="@dimen/text_gap"/>
+
+        </LinearLayout>
+
+
+
+        <TextView
+            android:id="@+id/tv_lyric_kr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/Noto_Sans.TEXT.R.12"
+            android:includeFontPadding="false"
+            tools:text="1. Now in the morning I sleep alone" />
+
+    </LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>

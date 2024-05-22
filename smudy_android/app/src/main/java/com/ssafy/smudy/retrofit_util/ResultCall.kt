@@ -1,5 +1,7 @@
 package com.ssafy.smudy.retrofit_util
 
+import android.util.Log
+import com.ssafy.util.NetworkException
 import okhttp3.Request
 import okio.Timeout
 import org.json.JSONObject
@@ -67,11 +69,12 @@ class ResultCall<T>(
                     }
                 } else {
                     val errorBodyString = response.errorBody()?.string()
+                    Log.e("TAG", "onResponse: $errorBodyString")
                     val (message,code) = try {
                         if (!errorBodyString.isNullOrBlank()) {
                             listOf(
-                                JSONObject(errorBodyString).getJSONObject("dataHeader").getString("resultMessage"),
-                                JSONObject(errorBodyString).getJSONObject("dataHeader").getString("resultCode")
+                                JSONObject(errorBodyString).getString("message"),
+                                JSONObject(errorBodyString).getString("code")
                             )
                         } else {
                             listOf("","")

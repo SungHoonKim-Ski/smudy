@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:backgroundTint="@color/box_blue"
+    app:cardCornerRadius="@dimen/streak_size"
+    android:layout_margin="@dimen/text_gap">
+
+    <TextView
+        android:id="@+id/tv_word"
+        android:layout_width="wrap_content"
+        android:maxWidth="110dp"
+        android:layout_height="40dp"
+        android:layout_marginHorizontal="8dp"
+        android:paddingVertical="@dimen/text_gap"
+        android:autoSizeMaxTextSize="13sp"
+        android:autoSizeMinTextSize="11sp"
+        android:autoSizeTextType="uniform"
+        android:autoSizeStepGranularity="1sp"
+        android:textAppearance="@style/Noto_Sans.TEXT.B.13"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:gravity="center"
+        tools:text="abc"/>
+
+</androidx.cardview.widget.CardView>

@@ -4,10 +4,8 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-//    alias(libs.plugins.kapt)
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.kapt)
     alias(libs.plugins.daggerHilt)
-//    alias(libs.plugins.googleservice)
 }
 
 fun getProperty(propertyKey: String): String = gradleLocalProperties(rootDir, providers).getProperty(propertyKey)
@@ -24,9 +22,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "NATIVE_APP_KEY", getProperty("NATIVE_APP_KEY"))
 
-
-
+        manifestPlaceholders["redirectSchemeName"] = "http://localhost:8888"
+        manifestPlaceholders["redirectHostName"] = "callback"
     }
 
     buildTypes {
@@ -40,8 +39,6 @@ android {
     }
 
     buildFeatures{
-        viewBinding = true
-        dataBinding = true
         buildConfig = true
     }
 
@@ -70,20 +67,22 @@ dependencies {
     implementation(project(":presentation"))
     implementation(project(":domain"))
     implementation(project(":data"))
+    implementation(project(":util"))
 
     implementation(libs.bundles.androidx)
     testImplementation(libs.bundles.testing)
 
     // Hilt
     implementation(libs.bundles.hilt)
-    ksp(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
+
+    implementation(libs.kakao)
 
     // Retrofit
     implementation(libs.bundles.retrofit)
 
-    // Navigation
-    implementation(libs.bundles.navigation)
-    implementation(libs.bundles.presentationBundle)
+    // DataStore
+    implementation(libs.dataStore)
 
     androidTestImplementation ("androidx.test.ext:junit:1.1.3")
     androidTestImplementation ("androidx.test.espresso:espresso-core:3.4.0")

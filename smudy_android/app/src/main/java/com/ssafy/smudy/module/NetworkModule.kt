@@ -3,7 +3,16 @@ package com.ssafy.smudy.module
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.ssafy.data.BuildConfig.BASE_URL
+import com.ssafy.data.api.AuthService
+import com.ssafy.data.api.ExpressService
+import com.ssafy.data.api.HistoryService
+import com.ssafy.data.api.MusicService
+import com.ssafy.data.api.PronounceService
+import com.ssafy.data.api.ShuffleService
+import com.ssafy.data.api.StudyService
+import com.ssafy.data.api.TokenService
 import com.ssafy.data.api.UserService
+import com.ssafy.smudy.AuthAuthenticator
 import com.ssafy.smudy.AuthInterceptor
 import com.ssafy.smudy.retrofit_util.NetworkResponseAdapterFactory
 import dagger.Module
@@ -36,6 +45,7 @@ object NetworkModule {
     fun providesRetrofitClient(
         moshi: Moshi,
         authInterceptor: AuthInterceptor,
+        authAuthenticator: AuthAuthenticator
     ): Retrofit {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
@@ -44,6 +54,7 @@ object NetworkModule {
         val client = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
             .addInterceptor(authInterceptor)
+            .authenticator(authAuthenticator)
             .build()
 
         return Retrofit.Builder()
@@ -72,6 +83,7 @@ object NetworkModule {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(client)
+            .addCallAdapterFactory(NetworkResponseAdapterFactory())
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
     }
@@ -81,4 +93,42 @@ object NetworkModule {
     fun provideUserService(retrofit: Retrofit): UserService =
         retrofit.create(UserService::class.java)
 
+    @Provides
+    @Singleton
+    fun provideAuthService(retrofit: Retrofit): AuthService =
+        retrofit.create(AuthService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideTokenService(@AuthRetrofit retrofit: Retrofit): TokenService =
+        retrofit.create(TokenService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideMusicService(retrofit: Retrofit): MusicService =
+        retrofit.create(MusicService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideStudyService(retrofit: Retrofit): StudyService =
+        retrofit.create(StudyService::class.java)
+
+    @Provides
+    @Singleton
+    fun providePronounceService(retrofit: Retrofit): PronounceService =
+        retrofit.create(PronounceService::class.java)
+
+
+    @Provides
+    @Singleton
+    fun provideShuffleService(retrofit: Retrofit): ShuffleService =
+        retrofit.create(ShuffleService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideExpressService(retrofit: Retrofit): ExpressService = retrofit.create(ExpressService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideHistoryService(retrofit: Retrofit): HistoryService = retrofit.create(HistoryService::class.java)
 }

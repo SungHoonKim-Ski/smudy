@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.ssafy.presentation.ui.main.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" />
+    <fragment
+        android:id="@+id/studyFragment"
+        android:name="com.ssafy.presentation.ui.study.StudyFragment"
+        android:label="fragment_study"
+        tools:layout="@layout/fragment_study" >
+        <action
+            android:id="@+id/action_studyFragment_to_musicSearchFragment"
+            app:destination="@id/musicSearchFragment"
+            app:popUpTo="@id/studyFragment"
+            app:popUpToInclusive="false"/>
+        <action
+            android:id="@+id/action_studyFragment_to_fillFragment"
+            app:destination="@id/fillFragment" />
+        <action
+            android:id="@+id/action_studyFragment_to_expressFragment"
+            app:destination="@id/expressFragment" />
+        <action
+            android:id="@+id/action_studyFragment_to_pronounce"
+            app:destination="@id/nav_pronounce" />
+        <action
+            android:id="@+id/action_studyFragment_to_shuffleFragment"
+            app:destination="@id/shuffleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.ssafy.presentation.ui.history.HistoryFragment"
+        android:label="fragment_history"
+        tools:layout="@layout/fragment_history" >
+        <action
+            android:id="@+id/action_historyFragment_to_shuffleResultFragment"
+            app:destination="@id/shuffleResultFragment" />
+        <action
+            android:id="@+id/action_historyFragment_to_fillResultFragment"
+            app:destination="@id/fillResultFragment" />
+        <action
+            android:id="@+id/action_historyFragment_to_expressResultFragment"
+            app:destination="@id/expressResultFragment" />
+        <action
+            android:id="@+id/action_historyFragment_to_pronounceResultFragment"
+            app:destination="@id/pronounceResultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/musicSearchFragment"
+        android:name="com.ssafy.presentation.ui.study.MusicSearchFragment"
+        android:label="fragment_music_search"
+        tools:layout="@layout/fragment_music_search" >
+    </fragment>
+    <fragment
+        android:id="@+id/fillFragment"
+        android:name="com.ssafy.presentation.ui.study.fill.FillFragment"
+        android:label="fragment_fill"
+        tools:layout="@layout/fragment_fill" >
+        <action
+            android:id="@+id/action_fillFragment_to_fillResultFragment"
+            app:destination="@id/fillResultFragment" />
+        <argument
+            android:name="Id"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/expressFragment"
+        android:name="com.ssafy.presentation.ui.study.express.ExpressFragment"
+        android:label="fragment_express"
+        tools:layout="@layout/fragment_express" >
+        <action
+            android:id="@+id/action_expressFragment_to_expressResultFragment"
+            app:destination="@id/expressResultFragment" />
+        <argument
+            android:name="Id"
+            app:argType="string" />
+    </fragment>
+    <navigation android:id="@+id/nav_pronounce"
+        app:startDestination="@id/pronounceProblemFragment">
+        <fragment
+            android:id="@+id/pronounceProblemFragment"
+            android:name="com.ssafy.presentation.ui.study.pronounce.PronounceProblemFragment"
+            android:label="fragment_pronounce_problem"
+            tools:layout="@layout/fragment_pronounce_problem">
+            <action
+                android:id="@+id/action_pronounceProblemFragment_to_pronouncePracticeFragment"
+                app:destination="@id/pronouncePracticeFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/pronouncePracticeFragment"
+            android:name="com.ssafy.presentation.ui.study.pronounce.PronouncePracticeFragment"
+            android:label="fragment_pronounce_practice"
+            tools:layout="@layout/fragment_pronounce_practice">
+            <action
+                android:id="@+id/action_pronouncePracticeFragment_to_pronounceResultFragment"
+                app:destination="@id/pronounceResultFragment" />
+        </fragment>
+        <argument
+            android:name="Id"
+            app:argType="string" />
+    </navigation>
+    <fragment
+        android:id="@+id/pronounceResultFragment"
+        android:name="com.ssafy.presentation.ui.study.pronounce.PronounceResultFragment"
+        android:label="fragment_pronounce_result"
+        tools:layout="@layout/fragment_pronounce_result" >
+        <action
+            android:id="@+id/action_pronounceResultFragment_to_pronouncePracticeFragment"
+            app:destination="@id/pronouncePracticeFragment" />
+        <argument
+            android:name="PronounceResult"
+            app:argType="com.ssafy.presentation.model.pronounce.GradedPronounce" />
+        <argument
+            android:name="IsHistory"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="Music"
+            app:argType="com.ssafy.presentation.model.Music" />
+    </fragment>
+    <fragment
+        android:id="@+id/fillResultFragment"
+        android:name="com.ssafy.presentation.ui.study.fill.FillResultFragment"
+        android:label="fragment_fill_result"
+        tools:layout="@layout/fragment_fill_result" >
+        <argument
+            android:name="ResultArgs"
+            app:argType="com.ssafy.presentation.model.ParcelableSubmitResult" />
+        <action
+            android:id="@+id/action_fillResultFragment_to_studyFragment"
+            app:destination="@id/studyFragment" />
+        <action
+            android:id="@+id/action_fillResultFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
+        <argument
+            android:name="IsHistory"
+            app:argType="boolean"
+            android:defaultValue="false"/>
+    </fragment>
+    <fragment
+        android:id="@+id/shuffleFragment"
+        android:name="com.ssafy.presentation.ui.study.shuffle.ShuffleFragment"
+        android:label="fragment_shuffle"
+        tools:layout="@layout/fragment_shuffle" >
+        <action
+            android:id="@+id/action_shuffleFragment_to_shuffleResultFragment"
+            app:destination="@id/shuffleResultFragment" />
+        <argument
+            android:name="Id"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/shuffleResultFragment"
+        android:name="com.ssafy.presentation.ui.study.shuffle.ShuffleResultFragment"
+        android:label="fragment_shuffle_result"
+        tools:layout="@layout/fragment_shuffle_result">
+        <argument
+            android:name="ResultArgs"
+            app:argType="com.ssafy.presentation.model.ParcelableShuffleSubmitResult" />
+        <action
+            android:id="@+id/action_shuffleResultFragment_to_studyFragment"
+            app:destination="@id/studyFragment" />
+        <argument
+            android:name="IsHistory"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/expressResultFragment"
+        android:name="com.ssafy.presentation.ui.study.express.ExpressResultFragment"
+        android:label="fragment_express_result"
+        tools:layout="@layout/fragment_express_result" >
+        <action
+            android:id="@+id/action_expressResultFragment_to_studyFragment"
+            app:destination="@id/studyFragment" />
+        <argument
+            android:name="IsHistory"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="Music"
+            app:argType="com.ssafy.presentation.model.Music" />
+        <argument
+            android:name="ExpressResultArray"
+            app:argType="com.ssafy.presentation.model.express.ExpressResult[]" />
+    </fragment>
+</navigation>

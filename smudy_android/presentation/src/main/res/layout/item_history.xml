@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingHorizontal="@dimen/item_padding"
+    android:background="@color/music_player_background"
+    android:layout_marginBottom="@dimen/margin_small">
+
+    <include layout="@layout/layout_music_basic"
+        android:id="@+id/lo_basic"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_type"
+        style="@style/TextAppearance.MaterialComponents.Button.Color"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25"
+        android:layout_gravity="center"
+        android:text="@string/all_study_type_express" />
+
+</LinearLayout>
