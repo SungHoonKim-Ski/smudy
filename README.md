@@ -73,7 +73,7 @@
 
 #### 가사 한 문장에 한 개의 빈칸이 있고, 노래를 들으며 해당 빈칸을 채우며 문제 풀이를 진행합니다. 또한, 빈칸에 제출한 단어의 채점 결과를 확인할 수 있습니다.
 ### PICK 유형
-<img src="./readme_img/pick_study_page.jpg" width="270" height="500">
+<img src="./readme_img/pick_study_solving_page.jpg" width="270" height="500">
 <img src="./readme_img/pick_study_result_page.jpg" width="270" height="500">
 
 #### 선택한 노래의 가사 중 5문제가 출제되고, 해당 가사가 단어 단위로 섞이며 한국어로 번역된 문장을 보며 섞인 단어의 순서를 맞춥니다. 또한, 이렇게 푼 문제의 풀이 결과를 확인할 수 있습니다.
