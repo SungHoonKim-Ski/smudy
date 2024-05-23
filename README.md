@@ -4,7 +4,7 @@
 
 ### 팝송을 이용하여 영어 어휘 실력을 기르는 서비스
 ## 아키텍처
-<img src="./readme_img/architecture.jpg.jpg" width="630" height="335">
+<img src="./readme_img/architecture.jpg" width="630" height="335">
 
 ## 개발 환경
 ### Backend
