@@ -1,9 +1,29 @@
 # SMUDY
 <img src="./readme_img/app_logo.png" width="240" height="240">
 
+
 ### 팝송을 이용하여 영어 어휘 실력을 기르는 서비스
+## 아키텍처
+<img src="./readme_img/architecture.jpg" width="630" height="335">
 
 ## 개발 환경
+### Backend
+#### IDE & JDK
+- Intellij 2022.3.3
+- JDK 17
+#### 📖 Backend 라이브러리 및 외부 API 사용
+| Library        |
+|----------------|
+| Spring Cloud   |
+| Openfeign      |
+| Netflix-eureka |
+| Postgres       |
+| MongoDB        |
+| JPA            |
+| RecyclerView   |
+| jjwt           |
+| jasypt         |
+
 ### Android
 #### IDE
 - Android Studio Iguana 2023.2.1 Patch 2
@@ -67,23 +87,23 @@
 <img src="./readme_img/study_list_page_search_result.jpg" width="270" height="500">
 
 #### 공부하고 싶은 노래를 검색할 수 있습니다. 이 때 단어를 입력하면 추천 검색어를 보여줍니다. 또한, 검색을 진행하면 해당 검색어와 관련된 검색 결과를 보여주고 선택하여 내 플레이리스트에 추가할 수 있습니다.
-### FILL 유형
+### FILL 유형 : 노래를 들으며 빈칸 채우기
 <img src="./readme_img/fill_study_page.jpg" width="270" height="500">
 <img src="./readme_img/fill_study_result_page.jpg" width="270" height="500">
 
 #### 가사 한 문장에 한 개의 빈칸이 있고, 노래를 들으며 해당 빈칸을 채우며 문제 풀이를 진행합니다. 또한, 빈칸에 제출한 단어의 채점 결과를 확인할 수 있습니다.
-### PICK 유형
+### PICK 유형 : 한국어 해석에 맞게 문장 조합하기
 <img src="./readme_img/pick_study_solving_page.jpg" width="270" height="500">
 <img src="./readme_img/pick_study_result_page.jpg" width="270" height="500">
 
 #### 선택한 노래의 가사 중 5문제가 출제되고, 해당 가사가 단어 단위로 섞이며 한국어로 번역된 문장을 보며 섞인 단어의 순서를 맞춥니다. 또한, 이렇게 푼 문제의 풀이 결과를 확인할 수 있습니다.
-### EXPRESS 유형
+### EXPRESS 유형 : 한국어 해석을 영어로 표현하기
 <img src="./readme_img/express_study_solving_page.jpg" width="270" height="500">
 <img src="./readme_img/express_study_solving_one_result_page.jpg" width="270" height="500">
 <img src="./readme_img/express_study_solving_full_result_page.jpg" width="270" height="500">
 
 #### 선택한 노래의 가사 중 5문제가 출제되고, 가사가 한국어로 번역되어 보여지고 영어로 표현해보는 유형입니다. 또한, 한 문제마다 채점 결과가 보여지고 마지막에 문제풀이 결과 전체를 확인할 수 있습니다.
-### PRONOUNCE 유형
+### PRONOUNCE 유형 : 가사 중 한 문장을 선택해 발음 연습하기
 <img src="./readme_img/pronounce_study_page.jpg" width="270" height="500">
 <img src="./readme_img/pronounce_study_solving_standard_page.jpg" width="270" height="500">
 <img src="./readme_img/pronounce_study_solving_user_record_page.jpg" width="270" height="500">
