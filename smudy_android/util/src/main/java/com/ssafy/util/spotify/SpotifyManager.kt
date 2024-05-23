@@ -10,6 +10,7 @@ import com.spotify.android.appremote.api.SpotifyAppRemote
 import com.spotify.sdk.android.auth.AuthorizationClient
 import com.spotify.sdk.android.auth.AuthorizationRequest
 import com.spotify.sdk.android.auth.AuthorizationResponse
+import com.ssafy.util.BuildConfig
 import kotlin.math.log
 
 
@@ -29,8 +30,8 @@ class SpotifyManager(private val context: Context) {
 
     private lateinit var builder: AuthorizationRequest.Builder
     private lateinit var spotifyAppRemote: SpotifyAppRemote
-    private val clientID = "b1d80c49997b4f65899ab92be706e24e"
-    private val redirectUri = "http://localhost:8888/callback"
+    private val clientID = BuildConfig.SPOTIFY_DEVELOPER_ID
+    private val redirectUri = "https://smudy/callback"
     private val REQUEST_CODE = 1337
 
     fun spotifyAuthenticate(activity: Activity) {

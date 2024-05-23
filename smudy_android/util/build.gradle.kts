@@ -1,7 +1,11 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
 }
+
+fun getProperty(propertyKey: String): String = gradleLocalProperties(rootDir, providers).getProperty(propertyKey)
 
 android {
     namespace = "com.ssafy.util"
@@ -15,6 +19,8 @@ android {
 
         manifestPlaceholders["redirectSchemeName"] = "http://localhost:8888"
         manifestPlaceholders["redirectHostName"] = "callback"
+
+        buildConfigField("String", "SPOTIFY_DEVELOPER_ID", getProperty("SPOTIFY_DEVELOPER_ID"))
     }
 
     buildTypes {
@@ -26,6 +32,11 @@ android {
             )
         }
     }
+
+    buildFeatures{
+        buildConfig = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
